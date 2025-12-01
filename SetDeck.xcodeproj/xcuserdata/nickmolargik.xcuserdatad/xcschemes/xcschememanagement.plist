@@ -7,7 +7,35 @@
 		<key>SetDeck.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>2</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>EB13859D2EBE5678001011D3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EB1387F62EBE6224001011D3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EB1388022EBE6225001011D3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EB13880C2EBE6226001011D3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EB1388252EBE625F001011D3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>
