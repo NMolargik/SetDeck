@@ -27,8 +27,17 @@ struct ExerciseCardView: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(LinearGradient(colors: [Color.white.opacity(0.8), Color.white.opacity(1.0)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                .fill(LinearGradient(colors: [Color.white.opacity(0.9), Color.white.opacity(1.0)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .stroke(Color.gray, lineWidth: 7)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .stroke(Color.white, lineWidth: 3)
+                )
                 .shadow(color: .black.opacity(0.15), radius: 12, x: 0, y: 8)
+            
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {
@@ -141,4 +150,5 @@ struct ExerciseCardView: View {
 
     return ExerciseCardView(index: 1, exercise: SetDeckExercise.sample(seed: 42, setCount: 3))
         .environment(exerciseManager)
+        .preferredColorScheme(.dark)
 }

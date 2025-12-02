@@ -30,7 +30,7 @@ struct RoutineDayDeckView: View {
                                 ExerciseCardView(index: idx, exercise: exercise)
                                     .frame(width: min(proxy.size.width, max(280, proxy.size.width * 0.92)))
                                     .tag(idx)
-                                    .padding(.top)
+                                    .padding(.vertical)
                             }
                         }
                         .tabViewStyle(.page(indexDisplayMode: .never))

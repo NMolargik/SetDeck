@@ -52,7 +52,7 @@ struct ExercisePRCardView: View {
                             Spacer()
                             Text(formatDate(pr.bestDate))
                                 .font(.caption2)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(.purpleStart)
                         }
                         .padding(.vertical, 2)
                     }

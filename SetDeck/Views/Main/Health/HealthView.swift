@@ -144,7 +144,7 @@ struct HealthView: View {
                                         Label("Start", systemImage: "play.fill")
                                     }
                                     .buttonStyle(.borderedProminent)
-                                    .tint(.greenEnd)
+                                    .tint(.greenStart)
                                 }
                             }
                         }
