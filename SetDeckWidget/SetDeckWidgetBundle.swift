@@ -11,7 +11,8 @@ import SwiftUI
 @main
 struct SetDeckWidgetBundle: WidgetBundle {
     var body: some Widget {
-        WaterWidget()
+        WaterWidgetOZ()
+        WaterWidgetLiter()
         EnergyWidget()
     }
 }

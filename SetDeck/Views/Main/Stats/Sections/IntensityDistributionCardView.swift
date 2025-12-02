@@ -39,6 +39,7 @@ struct IntensityDistributionCard: View {
                         x: .value("RPE", bucket.rpe),
                         y: .value("Sets", bucket.count)
                     )
+                    .foregroundStyle(.purpleStart)
                 }
                 .frame(height: 180)
             }

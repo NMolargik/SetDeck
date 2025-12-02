@@ -23,7 +23,7 @@ struct WorkoutSummary: Identifiable, Hashable {
         formatter.timeStyle = .short
         let when = formatter.string(from: startDate)
         if let kcal = totalEnergyBurnedKCal {
-            return "\(when) · \(Int(kcal)) kcal"
+            return "\(when) · \(Int(kcal)) cal"
         } else {
             return when
         }

@@ -33,6 +33,7 @@ struct VolumeTrendCardView: View {
                     x: .value("Date", point.date, unit: .day),
                     y: .value("Volume", point.volume)
                 )
+                .foregroundStyle(.purpleStart)
             }
             .chartXAxis {
                 AxisMarks(values: .automatic(desiredCount: 6)) { value in
@@ -57,4 +58,3 @@ struct VolumeTrendCardView: View {
 #Preview {
     VolumeTrendCardView(points: [])
 }
-

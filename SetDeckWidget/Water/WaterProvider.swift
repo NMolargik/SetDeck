@@ -1,43 +1,44 @@
 //
-//  WaterProvider.swift
-//  SetDeckWidgetExtension
+// WaterProvider.swift
+// SetDeckWidgetExtension
 //
-//  Created by Nick Molargik on 12/2/25.
+// Created by Nick Molargik on 12/2/25.
 //
 
 import Foundation
 import WidgetKit
 
-struct WaterProvider: AppIntentTimelineProvider {
+struct WaterProvider: TimelineProvider {
     typealias Entry = WaterEntry
 
     func placeholder(in context: Context) -> WaterEntry {
-        WaterEntry(date: Date(), waterML: 0, unitSystem: .imperial)
+        WaterEntry(date: Date(), waterML: 0)
     }
 
-    func snapshot(for configuration: ConfigureTrackerIntent, in context: Context) async -> WaterEntry {
-        WaterEntry(date: Date(), waterML: 0, unitSystem: configuration.unitSystem ?? .imperial)
-    }
-
-    private func fetchWaterForTimeline() async -> Double {
-        return await withCheckedContinuation { continuation in
-            Task { @MainActor in
-                let healthManager = HealthManager(forWidget: true)
-                // If an async refresh is needed and main-actor-isolated, it can be awaited here in this block.
-                continuation.resume(returning: healthManager.todayWaterML)
-            }
+    func getSnapshot(in context: Context, completion: @escaping (WaterEntry) -> Void) {
+        Task {
+            let waterML: Double = await fetchWaterForTimeline()
+            let entry = WaterEntry(date: Date(), waterML: waterML)
+            completion(entry)
         }
     }
 
-    func timeline(for configuration: ConfigureTrackerIntent, in context: Context) async -> Timeline<WaterEntry> {
-        let water: Double = await fetchWaterForTimeline()
+    private func fetchWaterForTimeline() async -> Double {
+        let healthManager = await HealthManager()
+        await healthManager.refreshWaterToday()
+        let waterML = await healthManager.todayWaterML
+        // Clamp NaN/invalids to 0 (prevents CoreGraphics errors in view).
+        let clampedML = waterML.isNaN ? 0.0 : max(0.0, waterML)
+        return clampedML
+    }
 
-        let entry = WaterEntry(
-            date: Date(),
-            waterML: water,
-            unitSystem: configuration.unitSystem ?? .imperial
-        )
-
-        return Timeline(entries: [entry], policy: .after(Date().addingTimeInterval(15 * 60)))
+    func getTimeline(in context: Context, completion: @escaping (Timeline<WaterEntry>) -> Void) {
+        Task {
+            let waterML: Double = await fetchWaterForTimeline()
+            let entry = WaterEntry(date: Date(), waterML: waterML)
+            let refreshDate = Date().addingTimeInterval(15 * 60)
+            let timeline = Timeline(entries: [entry], policy: .after(refreshDate))
+            completion(timeline)
+        }
     }
 }

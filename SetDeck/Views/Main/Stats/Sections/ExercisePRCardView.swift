@@ -9,10 +9,9 @@ import SwiftUI
 
 struct ExercisePRCardView: View {
     let exerciseNames: [String]
-    @Binding var selectedExerciseName: String?
     let prs: [StatsView.PRSummary]
 
-    @AppStorage(AppStorageKeys.useMetricUnits, store: UserDefaults(suiteName: "group.nickmolargik.ReadySet")) private var useMetricUnits: Bool = false
+    @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
     @AppStorage(AppStorageKeys.useDayMonthYearDates) private var useDayMonthYearDates = false
 
     private func displayWeight(_ lbs: Double) -> String {
@@ -36,18 +35,6 @@ struct ExercisePRCardView: View {
             Text("Personal Records")
                 .font(.headline)
             VStack(alignment: .leading, spacing: 8) {
-                if !exerciseNames.isEmpty {
-                    Picker("Exercise", selection: Binding(
-                        get: { selectedExerciseName ?? exerciseNames.first },
-                        set: { selectedExerciseName = $0 }
-                    )) {
-                        ForEach(exerciseNames, id: \.self) { name in
-                            Text(name).tag(Optional(name))
-                        }
-                    }
-                    .pickerStyle(.menu)
-                }
-
                 if prs.isEmpty {
                     Text("Log some sets to see PRs.")
                         .font(.caption)
@@ -91,10 +78,8 @@ struct ExercisePRCardView: View {
 
     return ExercisePRCardView(
         exerciseNames: names,
-        selectedExerciseName: .constant(names.first),
         prs: prs
     )
     .padding()
     .background(Color(.systemBackground))
 }
-

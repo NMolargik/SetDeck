@@ -142,7 +142,9 @@ class HealthManager: NSObject {
             try await addWater(ml: amountML, date: date)
             await refreshWaterToday()
             await refreshWaterSeries(days: 14)
-            WidgetCenter.shared.reloadTimelines(ofKind: "WaterWidget")
+            WidgetCenter.shared.reloadTimelines(ofKind: "WaterWidgetLiter")
+            WidgetCenter.shared.reloadTimelines(ofKind: "WaterWidgetOZ")
+
 
         } catch { }
     }

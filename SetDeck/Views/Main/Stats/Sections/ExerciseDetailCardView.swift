@@ -9,11 +9,16 @@ import SwiftUI
 import Charts
 
 struct ExerciseDetailCardView: View {
-    let exerciseName: String
+    let exerciseNames: [String]
+    @Binding var selectedExerciseName: String?
     let points: [StatsView.OneRMPoint]
 
     @AppStorage(AppStorageKeys.useMetricUnits, store: UserDefaults(suiteName: "group.nickmolargik.ReadySet")) private var useMetricUnits: Bool = false
     @AppStorage(AppStorageKeys.useDayMonthYearDates) private var useDayMonthYearDates = false
+
+    private var currentExerciseName: String {
+        selectedExerciseName ?? exerciseNames.first ?? "Exercise"
+    }
 
     private func axisDateString(_ date: Date) -> String {
         if useDayMonthYearDates {
@@ -28,8 +33,21 @@ struct ExerciseDetailCardView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("\(exerciseName) Progress")
+            Text("Exercise Progress")
                 .font(.headline)
+
+            if !exerciseNames.isEmpty {
+                Picker("Exercise", selection: Binding(
+                    get: { selectedExerciseName ?? exerciseNames.first },
+                    set: { selectedExerciseName = $0 }
+                )) {
+                    ForEach(exerciseNames, id: \.self) { name in
+                        Text(name).tag(Optional(name))
+                    }
+                }
+                .pickerStyle(.menu)
+            }
+
             if points.isEmpty {
                 Text("No history yet for this exercise.")
                     .font(.caption)
@@ -41,10 +59,13 @@ struct ExerciseDetailCardView: View {
                         x: .value("Date", point.date, unit: .day),
                         y: .value("Est. 1RM", useMetricUnits ? point.value * 0.45359237 : point.value)
                     )
+                    .foregroundStyle(.purpleStart)
+
                     PointMark(
                         x: .value("Date", point.date, unit: .day),
                         y: .value("Est. 1RM", useMetricUnits ? point.value * 0.45359237 : point.value)
                     )
+                    .foregroundStyle(.purpleStart)
                 }
                 .chartXAxis {
                     AxisMarks(values: .automatic(desiredCount: 6)) { value in
@@ -68,19 +89,28 @@ struct ExerciseDetailCardView: View {
 }
 
 #Preview("ExerciseDetailCard") {
-    let base = Calendar.current.startOfDay(for: Date())
-    let points: [StatsView.OneRMPoint] = [
-        .init(date: Calendar.current.date(byAdding: .day, value: -30, to: base)!, value: 225),
-        .init(date: Calendar.current.date(byAdding: .day, value: -20, to: base)!, value: 235),
-        .init(date: Calendar.current.date(byAdding: .day, value: -10, to: base)!, value: 245),
-        .init(date: base, value: 255)
-    ]
+    struct ExerciseDetailPreviewWrapper: View {
+        @State private var selectedExerciseName: String? = "Bench Press"
 
-    return ExerciseDetailCardView(
-        exerciseName: "Bench Press",
-        points: points
-    )
-    .padding()
-    .background(Color(.systemBackground))
+        var body: some View {
+            let base = Calendar.current.startOfDay(for: Date())
+            let points: [StatsView.OneRMPoint] = [
+                .init(date: Calendar.current.date(byAdding: .day, value: -30, to: base)!, value: 225),
+                .init(date: Calendar.current.date(byAdding: .day, value: -20, to: base)!, value: 235),
+                .init(date: Calendar.current.date(byAdding: .day, value: -10, to: base)!, value: 245),
+                .init(date: base, value: 255)
+            ]
+            let names = ["Bench Press", "Squat", "Deadlift"]
+
+            return ExerciseDetailCardView(
+                exerciseNames: names,
+                selectedExerciseName: $selectedExerciseName,
+                points: points
+            )
+            .padding()
+            .background(Color(.systemBackground))
+        }
+    }
+
+    return ExerciseDetailPreviewWrapper()
 }
-

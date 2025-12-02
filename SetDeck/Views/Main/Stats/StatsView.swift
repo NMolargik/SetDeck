@@ -10,7 +10,7 @@ import SwiftData
 
 struct StatsView: View {
     @Environment(ExerciseManager.self) private var exerciseManager
-    @AppStorage(AppStorageKeys.useMetricUnits, store: UserDefaults(suiteName: "group.nickmolargik.ReadySet")) private var useMetricUnits: Bool = false
+    @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
     @AppStorage(AppStorageKeys.useDayMonthYearDates) private var useDayMonthYearDates = false
 
     @State private var viewModel: ViewModel = ViewModel()
@@ -53,17 +53,17 @@ struct StatsView: View {
 
                         ExercisePRCardView(
                             exerciseNames: exerciseNames,
-                            selectedExerciseName: $selectedExerciseName,
                             prs: exercisePRs
                         )
 
-                        if let selected = selectedExerciseName,
-                           let points = exercise1RMPoints[selected] {
-                            ExerciseDetailCardView(
-                                exerciseName: selected,
-                                points: points
-                            )
-                        }
+                        let selected = selectedExerciseName ?? exerciseNames.first
+                        let selectedPoints = selected.flatMap { exercise1RMPoints[$0] } ?? []
+
+                        ExerciseDetailCardView(
+                            exerciseNames: exerciseNames,
+                            selectedExerciseName: $selectedExerciseName,
+                            points: selectedPoints
+                        )
 
                         IntensityDistributionCard(history: filteredHistory)
                     }

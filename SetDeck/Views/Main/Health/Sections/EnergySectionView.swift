@@ -10,22 +10,16 @@ import Charts
 
 struct EnergySectionView: View {
     @Environment(HealthManager.self) private var healthManager: HealthManager
-    @AppStorage(AppStorageKeys.useMetricUnits, store: UserDefaults(suiteName: "group.nickmolargik.ReadySet")) private var useMetricUnits: Bool = false
     @AppStorage(AppStorageKeys.useDayMonthYearDates) private var useDayMonthYearDates = false
 
     @Binding var newCalorieIntake: Double
     @Binding var isExpanded: Bool
     @Binding var didAddFood: Bool
 
-    private var energyUnitLabel: String { useMetricUnits ? "kJ" : "kcal" }
-    private var energyDisplayMax: Double { useMetricUnits ? 20000 : 5000 }
-    private var energyStep: Double { useMetricUnits ? 100 : 50 }
-    private var energyInputBinding: Binding<Double> {
-        Binding(
-            get: { useMetricUnits ? newCalorieIntake * 4.184 : newCalorieIntake },
-            set: { newValue in newCalorieIntake = useMetricUnits ? newValue / 4.184 : newValue }
-        )
-    }
+    private let energyUnitLabel: String = "cal"
+    private let energyDisplayMax: Double = 5000
+    private let energyStep: Double = 50
+    private var energyInputBinding: Binding<Double> { Binding(get: { newCalorieIntake }, set: { newCalorieIntake = $0 }) }
     private func axisDateString(_ date: Date) -> String {
         let df = DateFormatter()
         df.locale = .current
@@ -75,7 +69,7 @@ struct EnergySectionView: View {
         ForEach(data) { item in
             LineMark(
                 x: .value("Date", item.date, unit: .day),
-                y: .value("Intake", useMetricUnits ? item.amount * 4.184 : item.amount)
+                y: .value("Intake", item.amount)
             )
             .interpolationMethod(.linear)
             .symbol(Circle()).symbolSize(40)
@@ -84,7 +78,7 @@ struct EnergySectionView: View {
             .zIndex(1)
             .annotation(position: .top) {
                 if Calendar.current.isDateInToday(item.date) {
-                    Text("\(Int(useMetricUnits ? item.amount * 4.184 : item.amount)) \(energyUnitLabel)").font(.caption2).bold()
+                    Text("\(Int(item.amount)) \(energyUnitLabel)").font(.caption2).bold()
                 }
             }
         }
@@ -95,7 +89,7 @@ struct EnergySectionView: View {
         ForEach(data) { item in
             AreaMark(
                 x: .value("Date", item.date, unit: .day),
-                y: .value("Intake", useMetricUnits ? item.amount * 4.184 : item.amount)
+                y: .value("Intake", item.amount)
             )
             .interpolationMethod(.linear)
             .foregroundStyle(LinearGradient(colors: [.orangeStart.opacity(0.25), .clear], startPoint: .top, endPoint: .bottom))
@@ -107,7 +101,7 @@ struct EnergySectionView: View {
         ForEach(data) { item in
             LineMark(
                 x: .value("Date", item.date, unit: .day),
-                y: .value("Burn", useMetricUnits ? item.amount * 4.184 : item.amount)
+                y: .value("Burn", item.amount)
             )
             .interpolationMethod(.linear)
             .symbol(.square).symbolSize(40)
@@ -115,7 +109,7 @@ struct EnergySectionView: View {
             .foregroundStyle(LinearGradient(colors: [.red, .orangeStart], startPoint: .leading, endPoint: .trailing))
             .annotation(position: .top) {
                 if Calendar.current.isDateInToday(item.date) {
-                    Text("\(Int(useMetricUnits ? item.amount * 4.184 : item.amount)) \(energyUnitLabel)").font(.caption2).bold()
+                    Text("\(Int(item.amount)) \(energyUnitLabel)").font(.caption2).bold()
                 }
             }
         }
@@ -126,7 +120,7 @@ struct EnergySectionView: View {
         ForEach(data) { item in
             AreaMark(
                 x: .value("Date", item.date, unit: .day),
-                y: .value("Burn", useMetricUnits ? item.amount * 4.184 : item.amount)
+                y: .value("Burn", item.amount)
             )
             .interpolationMethod(.linear)
             .foregroundStyle(LinearGradient(colors: [.red.opacity(0.2), .clear], startPoint: .top, endPoint: .bottom))
@@ -152,7 +146,7 @@ struct EnergySectionView: View {
 
     private var caloriesBurnedChart: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Label(useMetricUnits ? "Energy Burned" : "Calories Burned", systemImage: "flame.fill").font(.headline).foregroundStyle(.red)
+            Label("Calories Burned", systemImage: "flame.fill").font(.headline).foregroundStyle(.red)
             let burn = burnData
             Chart { burnLine(burn); burnArea(burn) }
                 .frame(height: 200)
@@ -175,7 +169,7 @@ struct EnergySectionView: View {
             DisclosureGroup(isExpanded: $isExpanded) {
                 VStack(alignment: .leading, spacing: 12) {
                     HStack {
-                        Label(useMetricUnits ? "Energy Consumed" : "Calories Consumed", systemImage: "fork.knife").font(.headline).foregroundStyle(.orangeStart)
+                        Label("Calories Consumed", systemImage: "fork.knife").font(.headline).foregroundStyle(.orangeStart)
                         Spacer()
                         Text("\(Int(energyInputBinding.wrappedValue)) \(energyUnitLabel)")
                             .monospacedDigit().foregroundStyle(.orangeStart)
@@ -202,7 +196,7 @@ struct EnergySectionView: View {
                             Spacer()
                             Button {
                                 Task {
-                                    let kcal = useMetricUnits ? energyInputBinding.wrappedValue / 4.184 : energyInputBinding.wrappedValue
+                                    let kcal = energyInputBinding.wrappedValue
                                     await healthManager.addCalorieIntakeIfSupported(amount: kcal, date: Date())
                                     await MainActor.run { withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) { didAddFood = true; newCalorieIntake = 0 } }
                                     try? await Task.sleep(nanoseconds: 800_000_000)

@@ -10,7 +10,7 @@ import SwiftData
 
 struct SetRowView: View {
     @Environment(ExerciseManager.self) private var exerciseManager
-    @AppStorage(AppStorageKeys.useMetricUnits, store: UserDefaults(suiteName: "group.nickmolargik.ReadySet")) private var useMetricUnits: Bool = false
+    @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     @Binding var isEditing: Bool
@@ -27,97 +27,54 @@ struct SetRowView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack(alignment: .center, spacing: 12) {
-                if !isEditing {
-                    // Type badge
-                    Text(typeAbbrev)
-                        .font(.caption2.bold())
-                        .foregroundStyle(.black)
-                        .padding(.vertical, 4)
-                        .padding(.horizontal, 8)
-                        .background(Color(white: 0.9), in: Capsule())
-                        .overlay(Capsule().stroke(Color.black.opacity(0.08), lineWidth: 1))
-                        .frame(width: 55)
-                        .accessibilityHidden(true)
+                // Type badge
+                Text(typeAbbrev)
+                    .font(.caption2.bold())
+                    .foregroundStyle(.black)
+                    .padding(.vertical, 4)
+                    .padding(.horizontal, 8)
+                    .background(Color(white: 0.9), in: Capsule())
+                    .overlay(Capsule().stroke(Color.black.opacity(0.08), lineWidth: 1))
+                    .frame(width: 55)
+                    .accessibilityHidden(true)
 
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(primaryLine)
-                            .font(.title3).bold()
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(primaryLine)
+                        .font(.title3).bold()
+                        .foregroundStyle(.black)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.75)
+                        .truncationMode(.tail)
+
+                    if let detail = secondaryLine {
+                        Text(detail)
+                            .font(.subheadline)
                             .foregroundStyle(.black)
                             .lineLimit(1)
-                            .minimumScaleFactor(0.75)
                             .truncationMode(.tail)
-
-                        if let detail = secondaryLine {
-                            Text(detail)
-                                .font(.subheadline)
-                                .foregroundStyle(.black)
-                                .lineLimit(1)
-                                .truncationMode(.tail)
-                        }
                     }
                 }
 
                 Spacer()
 
-                VStack(alignment: .trailing, spacing: 2) {
-                    if isEditing {
-                        EmptyView()
-                    } else {
-                        Image(systemName: "chevron.right")
-                            .font(.body.weight(.semibold))
-                            .foregroundStyle(.greenStart)
-                            .rotationEffect(.degrees(isEditing ? 90 : 0))
-                            .animation(.easeInOut(duration: 0.25), value: isEditing)
-                    }
-                }
+                Image(systemName: isEditing ? "chevron.down" : "chevron.right")
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(.greenStart)
+                    .animation(.easeInOut(duration: 0.25), value: isEditing)
             }
             .padding(12)
             .contentShape(Rectangle())
             .onTapGesture {
-                if isEditing {
-                    withAnimation { isEditing = false }
-                } else {
-                    withAnimation { beginEditing() }
-                }
+                guard !isEditing else { return }
+                withAnimation { beginEditing() }
             }
 
             if isEditing {
                 Group {
                     VStack(spacing: 0) {
-                        Divider().opacity(0.2)
                         Group {
                             VStack(alignment: .leading, spacing: 12) {
-                                // First line: type + title lines
-                                HStack(alignment: .center, spacing: 12) {
-                                    Text(typeAbbrev)
-                                        .font(.caption2.bold())
-                                        .foregroundStyle(.black)
-                                        .padding(.vertical, 4)
-                                        .padding(.horizontal, 8)
-                                        .background(Color(white: 0.9), in: Capsule())
-                                        .overlay(Capsule().stroke(Color.black.opacity(0.08), lineWidth: 1))
-                                        .frame(width: 55)
-                                        .accessibilityHidden(true)
-
-                                    VStack(alignment: .leading, spacing: 4) {
-                                        Text(primaryLine)
-                                            .font(.title3).bold()
-                                            .foregroundStyle(.black)
-                                            .lineLimit(1)
-                                            .minimumScaleFactor(0.75)
-                                            .truncationMode(.tail)
-                                        if let detail = secondaryLine {
-                                            Text(detail)
-                                                .font(.subheadline)
-                                                .foregroundStyle(.black)
-                                                .lineLimit(1)
-                                                .truncationMode(.tail)
-                                        }
-                                    }
-                                    Spacer(minLength: 0)
-                                }
-
-                                // Second line: action buttons
+                                // Action buttons
                                 HStack(spacing: 10) {
                                     Spacer()
                                     Button("Cancel") { withAnimation { isEditing = false } }
@@ -437,21 +394,30 @@ struct SetRowView: View {
 }
 
 #Preview {
-    // Provide an ExerciseManager in the environment for preview
-    let container: ModelContainer = {
-        let schema = Schema([SetDeckRoutine.self, SetDeckExercise.self, SetDeckSet.self, SetDeckSetHistory.self])
-        let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
-        return try! ModelContainer(for: schema, configurations: [configuration])
-    }()
-    let context = ModelContext(container)
-    let exerciseManager = ExerciseManager(context: context)
+    struct SetRowPreviewWrapper: View {
+        @State private var isEditing: Bool = false
 
-    // Create a sample exercise with some sets and pick one
-    let exercise = SetDeckExercise.sample(seed: 7, setCount: 3)
-    let sets = exerciseManager.sets(for: exercise)
-    let set = sets.first ?? (exercise.sets ?? []).first ?? SetDeckSet()
-    return SetRowView(isEditing: .constant(false), set: set)
-        .environment(exerciseManager)
-        .padding()
+        var body: some View {
+            // Provide an ExerciseManager in the environment for preview
+            let container: ModelContainer = {
+                let schema = Schema([SetDeckRoutine.self, SetDeckExercise.self, SetDeckSet.self, SetDeckSetHistory.self])
+                let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
+                return try! ModelContainer(for: schema, configurations: [configuration])
+            }()
+            let context = ModelContext(container)
+            let exerciseManager = ExerciseManager(context: context)
+
+            // Create a sample exercise with some sets and pick one
+            let exercise = SetDeckExercise.sample(seed: 7, setCount: 3)
+            let sets = exerciseManager.sets(for: exercise)
+            let set = sets.first ?? (exercise.sets ?? []).first ?? SetDeckSet()
+
+            return SetRowView(isEditing: $isEditing, set: set)
+                .environment(exerciseManager)
+                .padding()
+        }
+    }
+
+    return SetRowPreviewWrapper()
 }
 

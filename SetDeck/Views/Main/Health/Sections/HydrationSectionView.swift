@@ -10,22 +10,24 @@ import Charts
 
 struct HydrationSectionView: View {
     @Environment(HealthManager.self) private var healthManager: HealthManager
-    @AppStorage(AppStorageKeys.useMetricUnits, store: UserDefaults(suiteName: "group.nickmolargik.ReadySet")) private var useMetricUnits: Bool = false
+    @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
     @AppStorage(AppStorageKeys.useDayMonthYearDates) private var useDayMonthYearDates = false
 
     @Binding var newWaterIntakeOZ: Double
     @Binding var isExpanded: Bool
     @Binding var didAddWater: Bool
 
-    private var waterUnitLabel: String { useMetricUnits ? "mL" : "fl oz" }
-    private var waterDisplayMax: Double { useMetricUnits ? 4000 : 200 }
-    private var waterStep: Double { useMetricUnits ? 100 : 4 }
+    private var waterUnitLabel: String { useMetricUnits ? "L" : "fl oz" }
+    private var waterDisplayMax: Double { useMetricUnits ? 4.0 : 200 }
+    private var waterStep: Double { useMetricUnits ? 0.1 : 4 }
     private var waterInputBinding: Binding<Double> {
         Binding(
-            get: { useMetricUnits ? newWaterIntakeOZ * 29.5735 : newWaterIntakeOZ },
+            get: {
+                useMetricUnits ? (newWaterIntakeOZ * 29.5735) / 1000.0 : newWaterIntakeOZ
+            },
             set: { newValue in
                 if useMetricUnits {
-                    newWaterIntakeOZ = newValue / 29.5735
+                    newWaterIntakeOZ = (newValue * 1000.0) / 29.5735
                 } else {
                     newWaterIntakeOZ = newValue
                 }
@@ -70,12 +72,12 @@ struct HydrationSectionView: View {
         Chart(waterData) { item in
             BarMark(
                 x: .value("Date", item.date, unit: .day),
-                y: .value(waterUnitLabel, useMetricUnits ? item.amount : item.amount / 29.5735)
+                y: .value(waterUnitLabel, useMetricUnits ? item.amount / 1000.0 : item.amount / 29.5735)
             )
             .foregroundStyle(Gradient(colors: [.blueStart.opacity(0.7), .cyan]))
             .annotation(position: .top) {
                 if Calendar.current.isDateInToday(item.date) {
-                    Text("\(Int(useMetricUnits ? item.amount : item.amount / 29.5735)) \(waterUnitLabel)")
+                    Text("\(useMetricUnits ? String(format: "%.1f", item.amount / 1000.0) : String(Int(item.amount / 29.5735))) \(waterUnitLabel)")
                         .font(.caption2).bold()
                 }
             }
@@ -126,7 +128,7 @@ struct HydrationSectionView: View {
                                 )
                             Spacer()
                             Button {
-                                let ml = useMetricUnits ? waterInputBinding.wrappedValue : waterInputBinding.wrappedValue * 29.5735
+                                let ml = useMetricUnits ? (waterInputBinding.wrappedValue * 1000.0) : waterInputBinding.wrappedValue * 29.5735
                                 Task {
                                     await healthManager.addWaterIntakeIfSupported(amountML: ml, date: Date())
                                     await MainActor.run {
@@ -182,4 +184,3 @@ private struct HydrationSectionPreview: View {
         .padding()
     }
 }
-

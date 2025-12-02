@@ -13,7 +13,7 @@ struct HealthView: View {
     @Environment(\.horizontalSizeClass) private var hSizeClass
     @Environment(\.verticalSizeClass) private var vSizeClass
     
-    @AppStorage(AppStorageKeys.useMetricUnits, store: UserDefaults(suiteName: "group.nickmolargik.ReadySet")) private var useMetricUnits: Bool = false
+    @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
     @AppStorage(AppStorageKeys.useDayMonthYearDates) private var useDayMonthYearDates = false
     
     // MARK: - Local input state
@@ -50,15 +50,19 @@ struct HealthView: View {
     }
 
     // MARK: - Unit & Date helpers
-    private var waterUnitLabel: String { useMetricUnits ? "mL" : "fl oz" }
-    private var waterDisplayMax: Double { useMetricUnits ? 4000 : 200 }
-    private var waterStep: Double { useMetricUnits ? 100 : 4 }
+    private var waterUnitLabel: String { useMetricUnits ? "L" : "fl oz" }
+    private var waterDisplayMax: Double { useMetricUnits ? 4.0 : 200 }
+    private var waterStep: Double { useMetricUnits ? 0.1 : 4 }
     private var waterInputBinding: Binding<Double> {
         Binding(
-            get: { useMetricUnits ? newWaterIntakeOZ * 29.5735 : newWaterIntakeOZ },
+            get: {
+                // Under the hood we store ounces, but when metric is enabled we show liters.
+                useMetricUnits ? (newWaterIntakeOZ * 29.5735) / 1000.0 : newWaterIntakeOZ
+            },
             set: { newValue in
                 if useMetricUnits {
-                    newWaterIntakeOZ = newValue / 29.5735
+                    // Convert liters back to ounces for storage.
+                    newWaterIntakeOZ = (newValue * 1000.0) / 29.5735
                 } else {
                     newWaterIntakeOZ = newValue
                 }
@@ -76,21 +80,10 @@ struct HealthView: View {
         }
     }
 
-    private var energyUnitLabel: String { useMetricUnits ? "kJ" : "kcal" }
-    private var energyDisplayMax: Double { useMetricUnits ? 20000 : 5000 }
-    private var energyStep: Double { useMetricUnits ? 100 : 50 }
-    private var energyInputBinding: Binding<Double> {
-        Binding(
-            get: { useMetricUnits ? newCalorieIntake * 4.184 : newCalorieIntake },
-            set: { newValue in
-                if useMetricUnits {
-                    newCalorieIntake = newValue / 4.184
-                } else {
-                    newCalorieIntake = newValue
-                }
-            }
-        )
-    }
+    private let energyUnitLabel: String = "cal"
+    private let energyDisplayMax: Double = 5000
+    private let energyStep: Double = 50
+    private var energyInputBinding: Binding<Double> { Binding(get: { newCalorieIntake }, set: { newCalorieIntake = $0 }) }
     
     private var isRegularWidth: Bool {
         hSizeClass == .regular
@@ -202,13 +195,15 @@ struct HealthView: View {
         Chart(waterData) { item in
             BarMark(
                 x: .value("Date", item.date, unit: .day),
-                y: .value(waterUnitLabel, useMetricUnits ? item.amount : item.amount / 29.5735)
+                y: .value(waterUnitLabel, useMetricUnits ? item.amount / 1000.0 : item.amount / 29.5735)
             )
             .foregroundStyle(Gradient(colors: [.blueStart.opacity(0.7), .cyan]))
             .annotation(position: .top) {
                 if Calendar.current.isDateInToday(item.date) {
-                    Text("\(Int(useMetricUnits ? item.amount : item.amount / 29.5735)) \(waterUnitLabel)")
-                        .font(.caption2).bold()
+                    Text(
+                        "\(useMetricUnits ? String(format: "%.1f", item.amount / 1000.0) : String(Int(item.amount / 29.5735))) \(waterUnitLabel)"
+                    )
+                    .font(.caption2).bold()
                 }
             }
         }
@@ -290,7 +285,7 @@ struct HealthView: View {
 
     private var caloriesBurnedChart: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Label(useMetricUnits ? "Energy Burned" : "Calories Burned", systemImage: "flame.fill")
+            Label("Calories Burned", systemImage: "flame.fill")
                 .font(.headline)
                 .foregroundStyle(.red)
 
@@ -341,7 +336,7 @@ struct HealthView: View {
         ForEach(data) { item in
             LineMark(
                 x: .value("Date", item.date, unit: .day),
-                y: .value("Intake", useMetricUnits ? item.amount * 4.184 : item.amount)
+                y: .value("Intake", item.amount)
             )
             .interpolationMethod(.linear)
             .symbol(Circle())
@@ -351,7 +346,7 @@ struct HealthView: View {
             .zIndex(1)
             .annotation(position: .top) {
                 if Calendar.current.isDateInToday(item.date) {
-                    Text("\(Int(useMetricUnits ? item.amount * 4.184 : item.amount)) \(energyUnitLabel)")
+                    Text("\(Int(item.amount)) \(energyUnitLabel)")
                         .font(.caption2).bold()
                 }
             }
@@ -363,7 +358,7 @@ struct HealthView: View {
         ForEach(data) { item in
             AreaMark(
                 x: .value("Date", item.date, unit: .day),
-                y: .value("Intake", useMetricUnits ? item.amount * 4.184 : item.amount)
+                y: .value("Intake", item.amount)
             )
             .interpolationMethod(.linear)
             .foregroundStyle(LinearGradient(colors: [.orangeStart.opacity(0.25), .clear], startPoint: .top, endPoint: .bottom))
@@ -375,7 +370,7 @@ struct HealthView: View {
         ForEach(data) { item in
             LineMark(
                 x: .value("Date", item.date, unit: .day),
-                y: .value("Burn", useMetricUnits ? item.amount * 4.184 : item.amount)
+                y: .value("Burn", item.amount)
             )
             .interpolationMethod(.linear)
             .symbol(.square)
@@ -384,7 +379,7 @@ struct HealthView: View {
             .foregroundStyle(LinearGradient(colors: [.red, .orangeStart], startPoint: .leading, endPoint: .trailing))
             .annotation(position: .top) {
                 if Calendar.current.isDateInToday(item.date) {
-                    Text("\(Int(useMetricUnits ? item.amount * 4.184 : item.amount)) \(energyUnitLabel)")
+                    Text("\(Int(item.amount)) \(energyUnitLabel)")
                         .font(.caption2).bold()
                 }
             }
@@ -396,7 +391,7 @@ struct HealthView: View {
         ForEach(data) { item in
             AreaMark(
                 x: .value("Date", item.date, unit: .day),
-                y: .value("Burn", useMetricUnits ? item.amount * 4.184 : item.amount)
+                y: .value("Burn", item.amount)
             )
             .interpolationMethod(.linear)
             .foregroundStyle(LinearGradient(colors: [.red.opacity(0.2), .clear], startPoint: .top, endPoint: .bottom))

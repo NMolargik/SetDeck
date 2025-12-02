@@ -10,7 +10,7 @@ import SwiftData
 
 struct ExerciseCardView: View {
     @Environment(ExerciseManager.self) private var exerciseManager: ExerciseManager
-    @AppStorage(AppStorageKeys.useMetricUnits, store: UserDefaults(suiteName: "group.nickmolargik.ReadySet")) private var useMetricUnits: Bool = false
+    @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
     
     @State private var expandedSetID: UUID? = nil
     @Environment(\.openURL) private var openURLAction
@@ -30,27 +30,29 @@ struct ExerciseCardView: View {
                 .fill(LinearGradient(colors: [Color.white.opacity(0.8), Color.white.opacity(1.0)], startPoint: .topLeading, endPoint: .bottomTrailing))
                 .shadow(color: .black.opacity(0.15), radius: 12, x: 0, y: 8)
 
-            ScrollView() {
-                header
+            ScrollView {
+                VStack(alignment: .leading, spacing: 12) {
+                    header
 
-                if orderedSets.isEmpty {
-                    Text("No sets yet")
-                        .font(.subheadline)
-                        .foregroundStyle(.black)
-                        .padding(.vertical, 8)
-                } else {
-                    ForEach(orderedSets, id: \.uuid) { set in
-                        let isExpanded = Binding<Bool>(
-                            get: { expandedSetID == set.uuid },
-                            set: { newValue in
-                                expandedSetID = newValue ? set.uuid : nil
-                            }
-                        )
-                        SetRowView(isEditing: isExpanded, set: set)
+                    if orderedSets.isEmpty {
+                        Text("No sets yet")
+                            .font(.subheadline)
+                            .foregroundStyle(.black)
+                            .padding(.vertical, 8)
+                    } else {
+                        ForEach(orderedSets, id: \.uuid) { set in
+                            let isExpanded = Binding<Bool>(
+                                get: { expandedSetID == set.uuid },
+                                set: { newValue in
+                                    withAnimation(.spring(response: 0.28, dampingFraction: 0.85)) {
+                                        expandedSetID = newValue ? set.uuid : nil
+                                    }
+                                }
+                            )
+                            SetRowView(isEditing: isExpanded, set: set)
+                        }
                     }
                 }
-                
-                Spacer()
             }
             .padding(16)
             .scrollIndicators(.hidden)
@@ -140,4 +142,3 @@ struct ExerciseCardView: View {
     return ExerciseCardView(index: 1, exercise: SetDeckExercise.sample(seed: 42, setCount: 3))
         .environment(exerciseManager)
 }
-

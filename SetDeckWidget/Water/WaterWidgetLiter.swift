@@ -1,5 +1,5 @@
 //
-// EnergyWidget.swift
+// WaterWidgetLiter.swift
 // SetDeckWidgetExtension
 //
 // Created by Nick Molargik on 12/2/25.
@@ -8,29 +8,29 @@
 import SwiftUI
 import WidgetKit
 
-struct EnergyWidget: Widget {
-    let kind: String = "EnergyWidget"  // Unique kind
+struct WaterWidgetLiter: Widget {
+    let kind: String = "WaterWidgetLiter"
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: EnergyProvider()) { entry in
-            EnergyWidgetView(entry: entry)
+        StaticConfiguration(kind: kind, provider: WaterProvider()) { entry in
+            WaterWidgetViewMetric(entry: entry)
         }
-        .configurationDisplayName("Energy Tracker")
-        .description("Today's energy consumption.")
+        .configurationDisplayName("Water Tracker (Liters)")
+        .description("Today's water consumption.")
         .supportedFamilies([.systemSmall])
     }
 }
 
-struct EnergyWidgetView: View {
-    var entry: EnergyProvider.Entry
+struct WaterWidgetViewMetric: View {
+    var entry: WaterProvider.Entry
 
     var body: some View {
         VStack(alignment: .center, spacing: 4) {
             HStack {
-                Image(systemName: "flame.fill")
-                    .foregroundStyle(.orangeEnd.gradient)
+                Image(systemName: "drop.fill")
+                    .foregroundStyle(.blueEnd.gradient)
                 
-                Text("Energy Today")
+                Text("Water Today")
                     .font(.caption2)
                     .fontWeight(.semibold)
                     .foregroundStyle(.white)
@@ -56,20 +56,18 @@ struct EnergyWidgetView: View {
             }
             .offset(x: 10, y: 10)
         }
-        .containerBackground(
-            LinearGradient(colors: [.orangeStart, .orangeEnd], startPoint: .topLeading, endPoint: .bottomTrailing),
-            for: .widget
-        )
+        .containerBackground(LinearGradient(colors: [.blueStart, .blueEnd], startPoint: .topLeading, endPoint: .bottomTrailing), for: .widget)
     }
     
     private var formattedAmount: String {
-        let rawKCal = entry.caloriesKCal
-        return "\(Int(rawKCal)) cal"
+        let waterML = entry.waterML
+        let liters = waterML / 1000.0
+        return "\(String(format: "%.1f", liters)) L"
     }
 }
 
 #Preview(as: .systemSmall) {
-    EnergyWidget()
+    WaterWidgetLiter()
 } timeline: {
-    EnergyEntry(date: .now, caloriesKCal: 1200)
+    WaterEntry(date: .now, waterML: 4000)
 }

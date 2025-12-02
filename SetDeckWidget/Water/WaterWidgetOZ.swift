@@ -1,28 +1,27 @@
 //
-//  WaterWidget.swift
-//  SetDeckWidgetExtension
+// WaterWidgetOZ.swift
+// SetDeckWidgetExtension
 //
-//  Created by Nick Molargik on 12/2/25.
+// Created by Nick Molargik on 12/2/25.
 //
 
 import SwiftUI
 import WidgetKit
-import AppIntents
 
-struct WaterWidget: Widget {
-    let kind: String = "WaterWidget"
+struct WaterWidgetOZ: Widget {
+    let kind: String = "WaterWidgetOZ"
 
     var body: some WidgetConfiguration {
-        AppIntentConfiguration(kind: kind, intent: ConfigureTrackerIntent.self, provider: WaterProvider()) { entry in
-            WaterWidgetView(entry: entry)
+        StaticConfiguration(kind: kind, provider: WaterProvider()) { entry in
+            WaterWidgetViewImperial(entry: entry)
         }
-        .configurationDisplayName("Water Tracker")
+        .configurationDisplayName("Water Tracker (Fluid Oz)")
         .description("Today's water consumption.")
         .supportedFamilies([.systemSmall])
     }
 }
 
-struct WaterWidgetView: View {
+struct WaterWidgetViewImperial: View {
     var entry: WaterProvider.Entry
 
     var body: some View {
@@ -61,20 +60,14 @@ struct WaterWidgetView: View {
     }
     
     private var formattedAmount: String {
-        let rawML = entry.waterML
-        switch entry.unitSystem {
-        case .imperial:
-            let oz = rawML * 0.033814  // mL to US fl oz
-            return "\(Int(oz.rounded())) oz"
-        case .metric:
-            let liters = rawML / 1000.0
-            return "\(liters, default: "%.1f") L"
-        }
+        let waterML = entry.waterML
+        let waterOZ = waterML / 29.5735
+        return "\(Int(waterOZ.rounded())) fl oz"
     }
 }
 
 #Preview(as: .systemSmall) {
-    WaterWidget()
+    WaterWidgetOZ()
 } timeline: {
-    WaterEntry(date: .now, waterML: 1200, unitSystem: .imperial)
+    WaterEntry(date: .now, waterML: 4000)
 }

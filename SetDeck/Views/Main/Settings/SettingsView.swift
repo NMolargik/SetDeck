@@ -13,7 +13,7 @@ struct SettingsView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(ExerciseManager.self) private var exerciseManager: ExerciseManager
 
-    @AppStorage(AppStorageKeys.useMetricUnits, store: UserDefaults(suiteName: "group.nickmolargik.ReadySet")) private var useMetricUnits: Bool = false
+    @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
     @AppStorage(AppStorageKeys.useDayMonthYearDates) private var useDayMonthYearDates = false
 
     @State private var viewModel = ViewModel()
@@ -21,7 +21,7 @@ struct SettingsView: View {
     var body: some View {
         Form {
             // MARK: - Units & Date Format
-            Toggle("Use Metric Units", isOn: $useMetricUnits)
+            Toggle("Display Water in Liters", isOn: $useMetricUnits)
                 .tint(.greenStart)
                 .onChange(of: useMetricUnits) { _, _ in Haptics.lightImpact() }
 

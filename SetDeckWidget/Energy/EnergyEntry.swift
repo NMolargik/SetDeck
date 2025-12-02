@@ -10,5 +10,4 @@ import WidgetKit
 struct EnergyEntry: TimelineEntry {
     let date: Date
     let caloriesKCal: Double
-    let unitSystem: UnitSystem
 }
