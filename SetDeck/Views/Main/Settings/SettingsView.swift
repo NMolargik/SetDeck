@@ -13,7 +13,7 @@ struct SettingsView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(ExerciseManager.self) private var exerciseManager: ExerciseManager
 
-    @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
+    @AppStorage(AppStorageKeys.useMetricUnits, store: UserDefaults(suiteName: "group.nickmolargik.ReadySet")) private var useMetricUnits: Bool = false
     @AppStorage(AppStorageKeys.useDayMonthYearDates) private var useDayMonthYearDates = false
 
     @State private var viewModel = ViewModel()

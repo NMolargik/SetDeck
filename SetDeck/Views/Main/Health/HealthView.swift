@@ -13,7 +13,7 @@ struct HealthView: View {
     @Environment(\.horizontalSizeClass) private var hSizeClass
     @Environment(\.verticalSizeClass) private var vSizeClass
     
-    @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
+    @AppStorage(AppStorageKeys.useMetricUnits, store: UserDefaults(suiteName: "group.nickmolargik.ReadySet")) private var useMetricUnits: Bool = false
     @AppStorage(AppStorageKeys.useDayMonthYearDates) private var useDayMonthYearDates = false
     
     // MARK: - Local input state

@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		EB80BD782EDF31B6005FD199 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB1388282EBE625F001011D3 /* WidgetKit.framework */; };
+		EB80BD792EDF31B6005FD199 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB13882A2EBE625F001011D3 /* SwiftUI.framework */; };
+		EB80BD842EDF31B7005FD199 /* SetDeckWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = EB80BD772EDF31B6005FD199 /* SetDeckWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		EB1385B02EBE567A001011D3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -20,6 +26,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = EB13859D2EBE5678001011D3;
 			remoteInfo = SetDeck;
+		};
+		EB80BD822EDF31B7005FD199 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EB1385962EBE5678001011D3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EB80BD762EDF31B6005FD199;
+			remoteInfo = SetDeckWidgetExtension;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -40,6 +53,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				EB80BD842EDF31B7005FD199 /* SetDeckWidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -52,6 +66,8 @@
 		EB1385B92EBE567A001011D3 /* SetDeckUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SetDeckUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB1388282EBE625F001011D3 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = /System/Library/Frameworks/WidgetKit.framework; sourceTree = "<absolute>"; };
 		EB13882A2EBE625F001011D3 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = /System/Library/Frameworks/SwiftUI.framework; sourceTree = "<absolute>"; };
+		EB80BD772EDF31B6005FD199 /* SetDeckWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SetDeckWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		EBA524C72EDF6F8E00810342 /* SetDeckWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SetDeckWidgetExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -62,6 +78,30 @@
 			);
 			target = EB13859D2EBE5678001011D3 /* SetDeck */;
 		};
+		EB80BD882EDF31B7005FD199 /* Exceptions for "SetDeckWidget" folder in "SetDeckWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = EB80BD762EDF31B6005FD199 /* SetDeckWidgetExtension */;
+		};
+		EB80BD8A2EDF31CE005FD199 /* Exceptions for "SetDeck" folder in "SetDeckWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Enumerations/MuscleGroup.swift,
+				Enumerations/SetType.swift,
+				"Extensions/HKWorkoutActivityType-displayName.swift",
+				Managers/HealthManager.swift,
+				Models/SetDeckExercise.swift,
+				Models/SetDeckRoutine.swift,
+				Models/SetDeckSet.swift,
+				Models/SetDeckSetHistory.swift,
+				Models/StrengthTrainingActivityAttributes.swift,
+				Models/TimeSeriesSample.swift,
+				Models/WorkoutSummary.swift,
+			);
+			target = EB80BD762EDF31B6005FD199 /* SetDeckWidgetExtension */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -69,6 +109,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				EB1385C12EBE567A001011D3 /* Exceptions for "SetDeck" folder in "SetDeck" target */,
+				EB80BD8A2EDF31CE005FD199 /* Exceptions for "SetDeck" folder in "SetDeckWidgetExtension" target */,
 			);
 			path = SetDeck;
 			sourceTree = "<group>";
@@ -81,6 +122,14 @@
 		EB1385BC2EBE567A001011D3 /* SetDeckUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = SetDeckUITests;
+			sourceTree = "<group>";
+		};
+		EB80BD7A2EDF31B6005FD199 /* SetDeckWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				EB80BD882EDF31B7005FD199 /* Exceptions for "SetDeckWidget" folder in "SetDeckWidgetExtension" target */,
+			);
+			path = SetDeckWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -107,15 +156,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EB80BD742EDF31B6005FD199 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EB80BD792EDF31B6005FD199 /* SwiftUI.framework in Frameworks */,
+				EB80BD782EDF31B6005FD199 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		EB1385952EBE5678001011D3 = {
 			isa = PBXGroup;
 			children = (
+				EBA524C72EDF6F8E00810342 /* SetDeckWidgetExtension.entitlements */,
 				EB1385A02EBE5678001011D3 /* SetDeck */,
 				EB1385B22EBE567A001011D3 /* SetDeckTests */,
 				EB1385BC2EBE567A001011D3 /* SetDeckUITests */,
+				EB80BD7A2EDF31B6005FD199 /* SetDeckWidget */,
 				EB1388272EBE625F001011D3 /* Frameworks */,
 				EB13859F2EBE5678001011D3 /* Products */,
 			);
@@ -127,6 +187,7 @@
 				EB13859E2EBE5678001011D3 /* SetDeck.app */,
 				EB1385AF2EBE567A001011D3 /* SetDeckTests.xctest */,
 				EB1385B92EBE567A001011D3 /* SetDeckUITests.xctest */,
+				EB80BD772EDF31B6005FD199 /* SetDeckWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -156,6 +217,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				EB80BD832EDF31B7005FD199 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				EB1385A02EBE5678001011D3 /* SetDeck */,
@@ -213,6 +275,28 @@
 			productReference = EB1385B92EBE567A001011D3 /* SetDeckUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		EB80BD762EDF31B6005FD199 /* SetDeckWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EB80BD872EDF31B7005FD199 /* Build configuration list for PBXNativeTarget "SetDeckWidgetExtension" */;
+			buildPhases = (
+				EB80BD732EDF31B6005FD199 /* Sources */,
+				EB80BD742EDF31B6005FD199 /* Frameworks */,
+				EB80BD752EDF31B6005FD199 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				EB80BD7A2EDF31B6005FD199 /* SetDeckWidget */,
+			);
+			name = SetDeckWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = SetDeckWidgetExtension;
+			productReference = EB80BD772EDF31B6005FD199 /* SetDeckWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -220,7 +304,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2610;
+				LastSwiftUpdateCheck = 2620;
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					EB13859D2EBE5678001011D3 = {
@@ -233,6 +317,9 @@
 					EB1385B82EBE567A001011D3 = {
 						CreatedOnToolsVersion = 26.1;
 						TestTargetID = EB13859D2EBE5678001011D3;
+					};
+					EB80BD762EDF31B6005FD199 = {
+						CreatedOnToolsVersion = 26.2;
 					};
 				};
 			};
@@ -255,6 +342,7 @@
 				EB13859D2EBE5678001011D3 /* SetDeck */,
 				EB1385AE2EBE567A001011D3 /* SetDeckTests */,
 				EB1385B82EBE567A001011D3 /* SetDeckUITests */,
+				EB80BD762EDF31B6005FD199 /* SetDeckWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -275,6 +363,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		EB1385B72EBE567A001011D3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB80BD752EDF31B6005FD199 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -305,6 +400,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EB80BD732EDF31B6005FD199 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -317,6 +419,11 @@
 			isa = PBXTargetDependency;
 			target = EB13859D2EBE5678001011D3 /* SetDeck */;
 			targetProxy = EB1385BA2EBE567A001011D3 /* PBXContainerItemProxy */;
+		};
+		EB80BD832EDF31B7005FD199 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EB80BD762EDF31B6005FD199 /* SetDeckWidgetExtension */;
+			targetProxy = EB80BD822EDF31B7005FD199 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -348,7 +455,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = nickmolargik.ReadySet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -392,7 +499,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = nickmolargik.ReadySet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -634,6 +741,70 @@
 			};
 			name = Release;
 		};
+		EB80BD852EDF31B7005FD199 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = SetDeckWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 9;
+				DEVELOPMENT_TEAM = R8Q8DM58C6;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SetDeckWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SetDeckWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 2.1;
+				PRODUCT_BUNDLE_IDENTIFIER = nickmolargik.ReadySet.SetDeckWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		EB80BD862EDF31B7005FD199 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = SetDeckWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 9;
+				DEVELOPMENT_TEAM = R8Q8DM58C6;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SetDeckWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SetDeckWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 2.1;
+				PRODUCT_BUNDLE_IDENTIFIER = nickmolargik.ReadySet.SetDeckWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -669,6 +840,15 @@
 			buildConfigurations = (
 				EB1385CB2EBE567A001011D3 /* Debug */,
 				EB1385CC2EBE567A001011D3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EB80BD872EDF31B7005FD199 /* Build configuration list for PBXNativeTarget "SetDeckWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EB80BD852EDF31B7005FD199 /* Debug */,
+				EB80BD862EDF31B7005FD199 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -15,7 +15,7 @@ struct SetDeckApp: App {
     @Environment(\.scenePhase) var scenePhase
 
     @AppStorage(AppStorageKeys.useDayMonthYearDates) private var useDayMonthYearDates: Bool = false
-    @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits: Bool = false
+    @AppStorage(AppStorageKeys.useMetricUnits, store: UserDefaults(suiteName: "group.nickmolargik.ReadySet")) private var useMetricUnits: Bool = false
     
     private let sharedModelContainer: ModelContainer
     private let exerciseManager: ExerciseManager
@@ -57,29 +57,7 @@ struct SetDeckApp: App {
             .preferredColorScheme(.dark)
                 
         }
-//        .onChange(of: scenePhase) { _, newPhase in
-//            switch newPhase {
-//            case .background:
-//                addQuickActions()
-//            case .inactive:
-//                break
-//            case .active:
-//                break
-//            @unknown default:
-//                break
-//            }
-//        }
     }
-//
-//    func addQuickActions() {
-//        UIApplication.shared.shortcutItems = [
-//            UIApplicationShortcutItem(type: "Exercise", localizedTitle: "Exercise", localizedSubtitle: "", icon: UIApplicationShortcutIcon(systemImageName: "dumbbell")),
-//
-//            UIApplicationShortcutItem(type: "Water", localizedTitle: "Water", localizedSubtitle: "", icon: UIApplicationShortcutIcon(systemImageName: "drop")),
-//
-//            UIApplicationShortcutItem(type: "Energy", localizedTitle: "Energy", localizedSubtitle: "", icon: UIApplicationShortcutIcon(systemImageName: "flame"))
-//        ]
-//    }
     
     private func resetApplication() {
         useMetricUnits = false

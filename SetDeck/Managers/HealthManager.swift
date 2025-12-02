@@ -7,65 +7,22 @@
 
 import Foundation
 import HealthKit
+import WidgetKit
 
-// MARK: - Health Data Models
-struct TimeSeriesSample: Identifiable, Hashable {
-    let id = UUID()
-    let date: Date
-    let amount: Double
-}
-
-struct WorkoutSummary: Identifiable, Hashable {
-    let id: UUID
-    let startDate: Date
-    let endDate: Date
-    let activityType: HKWorkoutActivityType
-    let totalEnergyBurnedKCal: Double?
-
-    var title: String { activityType.displayName }
-
-    var subtitle: String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        formatter.timeStyle = .short
-        let when = formatter.string(from: startDate)
-        if let kcal = totalEnergyBurnedKCal {
-            return "\(when) · \(Int(kcal)) kcal"
-        } else {
-            return when
-        }
-    }
-
-    var durationString: String {
-        let secs = max(0, Int(endDate.timeIntervalSince(startDate)))
-        let h = secs / 3600
-        let m = (secs % 3600) / 60
-        let s = secs % 60
-        if h > 0 { return String(format: "%dh %dm", h, m) }
-        if m > 0 { return String(format: "%dm %ds", m, s) }
-        return String(format: "%ds", s)
-    }
-}
-
-private extension HKWorkoutActivityType {
-    var displayName: String {
-        switch self {
-        case .traditionalStrengthTraining: return "Strength Training"
-        case .running: return "Running"
-        case .walking: return "Walking"
-        case .cycling: return "Cycling"
-        case .yoga: return "Yoga"
-        case .highIntensityIntervalTraining: return "HIIT"
-        default: return String(describing: self)
-        }
-    }
-}
-
+@MainActor
 @Observable
 class HealthManager: NSObject {
     // MARK: - HealthKit
     @ObservationIgnored
     private let healthStore = HKHealthStore()
+    
+    convenience init(forWidget: Bool = false) {
+        self.init()
+        if forWidget {
+            // No need to request auth here; it's shared
+            Task { await refreshTodayTotals() }
+        }
+    }
 
     // MARK: - Authorization
     var isAuthorized: Bool = false
@@ -185,6 +142,8 @@ class HealthManager: NSObject {
             try await addWater(ml: amountML, date: date)
             await refreshWaterToday()
             await refreshWaterSeries(days: 14)
+            WidgetCenter.shared.reloadTimelines(ofKind: "WaterWidget")
+
         } catch { }
     }
 
@@ -193,6 +152,7 @@ class HealthManager: NSObject {
             try await addCalories(kcal: amount, date: date)
             await refreshCaloriesToday()
             await refreshCalorieIntakeSeries(days: 14)
+            WidgetCenter.shared.reloadTimelines(ofKind: "EnergyWidget")
         } catch { }
     }
 
@@ -222,19 +182,19 @@ class HealthManager: NSObject {
         if let type = HKQuantityType.quantityType(forIdentifier: .dietaryWater) {
             let unit = HKUnit.literUnit(with: .milli)
             let series = await dailySums(for: type, unit: unit, days: days)
-            DispatchQueue.main.async { self.waterIntakeSeries = series }
+            self.waterIntakeSeries = series
         }
         // Calorie intake (kcal per day)
         if let type = HKQuantityType.quantityType(forIdentifier: .dietaryEnergyConsumed) {
             let unit = HKUnit.kilocalorie()
             let series = await dailySums(for: type, unit: unit, days: days)
-            DispatchQueue.main.async { self.calorieIntakeSeries = series }
+            self.calorieIntakeSeries = series
         }
         // Calorie burn (kcal per day)
         if let type = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned) {
             let unit = HKUnit.kilocalorie()
             let series = await dailySums(for: type, unit: unit, days: days)
-            DispatchQueue.main.async { self.calorieBurnSeries = series }
+            self.calorieBurnSeries = series
         }
     }
 
@@ -242,7 +202,7 @@ class HealthManager: NSObject {
         if let type = HKQuantityType.quantityType(forIdentifier: .dietaryWater) {
             let unit = HKUnit.literUnit(with: .milli)
             let series = await dailySums(for: type, unit: unit, days: days)
-            DispatchQueue.main.async { self.waterIntakeSeries = series }
+            self.waterIntakeSeries = series
         }
     }
 
@@ -250,7 +210,7 @@ class HealthManager: NSObject {
         if let type = HKQuantityType.quantityType(forIdentifier: .dietaryEnergyConsumed) {
             let unit = HKUnit.kilocalorie()
             let series = await dailySums(for: type, unit: unit, days: days)
-            DispatchQueue.main.async { self.calorieIntakeSeries = series }
+            self.calorieIntakeSeries = series
         }
     }
 
@@ -258,7 +218,7 @@ class HealthManager: NSObject {
         if let type = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned) {
             let unit = HKUnit.kilocalorie()
             let series = await dailySums(for: type, unit: unit, days: days)
-            DispatchQueue.main.async { self.calorieBurnSeries = series }
+            self.calorieBurnSeries = series
         }
     }
 
@@ -315,7 +275,9 @@ class HealthManager: NSObject {
         await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
             builder.endCollection(withEnd: Date()) { _, _ in
                 builder.finishWorkout { _, _ in
-                    self.resetWorkoutState()
+                    Task { @MainActor in
+                        self.resetWorkoutState()
+                    }
                     continuation.resume()
                 }
             }
@@ -417,8 +379,10 @@ class HealthManager: NSObject {
                     }()
                     return WorkoutSummary(id: wk.uuid, startDate: wk.startDate, endDate: wk.endDate, activityType: wk.workoutActivityType, totalEnergyBurnedKCal: kcal)
                 }
-                DispatchQueue.main.async { self.workoutHistory = summaries }
-                continuation.resume()
+                Task { @MainActor in
+                    self.workoutHistory = summaries
+                    continuation.resume()
+                }
             }
             self.healthStore.execute(query)
         }
@@ -429,15 +393,11 @@ class HealthManager: NSObject {
 extension HealthManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate {
     func workoutSession(_ workoutSession: HKWorkoutSession, didChangeTo toState: HKWorkoutSessionState, from fromState: HKWorkoutSessionState, date: Date) {
         // Update observable state on main thread
-        DispatchQueue.main.async {
-            self.workoutState = toState
-        }
+        self.workoutState = toState
     }
 
     func workoutSession(_ workoutSession: HKWorkoutSession, didFailWithError error: Error) {
-        DispatchQueue.main.async {
-            self.resetWorkoutState()
-        }
+        self.resetWorkoutState()
     }
 
     func workoutBuilderDidCollectEvent(_ workoutBuilder: HKLiveWorkoutBuilder) { }

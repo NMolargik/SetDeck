@@ -10,7 +10,7 @@ import SwiftData
 
 struct ExerciseCardView: View {
     @Environment(ExerciseManager.self) private var exerciseManager: ExerciseManager
-    @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
+    @AppStorage(AppStorageKeys.useMetricUnits, store: UserDefaults(suiteName: "group.nickmolargik.ReadySet")) private var useMetricUnits: Bool = false
     
     @State private var expandedSetID: UUID? = nil
     @Environment(\.openURL) private var openURLAction

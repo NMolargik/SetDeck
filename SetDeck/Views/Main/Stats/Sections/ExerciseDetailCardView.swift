@@ -12,7 +12,7 @@ struct ExerciseDetailCardView: View {
     let exerciseName: String
     let points: [StatsView.OneRMPoint]
 
-    @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
+    @AppStorage(AppStorageKeys.useMetricUnits, store: UserDefaults(suiteName: "group.nickmolargik.ReadySet")) private var useMetricUnits: Bool = false
     @AppStorage(AppStorageKeys.useDayMonthYearDates) private var useDayMonthYearDates = false
 
     private func axisDateString(_ date: Date) -> String {

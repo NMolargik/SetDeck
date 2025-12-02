@@ -10,7 +10,7 @@ import Charts
 
 struct HydrationSectionView: View {
     @Environment(HealthManager.self) private var healthManager: HealthManager
-    @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
+    @AppStorage(AppStorageKeys.useMetricUnits, store: UserDefaults(suiteName: "group.nickmolargik.ReadySet")) private var useMetricUnits: Bool = false
     @AppStorage(AppStorageKeys.useDayMonthYearDates) private var useDayMonthYearDates = false
 
     @Binding var newWaterIntakeOZ: Double

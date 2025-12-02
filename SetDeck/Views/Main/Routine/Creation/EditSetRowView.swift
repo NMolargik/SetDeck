@@ -12,8 +12,8 @@ struct EditSetRowView: View {
     let setCount: Int
 
     @Environment(ExerciseManager.self) private var exerciseManager
-    @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
-
+    @AppStorage(AppStorageKeys.useMetricUnits, store: UserDefaults(suiteName: "group.nickmolargik.ReadySet")) private var useMetricUnits: Bool = false
+    
     private func lbsToKg(_ lbs: Double) -> Double { lbs * 0.45359237 }
     private func kgToLbs(_ kg: Double) -> Double { kg / 0.45359237 }
     private func trimTrailingZeros(_ value: Double) -> String {

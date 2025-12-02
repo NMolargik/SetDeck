@@ -19,8 +19,8 @@ struct EditRoutineView: View {
     @State private var viewModel = ViewModel()
 
     @FocusState private var focusedExerciseID: UUID?
-    @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
-
+    @AppStorage(AppStorageKeys.useMetricUnits, store: UserDefaults(suiteName: "group.nickmolargik.ReadySet")) private var useMetricUnits: Bool = false
+    
     var body: some View {
         VStack(spacing: 0) {
             DayPickerView(selectedDay: $viewModel.selectedDay)

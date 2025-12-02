@@ -10,7 +10,7 @@ import SwiftData
 
 struct SetRowView: View {
     @Environment(ExerciseManager.self) private var exerciseManager
-    @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
+    @AppStorage(AppStorageKeys.useMetricUnits, store: UserDefaults(suiteName: "group.nickmolargik.ReadySet")) private var useMetricUnits: Bool = false
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     @Binding var isEditing: Bool
