@@ -267,15 +267,16 @@ class ExerciseManager {
     /// sorted by completion date.
     func history(for exercise: SetDeckExercise) -> [SetDeckSetHistory] {
         let exerciseID = exercise.uuid
-        let predicate = #Predicate<SetDeckSetHistory> { history in
-            history.set?.exercise?.uuid == exerciseID
-        }
+        // Fetch all history entries sorted by date, then filter in-memory.
+        // This avoids Core Data's unsupported TERNARY(...) SQL expression
+        // when navigating optional relationships like set?.exercise?.uuid.
         let descriptor = FetchDescriptor<SetDeckSetHistory>(
-            predicate: predicate,
             sortBy: [SortDescriptor(\.completedDate, order: .forward)]
         )
-        let results = (try? context.fetch(descriptor)) ?? []
-        return results
+        let all = (try? context.fetch(descriptor)) ?? []
+        return all.filter { history in
+            history.set?.exercise?.uuid == exerciseID
+        }
     }
 
     /// Records a history entry for a set (e.g., when completing a workout)

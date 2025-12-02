@@ -10,8 +10,6 @@ import SwiftData
 
 @main
 struct SetDeckApp: App {
-    //    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-        
     @Environment(\.scenePhase) var scenePhase
 
     @AppStorage(AppStorageKeys.useDayMonthYearDates) private var useDayMonthYearDates: Bool = false
@@ -42,9 +40,6 @@ struct SetDeckApp: App {
         }
 
         exerciseManager = ExerciseManager(context: sharedModelContainer.mainContext)
-        
-        // watchOS
-//        ComplicationSync.shared.activate()
     }
 
     var body: some Scene {
