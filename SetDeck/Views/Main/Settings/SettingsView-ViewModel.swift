@@ -12,6 +12,8 @@ extension SettingsView {
     class ViewModel {
         var showDeleteConfirmation: Bool = false
         var showHistoryClearedAlert: Bool = false
+        var showDeleteRoutinesConfirmation: Bool = false
+        var showRoutinesDeletedAlert: Bool = false
         var appVersion: String {
             Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "—"
         }

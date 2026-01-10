@@ -28,7 +28,7 @@ struct SetRowView: View {
         VStack(spacing: 0) {
             HStack(alignment: .center, spacing: 12) {
                 // Type badge
-                Text(typeAbbrev)
+                Text(typeAbbreviation)
                     .font(.caption2.bold())
                     .foregroundStyle(.black)
                     .padding(.vertical, 4)
@@ -170,7 +170,7 @@ struct SetRowView: View {
         .accessibilityLabel(accessibilitySummary)
     }
 
-    private var typeAbbrev: String {
+    private var typeAbbreviation: String {
         switch set.setType {
         case .reps: return "REPS"
         case .amap: return "AMAP"

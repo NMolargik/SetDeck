@@ -7,11 +7,11 @@
 
 import SwiftUI
 import Charts
+import TipKit
 
 struct HealthView: View {
     @Environment(HealthManager.self) private var healthManager: HealthManager
-    @Environment(\.horizontalSizeClass) private var hSizeClass
-    @Environment(\.verticalSizeClass) private var vSizeClass
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
     @AppStorage(AppStorageKeys.useDayMonthYearDates) private var useDayMonthYearDates = false
@@ -32,6 +32,9 @@ struct HealthView: View {
     @State private var now: Date = Date()
     @State private var isPulsing: Bool = false
 
+    // TipKit
+    private let recordWorkoutTip = RecordWorkoutTip()
+
     private var isStrengthWorkoutActive: Bool {
         healthManager.isStrengthTrainingActive
     }
@@ -41,12 +44,7 @@ struct HealthView: View {
     }
 
     private var workoutElapsedString: String {
-        guard let start = workoutStartDate else { return "00:00:00" }
-        let interval = Int(now.timeIntervalSince(start))
-        let hours = interval / 3600
-        let minutes = (interval % 3600) / 60
-        let seconds = interval % 60
-        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+        workoutStartDate?.elapsedString(to: now) ?? "00:00:00"
     }
 
     // MARK: - Unit & Date helpers
@@ -86,7 +84,7 @@ struct HealthView: View {
     private var energyInputBinding: Binding<Double> { Binding(get: { newCalorieIntake }, set: { newCalorieIntake = $0 }) }
     
     private var isRegularWidth: Bool {
-        hSizeClass == .regular
+        horizontalSizeClass == .regular
     }
 
     // MARK: - Body
@@ -120,7 +118,7 @@ struct HealthView: View {
                                 Text(workoutElapsedString)
                                     .monospacedDigit()
                                     .font(.subheadline).bold()
-                                    .foregroundStyle(.greenEnd)
+                                    .foregroundStyle(.greenStart)
                             } else {
                                 Text("Record Workout")
                                     .font(.headline)
@@ -135,17 +133,15 @@ struct HealthView: View {
                                 .buttonStyle(.borderedProminent)
                                 .tint(.red)
                             } else {
-                                if isStrengthWorkoutActive {
-                                    
-                                } else {
-                                    Button {
-                                        Task { await healthManager.startStrengthTrainingWorkoutIfSupported() }
-                                    } label: {
-                                        Label("Start", systemImage: "play.fill")
-                                    }
-                                    .buttonStyle(.borderedProminent)
-                                    .tint(.greenStart)
+                                Button {
+                                    recordWorkoutTip.invalidate(reason: .actionPerformed)
+                                    Task { await healthManager.startStrengthTrainingWorkoutIfSupported() }
+                                } label: {
+                                    Label("Start", systemImage: "play.fill")
                                 }
+                                .buttonStyle(.borderedProminent)
+                                .tint(.greenStart)
+                                .popoverTip(recordWorkoutTip, arrowEdge: .bottom)
                             }
                         }
                     }

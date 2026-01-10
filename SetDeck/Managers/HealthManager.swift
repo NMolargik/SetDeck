@@ -8,6 +8,10 @@
 import Foundation
 import HealthKit
 import WidgetKit
+import ActivityKit
+import os.log
+
+private let logger = Logger(subsystem: "com.molargiksoftware.SetDeck", category: "HealthManager")
 
 @MainActor
 @Observable
@@ -47,6 +51,14 @@ class HealthManager: NSObject {
 
     var workoutState: HKWorkoutSessionState = .notStarted
     var workoutStartDate: Date?
+
+    // MARK: - Live Activity
+    @ObservationIgnored
+    private var currentActivity: Activity<StrengthTrainingActivityAttributes>?
+    @ObservationIgnored
+    private var accumulatedPauseTime: TimeInterval = 0
+    @ObservationIgnored
+    private var lastPauseDate: Date?
 
     // Convenience accessors used by HealthView
     var isStrengthTrainingActive: Bool {
@@ -144,9 +156,9 @@ class HealthManager: NSObject {
             await refreshWaterSeries(days: 14)
             WidgetCenter.shared.reloadTimelines(ofKind: "WaterWidgetLiter")
             WidgetCenter.shared.reloadTimelines(ofKind: "WaterWidgetOZ")
-
-
-        } catch { }
+        } catch {
+            logger.error("Failed to add water intake: \(error.localizedDescription)")
+        }
     }
 
     func addCalorieIntakeIfSupported(amount: Double, date: Date) async {
@@ -155,14 +167,18 @@ class HealthManager: NSObject {
             await refreshCaloriesToday()
             await refreshCalorieIntakeSeries(days: 14)
             WidgetCenter.shared.reloadTimelines(ofKind: "EnergyWidget")
-        } catch { }
+        } catch {
+            logger.error("Failed to add calorie intake: \(error.localizedDescription)")
+        }
     }
 
     func addCalorieBurnIfSupported(amount: Double, date: Date) async {
         do {
             try await addActiveEnergy(kcal: amount, date: date)
             await refreshCalorieBurnSeries(days: 14)
-        } catch { }
+        } catch {
+            logger.error("Failed to add calorie burn: \(error.localizedDescription)")
+        }
     }
 
     func refreshTodayTotals() async {
@@ -256,23 +272,34 @@ class HealthManager: NSObject {
 
         let start = Date()
         workoutStartDate = start
+        accumulatedPauseTime = 0
+        lastPauseDate = nil
 
         session.startActivity(with: start)
-        builder.beginCollection(withStart: start) { _, _ in }
+        try await builder.beginCollection(at: start)
+
+        // Start Live Activity
+        startLiveActivity(startDate: start)
     }
 
     func pauseWorkout() {
         guard let session = workoutSession, workoutState == .running else { return }
         session.pause()
+        updateLiveActivityForPause()
     }
 
     func resumeWorkout() {
         guard let session = workoutSession, workoutState == .paused else { return }
         session.resume()
+        updateLiveActivityForResume()
     }
 
     func endWorkout() async {
         guard let session = workoutSession, let builder = workoutBuilder else { return }
+
+        // End Live Activity before resetting state
+        endLiveActivity()
+
         session.end()
         await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
             builder.endCollection(withEnd: Date()) { _, _ in
@@ -305,6 +332,98 @@ class HealthManager: NSObject {
         workoutBuilder = nil
         workoutStartDate = nil
         workoutState = .ended
+        // Reset Live Activity state
+        accumulatedPauseTime = 0
+        lastPauseDate = nil
+        currentActivity = nil
+    }
+
+    // MARK: - Live Activity Management
+    private func startLiveActivity(startDate: Date) {
+        guard ActivityAuthorizationInfo().areActivitiesEnabled else {
+            logger.info("Live Activities not enabled")
+            return
+        }
+
+        let attributes = StrengthTrainingActivityAttributes()
+        let initialState = StrengthTrainingActivityAttributes.ContentState(
+            startDate: startDate,
+            accumulatedPause: 0,
+            lastPauseDate: nil,
+            isPaused: false
+        )
+
+        do {
+            let activity = try Activity.request(
+                attributes: attributes,
+                content: .init(state: initialState, staleDate: nil),
+                pushType: nil
+            )
+            currentActivity = activity
+            logger.info("Live Activity started: \(activity.id)")
+        } catch {
+            logger.error("Failed to start Live Activity: \(error.localizedDescription)")
+        }
+    }
+
+    private func updateLiveActivityForPause() {
+        guard let activity = currentActivity, let start = workoutStartDate else { return }
+
+        lastPauseDate = Date()
+        let state = StrengthTrainingActivityAttributes.ContentState(
+            startDate: start,
+            accumulatedPause: accumulatedPauseTime,
+            lastPauseDate: lastPauseDate,
+            isPaused: true
+        )
+
+        Task {
+            await activity.update(.init(state: state, staleDate: nil))
+            logger.info("Live Activity updated for pause")
+        }
+    }
+
+    private func updateLiveActivityForResume() {
+        guard let activity = currentActivity, let start = workoutStartDate else { return }
+
+        // Add time paused to accumulated pause time
+        if let pauseStart = lastPauseDate {
+            accumulatedPauseTime += Date().timeIntervalSince(pauseStart)
+        }
+        lastPauseDate = nil
+
+        let state = StrengthTrainingActivityAttributes.ContentState(
+            startDate: start,
+            accumulatedPause: accumulatedPauseTime,
+            lastPauseDate: nil,
+            isPaused: false
+        )
+
+        Task {
+            await activity.update(.init(state: state, staleDate: nil))
+            logger.info("Live Activity updated for resume")
+        }
+    }
+
+    private func endLiveActivity() {
+        guard let activity = currentActivity, let start = workoutStartDate else { return }
+
+        // Calculate final elapsed time
+        if let pauseStart = lastPauseDate {
+            accumulatedPauseTime += Date().timeIntervalSince(pauseStart)
+        }
+
+        let finalState = StrengthTrainingActivityAttributes.ContentState(
+            startDate: start,
+            accumulatedPause: accumulatedPauseTime,
+            lastPauseDate: nil,
+            isPaused: false
+        )
+
+        Task {
+            await activity.end(.init(state: finalState, staleDate: nil), dismissalPolicy: .default)
+            logger.info("Live Activity ended")
+        }
     }
 
     // MARK: - Helpers
@@ -354,7 +473,7 @@ class HealthManager: NSObject {
     private func todayRange() -> (Date, Date) {
         let cal = Calendar.current
         let start = cal.startOfDay(for: Date())
-        let end = cal.date(byAdding: .day, value: 1, to: start)!
+        let end = cal.date(byAdding: .day, value: 1, to: start) ?? start.addingTimeInterval(86400)
         return (start, end)
     }
 

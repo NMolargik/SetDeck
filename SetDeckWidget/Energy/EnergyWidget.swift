@@ -9,7 +9,7 @@ import SwiftUI
 import WidgetKit
 
 struct EnergyWidget: Widget {
-    let kind: String = "EnergyWidget"  // Unique kind
+    let kind: String = "EnergyWidget"
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: EnergyProvider()) { entry in
@@ -29,27 +29,27 @@ struct EnergyWidgetView: View {
             HStack {
                 Image(systemName: "flame.fill")
                     .foregroundStyle(.orangeEnd.gradient)
-                
+
                 Text("Energy Today")
                     .font(.caption2)
                     .fontWeight(.semibold)
                     .foregroundStyle(.white)
-                
+
                 Spacer()
             }
-            
+
             Spacer()
-            
+
             Text(formattedAmount)
                 .font(.title)
                 .fontWeight(.bold)
                 .foregroundStyle(.white)
-            
+
             Spacer()
-            
+
             HStack {
                 Spacer()
-                
+
                 Image("icon")
                     .resizable()
                     .frame(width: 50, height: 50)
@@ -61,7 +61,7 @@ struct EnergyWidgetView: View {
             for: .widget
         )
     }
-    
+
     private var formattedAmount: String {
         let rawKCal = entry.caloriesKCal
         return "\(Int(rawKCal)) cal"

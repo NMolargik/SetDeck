@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import TipKit
 #if canImport(UIKit)
 import UIKit
 #endif
@@ -21,6 +22,10 @@ struct EditRoutineView: View {
     @FocusState private var focusedExerciseID: UUID?
     @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
 
+    // TipKit
+    private let addExerciseTip = AddExerciseTip()
+    private let addSetTip = AddSetTip()
+
     var body: some View {
         VStack(spacing: 0) {
             DayPickerView(selectedDay: $viewModel.selectedDay)
@@ -31,16 +36,26 @@ struct EditRoutineView: View {
                 .sorted { (lhs: SetDeckExercise, rhs: SetDeckExercise) -> Bool in
                     (lhs.orderIndex) < (rhs.orderIndex)
                 }
+
+            // Pre-compute sets for all exercises so changes trigger view updates
+            // Reading changeStamp ensures this runs when data mutates
             let _ = exerciseManager.changeStamp
+            let setsForExercise: [UUID: [SetDeckSet]] = Dictionary(
+                uniqueKeysWithValues: exercises.map { ex in
+                    (ex.uuid, exerciseManager.sets(for: ex).sorted { $0.orderIndex < $1.orderIndex })
+                }
+            )
 
             List {
                 if exercises.isEmpty {
                     Section {
                         VStack(spacing: 8) {
                             Button {
+                                addExerciseTip.invalidate(reason: .actionPerformed)
                                 withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
                                     viewModel.addExercise(named: "New Exercise", using: exerciseManager)
                                 }
+                                Task { await TipEvents.firstExerciseAdded.donate() }
                             } label: {
                                 HStack(spacing: 8) {
                                     Image(systemName: "plus.circle.fill")
@@ -58,6 +73,7 @@ struct EditRoutineView: View {
                             }
                             .buttonStyle(.plain)
                             .frame(maxWidth: .infinity, alignment: .leading)
+                            .popoverTip(addExerciseTip, arrowEdge: .top)
                         }
                         .frame(maxWidth: .infinity)
                         .listRowBackground(Color.clear)
@@ -65,40 +81,13 @@ struct EditRoutineView: View {
                     }
                 } else {
                     ForEach(exercises, id: \.uuid) { exercise in
+                        let isFirstExercise = exercise.uuid == exercises.first?.uuid
                         Section(
                             header: exerciseHeader(for: exercise)
                                 .listRowInsets(EdgeInsets()),
-                            footer: Button {
-                                withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
-                                    viewModel.addSet(to: exercise, using: exerciseManager)
-                                }
-                            } label: {
-                                HStack(spacing: 8) {
-                                    Image(systemName: "plus.circle.fill")
-                                    Text("Add Set")
-                                        .font(.callout.weight(.semibold))
-                                }
-                                .padding(.horizontal, 16)
-                                .padding(.vertical, 8)
-                                .foregroundStyle(.white)
-                                .background(
-                                    Capsule()
-                                        .fill(Color.blueStart)
-                                )
-                                .contentShape(Capsule())
-                            }
-                            .buttonStyle(.plain)
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 8)
-                            .listRowInsets(EdgeInsets())
-                            .listRowSeparator(.hidden)
-                            .listRowBackground(Color.clear)
+                            footer: addSetFooter(for: exercise, isFirstExercise: isFirstExercise)
                         ) {
-                            let sets = exerciseManager.sets(for: exercise)
-                                .sorted { (lhs: SetDeckSet, rhs: SetDeckSet) -> Bool in
-                                    (lhs.orderIndex) < (rhs.orderIndex)
-                                }
+                            let sets = setsForExercise[exercise.uuid] ?? []
                             ForEach(sets, id: \.uuid) { set in
                                 EditSetRowView(set: set, setCount: sets.count)
                                     .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
@@ -192,6 +181,7 @@ struct EditRoutineView: View {
         }
         .onAppear {
             viewModel.resetToToday()
+            Task { await TipEvents.editRoutineOpened.donate() }
         }
         .onChange(of: scenePhase) { oldValue, newValue in
             if newValue == .active {
@@ -210,6 +200,43 @@ struct EditRoutineView: View {
                 .bold()
                 .tint(.greenStart)
             }
+        }
+    }
+
+    @ViewBuilder
+    private func addSetFooter(for exercise: SetDeckExercise, isFirstExercise: Bool) -> some View {
+        let button = Button {
+            addSetTip.invalidate(reason: .actionPerformed)
+            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                viewModel.addSet(to: exercise, using: exerciseManager)
+            }
+        } label: {
+            HStack(spacing: 8) {
+                Image(systemName: "plus.circle.fill")
+                Text("Add Set")
+                    .font(.callout.weight(.semibold))
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
+            .foregroundStyle(.white)
+            .background(
+                Capsule()
+                    .fill(Color.blueStart)
+            )
+            .contentShape(Capsule())
+        }
+        .buttonStyle(.plain)
+        .frame(maxWidth: .infinity, alignment: .trailing)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
+        .listRowInsets(EdgeInsets())
+        .listRowSeparator(.hidden)
+        .listRowBackground(Color.clear)
+
+        if isFirstExercise {
+            button.popoverTip(addSetTip, arrowEdge: .bottom)
+        } else {
+            button
         }
     }
 

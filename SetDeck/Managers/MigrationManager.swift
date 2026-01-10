@@ -7,6 +7,9 @@
 
 import Foundation
 import SwiftData
+import os.log
+
+private let logger = Logger(subsystem: "com.molargiksoftware.SetDeck", category: "MigrationManager")
 
 @Observable
 class MigrationManager {
@@ -87,7 +90,7 @@ class MigrationManager {
 
         updateProgress(message: "Migrating exercises…")
 
-        print("Found \(legacyExercises.count) exercises to migrate")
+        logger.info("Found \(legacyExercises.count) exercises to migrate")
         for exercise in legacyExercises {
             guard let routine = routinesByDay[exercise.weekday] else { continue }
 
@@ -110,17 +113,20 @@ class MigrationManager {
             for (idx, eset) in legacySets.enumerated() {
                 let newSet = SetDeckSet()
 
-                switch eset.goalType {
-                case .weight:
-                    newSet.setType = .reps
-                    newSet.targetReps = eset.repetitionsToDo
-                    newSet.weight = Double(eset.weightToLift)
-                    newSet.targetDuration = nil
-                case .duration:
+                // Infer goal type from data since goalType property causes deserialization issues
+                // If duration is set and significant, assume duration-based; otherwise weight/reps
+                let isDuration = eset.durationToDo > 0 && eset.repetitionsToDo <= 0
+
+                if isDuration {
                     newSet.setType = .duration
                     newSet.targetDuration = TimeInterval(eset.durationToDo)
                     newSet.targetReps = nil
                     newSet.weight = nil
+                } else {
+                    newSet.setType = .reps
+                    newSet.targetReps = eset.repetitionsToDo
+                    newSet.weight = Double(eset.weightToLift)
+                    newSet.targetDuration = nil
                 }
 
                 newSet.orderIndex = idx

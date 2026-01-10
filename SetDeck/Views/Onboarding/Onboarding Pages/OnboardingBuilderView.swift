@@ -34,15 +34,11 @@ struct OnboardingBuilderView: View {
             Button(action: {
                 onContinue()
             }) {
-                HStack(spacing: 10) {
-                    Image(systemName: "rectangle.portrait.on.rectangle.portrait.fill")
-                        .imageScale(.large)
-                    Text("Continue")
-                        .font(.title3).bold()
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
-                .foregroundStyle(.white)
+                Text("Continue")
+                    .font(.title3).bold()
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .foregroundStyle(.white)
             }
             .adaptiveGlass(tint: .purpleStart)
             .shadow(radius: 6, y: 3)

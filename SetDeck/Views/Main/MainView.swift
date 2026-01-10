@@ -7,11 +7,11 @@
 
 import SwiftUI
 import SwiftData
+import TipKit
 
 struct MainView: View {
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.horizontalSizeClass) private var hSizeClass
-    @Environment(\.verticalSizeClass) private var vSizeClass
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.scenePhase) private var scenePhase
     
     @Environment(ExerciseManager.self) private var exerciseManager: ExerciseManager
@@ -26,17 +26,15 @@ struct MainView: View {
     @State private var workoutNow: Date = Date()
     @State private var workoutToolbarTimer: Timer? = nil
 
+    // TipKit
+    private let editRoutineTip = EditRoutineTip()
+
     private var isStrengthWorkoutActive: Bool {
         healthManager.isStrengthTrainingActive
     }
 
     private var workoutElapsedString: String {
-        guard let start = healthManager.currentWorkoutStartDate else { return "00:00:00" }
-        let interval = Int(workoutNow.timeIntervalSince(start))
-        let h = interval / 3600
-        let m = (interval % 3600) / 60
-        let s = interval % 60
-        return String(format: "%02d:%02d:%02d", h, m, s)
+        healthManager.currentWorkoutStartDate?.elapsedString(to: workoutNow) ?? "00:00:00"
     }
 
     var body: some View {
@@ -60,7 +58,7 @@ struct MainView: View {
     }
     
     private var isRegularWidth: Bool {
-        hSizeClass == .regular
+        horizontalSizeClass == .regular
     }
     
     // MARK: - iPAD
@@ -78,12 +76,14 @@ struct MainView: View {
                     .toolbar {
                         ToolbarItem(placement: .topBarLeading) {
                             Button {
+                                editRoutineTip.invalidate(reason: .actionPerformed)
                                 showingEditRoutineSheet = true
                             } label: {
                                 Text("Edit Routine")
                                     .bold()
                             }
                             .tint(.greenStart)
+                            .popoverTip(editRoutineTip)
                         }
                     }
                     .sheet(isPresented: $showingEditRoutineSheet) {
@@ -165,6 +165,10 @@ struct MainView: View {
                                     .bold()
                                     .tint(.greenStart)
                             }
+                            .simultaneousGesture(TapGesture().onEnded {
+                                editRoutineTip.invalidate(reason: .actionPerformed)
+                            })
+                            .popoverTip(editRoutineTip)
                         }
                         if isStrengthWorkoutActive {
                             ToolbarItem(placement: .topBarTrailing) {

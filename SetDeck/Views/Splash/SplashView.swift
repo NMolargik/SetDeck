@@ -12,7 +12,7 @@ struct SplashView: View {
     var moveToMigration: () -> Void
 
     @State private var viewModel = SplashView.ViewModel()
-    @Environment(\.horizontalSizeClass) private var hSizeClass
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     var body: some View {
         ZStack {
@@ -41,8 +41,8 @@ struct SplashView: View {
                 .shadow(radius: 30, y: 20)
             }
             .padding(.horizontal, 24)
-            .padding(.top, hSizeClass == .regular ? 40 : 80)
-            .frame(maxWidth: hSizeClass == .regular ? 520 : .infinity)
+            .padding(.top, horizontalSizeClass == .regular ? 40 : 80)
+            .frame(maxWidth: horizontalSizeClass == .regular ? 520 : .infinity)
         }
         .onAppear {
             viewModel.activateAnimation()
@@ -54,14 +54,14 @@ struct SplashView: View {
     private var titleSection: some View {
         VStack(spacing: 6) {
             Text("SetDeck")
-                .font(.system(size: hSizeClass == .regular ? 90 : 60, weight: .bold))
+                .font(.system(size: horizontalSizeClass == .regular ? 90 : 60, weight: .bold))
                 .opacity(viewModel.titleVisible ? 1 : 0)
                 .scaleEffect(viewModel.titleVisible ? 1 : 0.7)
                 .animation(.easeOut(duration: 0.6),
                            value: viewModel.titleVisible)
 
             Text("Crush your workout routine")
-                .font(hSizeClass == .regular ? .title2 : .headline)
+                .font(horizontalSizeClass == .regular ? .title2 : .headline)
                 .fontWeight(.semibold)
                 .opacity(viewModel.subtitleVisible ? 1 : 0)
                 .offset(y: viewModel.subtitleVisible ? 0 : 20)
@@ -74,7 +74,7 @@ struct SplashView: View {
         Image("icon")
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(maxWidth: hSizeClass == .regular ? 280 : 250)
+            .frame(maxWidth: horizontalSizeClass == .regular ? 280 : 250)
             .opacity(viewModel.subtitleVisible ? 1 : 0)
             .offset(y: viewModel.subtitleVisible ? (viewModel.float ? -4 : 4) : 30)
             .scaleEffect(viewModel.subtitleVisible ? 1 : 0.9)
@@ -92,10 +92,11 @@ struct SplashView: View {
             moveToMigration()
         } label: {
             HStack(spacing: 8) {
-                Image(systemName: "arrow.right")
                 Text("Get Started")
                     .bold()
                     .frame(maxWidth: .infinity, alignment: .center)
+                
+                Image(systemName: "arrow.right")
             }
             .padding()
         }

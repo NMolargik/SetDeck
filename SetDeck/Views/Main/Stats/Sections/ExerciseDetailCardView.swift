@@ -57,13 +57,13 @@ struct ExerciseDetailCardView: View {
                 Chart(points) { point in
                     LineMark(
                         x: .value("Date", point.date, unit: .day),
-                        y: .value("Est. 1RM", useMetricUnits ? point.value * 0.45359237 : point.value)
+                        y: .value("Est. 1RM", point.value.weight(useMetric: useMetricUnits))
                     )
                     .foregroundStyle(.purpleStart)
 
                     PointMark(
                         x: .value("Date", point.date, unit: .day),
-                        y: .value("Est. 1RM", useMetricUnits ? point.value * 0.45359237 : point.value)
+                        y: .value("Est. 1RM", point.value.weight(useMetric: useMetricUnits))
                     )
                     .foregroundStyle(.purpleStart)
                 }

@@ -9,6 +9,8 @@ import Foundation
 import SwiftData
 import os.log
 
+private let logger = Logger(subsystem: "com.molargiksoftware.SetDeck", category: "ExerciseManager")
+
 @MainActor
 @Observable
 class ExerciseManager {
@@ -20,13 +22,13 @@ class ExerciseManager {
 
     // MARK: - Init
     init(context: ModelContext) {
-        print("[ExerciseManager] Initializing with context: \(ObjectIdentifier(context))")
+        logger.debug("Initializing with context: \(String(describing: ObjectIdentifier(context)))")
         self.context = context
 
         cleanupDuplicateRoutines()
-            
+
         let histories = self.allHistoryEntries()
-        print("[ExerciseManager] Init complete. History count: \(histories.count)")
+        logger.debug("Init complete. History count: \(histories.count)")
     }
 
     // MARK: - Routines
@@ -66,10 +68,7 @@ class ExerciseManager {
             predicate: predicate,
             sortBy: [SortDescriptor(\.orderIndex, order: .forward)]
         )
-        let results = (try? context.fetch(descriptor)) ?? []
-        return results.sorted { lhs, rhs in
-            lhs.orderIndex < rhs.orderIndex
-        }
+        return (try? context.fetch(descriptor)) ?? []
     }
 
     /// Returns exercises for a specific routine, ordered by orderIndex
@@ -82,10 +81,7 @@ class ExerciseManager {
             predicate: predicate,
             sortBy: [SortDescriptor(\.orderIndex, order: .forward)]
         )
-        let results = (try? context.fetch(descriptor)) ?? []
-        return results.sorted { lhs, rhs in
-            lhs.orderIndex < rhs.orderIndex
-        }
+        return (try? context.fetch(descriptor)) ?? []
     }
 
     /// Adds a new exercise to the routine for the specified day
@@ -176,10 +172,7 @@ class ExerciseManager {
             predicate: predicate,
             sortBy: [SortDescriptor(\.orderIndex, order: .forward)]
         )
-        let results = (try? context.fetch(descriptor)) ?? []
-        return results.sorted { lhs, rhs in
-            lhs.orderIndex < rhs.orderIndex
-        }
+        return (try? context.fetch(descriptor)) ?? []
     }
 
     /// Adds a new set to an exercise
@@ -363,6 +356,40 @@ class ExerciseManager {
         saveContext()
     }
 
+    /// Deletes all routines, exercises, sets, and history from the store.
+    /// This is a destructive operation that wipes all workout data.
+    func deleteAllRoutines() {
+        logger.info("Deleting all routines, exercises, sets, and history")
+
+        // Delete all history first
+        clearAllHistory()
+
+        // Delete all sets
+        let setsDescriptor = FetchDescriptor<SetDeckSet>()
+        let allSets = (try? context.fetch(setsDescriptor)) ?? []
+        for set in allSets {
+            context.delete(set)
+        }
+
+        // Delete all exercises
+        let exercisesDescriptor = FetchDescriptor<SetDeckExercise>()
+        let allExercises = (try? context.fetch(exercisesDescriptor)) ?? []
+        for exercise in allExercises {
+            context.delete(exercise)
+        }
+
+        // Delete all routines
+        let routinesDescriptor = FetchDescriptor<SetDeckRoutine>()
+        let allRoutines = (try? context.fetch(routinesDescriptor)) ?? []
+        for routine in allRoutines {
+            context.delete(routine)
+        }
+
+        // Persist changes
+        saveContext()
+        logger.info("All routines deleted successfully")
+    }
+
     // MARK: - Sample Data Generation (Development / Previews)
     /// Generates ~30 days of realistic-looking routines, sets, and history data.
     /// - Note: This function is intended for development / preview use only.
@@ -372,13 +399,13 @@ class ExerciseManager {
     ///   • Generate one workout per day for the last 30 days, mapping dayIndex % 7 → routine day.
     ///   • For every set, create history entries that slowly increase reps/weight over time.
     func generateSampleDataForLast30Days() {
-        print("[ExerciseManager] Starting sample data generation for last 30 days…")
+        logger.info("Starting sample data generation for last 30 days")
 
         // Avoid exploding data if this function is called multiple times.
         // If you want to regenerate from scratch, clearAllHistory() and/or delete routines first.
         let existingHistory = allHistoryEntries()
         if !existingHistory.isEmpty {
-            print("[ExerciseManager] Sample generation aborted: history already exists (\(existingHistory.count) entries).")
+            logger.info("Sample generation aborted: history already exists (\(existingHistory.count) entries)")
             return
         }
 
@@ -478,7 +505,7 @@ class ExerciseManager {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
         guard let startDate = calendar.date(byAdding: .day, value: -29, to: today) else {
-            print("[ExerciseManager] Failed to compute start date for sample data.")
+            logger.error("Failed to compute start date for sample data")
             return
         }
 
@@ -540,7 +567,7 @@ class ExerciseManager {
             }
         }
 
-        print("[ExerciseManager] Sample data generation complete. History count: \(allHistoryEntries().count)")
+        logger.info("Sample data generation complete. History count: \(self.allHistoryEntries().count)")
     }
 
     // MARK: - Private helpers
@@ -566,8 +593,7 @@ class ExerciseManager {
             // Bump change stamp so SwiftUI views depending on ExerciseManager refresh
             changeStamp &+= 1
         } catch {
-            // Non-fatal in SwiftData; log for debugging
-            print("[ExerciseManager] Failed to save context: \(error)")
+            logger.error("Failed to save context: \(error.localizedDescription)")
         }
     }
     

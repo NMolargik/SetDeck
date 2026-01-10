@@ -106,17 +106,17 @@ struct ExerciseManagerTests {
     }
     
     @Test("addExercise(toDay:) creates exercise with default set")
-    func addExerciseToDay_CreatesExerciseWithDefaultSet() {
+    func addExerciseToDay_CreatesExerciseWithDefaultSet() throws {
         // Given: Routine for day 0
-        
+
         // When
         let exercise = sut.addExercise(named: "Squat", toDay: 0)
-        
+
         // Then
         #expect(exercise.name == "Squat")
         #expect(sut.exercises(forDay: 0).count == 1)
         #expect(sut.sets(for: exercise).count == 1)  // Default set added
-        let defaultSet = sut.sets(for: exercise).first!
+        let defaultSet = try #require(sut.sets(for: exercise).first)
         #expect(defaultSet.setType == .reps)
         #expect(defaultSet.targetReps == 10)
         #expect(defaultSet.rpe == 6)
@@ -281,14 +281,14 @@ struct ExerciseManagerTests {
     }
     
     @Test("recordHistory adds entry to set and exercise history")
-    func recordHistory_AddsEntryToSetAndExerciseHistory() {
+    func recordHistory_AddsEntryToSetAndExerciseHistory() throws {
         // Given: Exercise and set
         let exercise = sut.addExercise(named: "Test", toDay: 0)
-        let set = sut.sets(for: exercise).first!
-        
+        let set = try #require(sut.sets(for: exercise).first)
+
         // When
         let history = sut.recordHistory(for: set, actualReps: 12, actualWeight: 100, actualRpe: 8)
-        
+
         // Then
         #expect(history.actualReps == 12)
         #expect(history.actualWeight == 100)
@@ -299,20 +299,20 @@ struct ExerciseManagerTests {
     }
     
     @Test("update(set:withReps:weight:rpe:) updates targets and records history")
-    func updateSetWithValues_UpdatesTargetsAndRecordsHistory() {
+    func updateSetWithValues_UpdatesTargetsAndRecordsHistory() throws {
         // Given: Set
         let exercise = sut.addExercise(named: "Test", toDay: 0)
-        let set = sut.sets(for: exercise).first!
-        
+        let set = try #require(sut.sets(for: exercise).first)
+
         // When
         sut.update(set: set, withReps: 12, weight: 100, rpe: 8)
-        
+
         // Then
         #expect(set.targetReps == 12)
         #expect(set.weight == 100)
         #expect(set.rpe == 8)
         #expect(sut.history(for: exercise).count == 1)
-        let recorded = sut.history(for: exercise).first!
+        let recorded = try #require(sut.history(for: exercise).first)
         #expect(recorded.actualReps == 12)
         #expect(recorded.actualWeight == 100)
         #expect(recorded.actualRpe == 8)
@@ -320,17 +320,17 @@ struct ExerciseManagerTests {
     }
     
     @Test("clearAllHistory removes all entries")
-    func clearAllHistory_RemovesAllEntries() {
+    func clearAllHistory_RemovesAllEntries() throws {
         // Given: Some history exists
         let exercise = sut.addExercise(named: "Test", toDay: 0)
-        let set = sut.sets(for: exercise).first!
+        let set = try #require(sut.sets(for: exercise).first)
         _ = sut.recordHistory(for: set)
         _ = sut.recordHistory(for: set)
         #expect(sut.allHistoryEntries().count == 2)
-        
+
         // When
         sut.clearAllHistory()
-        
+
         // Then
         #expect(sut.allHistoryEntries().count == 0)
         #expect((set.history?.isEmpty ?? true) == true)
@@ -358,15 +358,15 @@ struct ExerciseManagerTests {
     }
     
     @Test("generateSampleDataForLast30Days aborts if history exists")
-    func generateSampleDataForLast30Days_AbortsIfHistoryExists() {
+    func generateSampleDataForLast30Days_AbortsIfHistoryExists() throws {
         // Given: Existing history
         let exercise = sut.addExercise(named: "Test", toDay: 0)
-        let set = sut.sets(for: exercise).first!
+        let set = try #require(sut.sets(for: exercise).first)
         _ = sut.recordHistory(for: set)
-        
+
         // When
         sut.generateSampleDataForLast30Days()
-        
+
         // Then: History count unchanged
         #expect(sut.allHistoryEntries().count == 1)
     }

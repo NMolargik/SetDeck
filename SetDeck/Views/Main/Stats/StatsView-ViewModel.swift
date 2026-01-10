@@ -23,7 +23,7 @@ extension StatsView {
 
         // MARK: - Units
         func displayWeight(_ lbs: Double, useMetricUnits: Bool) -> Double {
-            useMetricUnits ? lbs * 0.45359237 : lbs
+            lbs.weight(useMetric: useMetricUnits)
         }
 
         // MARK: - Aggregates
@@ -141,6 +141,68 @@ extension StatsView {
             }
 
             return result
+        }
+
+        // MARK: - Muscle Group Analysis
+
+        /// Check if muscle group inference is available (iOS 26+ with Foundation Models)
+        var isMuscleAnalysisAvailable: Bool {
+            MuscleGroupInferenceService.shared.isAvailable
+        }
+
+        /// Calculate volume per muscle group from history, using AI inference for exercises without muscle groups
+        /// Volume = sum of (reps × weight) for each set, distributed across the exercise's muscle groups
+        func muscleGroupVolumes(filteredHistory: [SetDeckSetHistory], inferredMuscleGroups: [String: [MuscleGroup]]) -> [MuscleGroup: Double] {
+            var volumes: [MuscleGroup: Double] = [:]
+
+            for entry in filteredHistory {
+                guard let exercise = entry.set?.exercise else { continue }
+
+                // Use exercise's muscle groups if defined, otherwise use inferred
+                var muscleGroups = exercise.muscleGroups
+                if muscleGroups.isEmpty, let inferred = inferredMuscleGroups[exercise.name] {
+                    muscleGroups = inferred
+                }
+
+                // Skip if still no muscle groups
+                guard !muscleGroups.isEmpty else { continue }
+
+                let reps = entry.actualReps ?? 0
+                let weight = entry.actualWeight ?? 0
+                let setVolume = Double(reps) * weight
+
+                // Distribute volume across all muscle groups for this exercise
+                let volumePerMuscle = setVolume / Double(muscleGroups.count)
+
+                for muscle in muscleGroups {
+                    volumes[muscle, default: 0] += volumePerMuscle
+                }
+            }
+
+            return volumes
+        }
+
+        /// Infer muscle groups for all exercises in history that don't have them set
+        func inferMuscleGroupsForHistory(_ history: [SetDeckSetHistory]) async -> [String: [MuscleGroup]] {
+            // Get unique exercise names that need inference
+            let exerciseNames = Set(
+                history.compactMap { entry -> String? in
+                    guard let exercise = entry.set?.exercise else { return nil }
+                    // Only infer if exercise has no muscle groups set
+                    return exercise.muscleGroups.isEmpty ? exercise.name : nil
+                }
+            )
+
+            guard !exerciseNames.isEmpty else { return [:] }
+
+            return await MuscleGroupInferenceService.shared.inferMuscleGroups(for: Array(exerciseNames))
+        }
+
+        /// Get this week's muscle volumes (last 7 days) with inference
+        func thisWeekMuscleVolumes(allHistory: [SetDeckSetHistory], inferredMuscleGroups: [String: [MuscleGroup]]) -> [MuscleGroup: Double] {
+            let weekAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date()) ?? Date()
+            let thisWeekHistory = allHistory.filter { $0.completedDate >= weekAgo }
+            return muscleGroupVolumes(filteredHistory: thisWeekHistory, inferredMuscleGroups: inferredMuscleGroups)
         }
     }
 }

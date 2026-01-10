@@ -69,19 +69,3 @@ extension View {
         if condition { transform(self) } else { self }
     }
 }
-
- 
-struct DrawOnOffEffect: ViewModifier {
-    let drawOn: Bool
-    let drawOff: Bool
-
-    func body(content: Content) -> some View {
-        #if compiler(>=6.0)
-        content
-            .symbolEffect(.pulse, options: .repeating, value: drawOn)
-        #else
-        content
-            .symbolEffect(.pulse, options: .repeating, value: drawOn)
-        #endif
-    }
-}

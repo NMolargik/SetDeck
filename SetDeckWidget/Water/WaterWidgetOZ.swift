@@ -29,36 +29,39 @@ struct WaterWidgetViewImperial: View {
             HStack {
                 Image(systemName: "drop.fill")
                     .foregroundStyle(.blueEnd.gradient)
-                
+
                 Text("Water Today")
                     .font(.caption2)
                     .fontWeight(.semibold)
                     .foregroundStyle(.white)
-                
+
                 Spacer()
             }
-            
+
             Spacer()
-            
+
             Text(formattedAmount)
                 .font(.title)
                 .fontWeight(.bold)
                 .foregroundStyle(.white)
-            
+
             Spacer()
-            
+
             HStack {
                 Spacer()
-                
+
                 Image("icon")
                     .resizable()
                     .frame(width: 50, height: 50)
             }
             .offset(x: 10, y: 10)
         }
-        .containerBackground(LinearGradient(colors: [.blueStart, .blueEnd], startPoint: .topLeading, endPoint: .bottomTrailing), for: .widget)
+        .containerBackground(
+            LinearGradient(colors: [.blueStart, .blueEnd], startPoint: .topLeading, endPoint: .bottomTrailing),
+            for: .widget
+        )
     }
-    
+
     private var formattedAmount: String {
         let waterML = entry.waterML
         let waterOZ = waterML / 29.5735

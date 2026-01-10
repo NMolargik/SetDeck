@@ -27,12 +27,7 @@ extension HealthView {
         }
 
         var workoutElapsedString: String {
-            guard let start = workoutStartDate else { return "00:00:00" }
-            let interval = Int(now.timeIntervalSince(start))
-            let hours = interval / 3600
-            let minutes = (interval % 3600) / 60
-            let seconds = interval % 60
-            return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+            workoutStartDate?.elapsedString(to: now) ?? "00:00:00"
         }
 
         // MARK: - Binding & lifecycle

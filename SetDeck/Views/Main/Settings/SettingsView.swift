@@ -21,26 +21,16 @@ struct SettingsView: View {
     var body: some View {
         Form {
             // MARK: - Units & Date Format
-            Toggle("Display Water in Liters", isOn: $useMetricUnits)
-                .tint(.greenStart)
-                .onChange(of: useMetricUnits) { _, _ in Haptics.lightImpact() }
+            Section {
+                Toggle("Display Water in Liters", isOn: $useMetricUnits)
+                    .tint(.greenStart)
+                    .onChange(of: useMetricUnits) { _, _ in Haptics.lightImpact() }
 
-            Toggle("Use Day–Month–Year Dates", isOn: $useDayMonthYearDates)
-                .tint(.greenStart)
-                .accessibilityHint("Switch between Month–Day–Year and Day–Month–Year formats for dates.")
-                .onChange(of: useDayMonthYearDates) { _, _ in Haptics.lightImpact() }
-
-            Button {
-                Haptics.lightImpact()
-                DispatchQueue.main.async {
-                    viewModel.showDeleteConfirmation = true
-                }
-            } label: {
-                Text("Clear Set History")
-                    .bold()
-                    .foregroundStyle(.red)
+                Toggle("Use Day–Month–Year Dates", isOn: $useDayMonthYearDates)
+                    .tint(.greenStart)
+                    .accessibilityHint("Switch between Month–Day–Year and Day–Month–Year formats for dates.")
+                    .onChange(of: useDayMonthYearDates) { _, _ in Haptics.lightImpact() }
             }
-            .buttonStyle(.plain)
 
             // MARK: - App Info
             Section("SetDeck") {
@@ -59,6 +49,29 @@ struct SettingsView: View {
                         .foregroundStyle(.blueStart)
                 }
             }
+
+            // MARK: - Danger Zone
+            Section {
+                Button {
+                    Haptics.lightImpact()
+                    viewModel.showDeleteConfirmation = true
+                } label: {
+                    Label("Clear Set History", systemImage: "clock.arrow.circlepath")
+                        .foregroundStyle(.red)
+                }
+
+                Button {
+                    Haptics.lightImpact()
+                    viewModel.showDeleteRoutinesConfirmation = true
+                } label: {
+                    Label("Delete All Routines", systemImage: "trash.fill")
+                        .foregroundStyle(.red)
+                }
+            } header: {
+                Text("Danger Zone")
+            } footer: {
+                Text("These actions cannot be undone.")
+            }
         }
         .alert("Clear Set History?", isPresented: $viewModel.showDeleteConfirmation) {
             Button("Delete History", role: .destructive) {
@@ -76,6 +89,23 @@ struct SettingsView: View {
             Button("OK", role: .cancel) { }
         } message: {
             Text("All historical set entries have been removed. Your routines and exercises are unchanged.")
+        }
+        .alert("Delete All Routines?", isPresented: $viewModel.showDeleteRoutinesConfirmation) {
+            Button("Delete Everything", role: .destructive) {
+                Haptics.lightImpact()
+                exerciseManager.deleteAllRoutines()
+                viewModel.showRoutinesDeletedAlert = true
+            }
+            Button("Cancel", role: .cancel) {
+                Haptics.lightImpact()
+            }
+        } message: {
+            Text("This will permanently delete all of your routines, exercises, sets, and history. You will need to rebuild your workout routine from scratch.")
+        }
+        .alert("Routines Deleted", isPresented: $viewModel.showRoutinesDeletedAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("All routines, exercises, sets, and history have been deleted.")
         }
     }
 }

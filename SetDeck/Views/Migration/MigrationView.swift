@@ -48,7 +48,7 @@ struct MigrationView: View {
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
                             default:
-                                Text("One sec! We’re moving your Ready, Set workouts to over to SetDeck!")
+                                Text("One sec! We’re moving any old Ready, Set workouts over to SetDeck!")
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
                             }

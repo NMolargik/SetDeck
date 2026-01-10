@@ -16,31 +16,15 @@ struct StatsView: View {
     @State private var viewModel: ViewModel = ViewModel()
     @State private var range: TimeRange = .last30Days
     @State private var selectedExerciseName: String?
+    @State private var inferredMuscleGroups: [String: [MuscleGroup]] = [:]
+    @State private var isLoadingMuscleAnalysis: Bool = false
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     if filteredHistory.isEmpty {
-                        VStack(spacing: 12) {
-                            Text("No history yet")
-                                .font(.title3).bold()
-                            Text("Once you log some sets, you’ll see trends, PRs, and volume charts here.")
-                                .font(.subheadline)
-                                .multilineTextAlignment(.center)
-                                .foregroundStyle(.secondary)
-                        }
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(.ultraThinMaterial)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .stroke(Color.primary.opacity(0.15), lineWidth: 0.5)
-                                )
-                        )
-                        .frame(maxWidth: .infinity, minHeight: 200)
+                        emptyStateView
                     } else {
                         SummaryRowView(
                             totalVolume: totalVolume,
@@ -66,6 +50,32 @@ struct StatsView: View {
                         )
 
                         IntensityDistributionCard(history: filteredHistory)
+
+                        // MARK: - Muscle Analysis Section (iOS 26+ with Foundation Models)
+                        if viewModel.isMuscleAnalysisAvailable {
+                            if isLoadingMuscleAnalysis {
+                                VStack(spacing: 12) {
+                                    ProgressView()
+                                        .controlSize(.regular)
+                                    Text("Analyzing muscle groups...")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 40)
+                            } else if !weeklyMuscleVolumes.isEmpty {
+                                Text("Muscle Analysis")
+                                    .font(.title3)
+                                    .fontWeight(.semibold)
+                                    .padding(.top, 8)
+
+                                MuscleHeatmapCardView(muscleVolumes: weeklyMuscleVolumes)
+
+                                MuscleDistributionCardView(muscleVolumes: weeklyMuscleVolumes)
+
+                                BalanceAnalysisCardView(muscleVolumes: weeklyMuscleVolumes)
+                            }
+                        }
                     }
                 }
                 .padding()
@@ -83,12 +93,141 @@ struct StatsView: View {
             }
         }
         .onAppear {
-            let history = allHistory
-            print("[StatsView] allHistory count:", history.count)
+            // History data loaded via allHistory computed property
+        }
+        .task {
+            // Load muscle group inference if available
+            if viewModel.isMuscleAnalysisAvailable && inferredMuscleGroups.isEmpty {
+                isLoadingMuscleAnalysis = true
+                inferredMuscleGroups = await viewModel.inferMuscleGroupsForHistory(allHistory)
+                isLoadingMuscleAnalysis = false
+            }
+        }
+        .onChange(of: allHistory.count) {
+            // Re-infer when history changes
+            if viewModel.isMuscleAnalysisAvailable {
+                Task {
+                    isLoadingMuscleAnalysis = true
+                    inferredMuscleGroups = await viewModel.inferMuscleGroupsForHistory(allHistory)
+                    isLoadingMuscleAnalysis = false
+                }
+            }
         }
         .tint(.purpleStart)
     }
-    
+
+    // MARK: - Empty State View
+    private var emptyStateView: some View {
+        VStack(spacing: 24) {
+            // Header
+            VStack(spacing: 12) {
+                Image(systemName: "chart.bar.fill")
+                    .font(.system(size: 50))
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [.purpleStart, .blueStart],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+
+                Text("Your Stats Await")
+                    .font(.title2).bold()
+
+                Text("Start logging sets in your routines to unlock powerful insights about your training.")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+            }
+            .padding(.top, 8)
+
+            // Feature Cards
+            VStack(spacing: 12) {
+                emptyStateFeatureCard(
+                    icon: "flame.fill",
+                    iconColor: .orange,
+                    title: "Volume Tracking",
+                    description: "See your total weight lifted over time with beautiful trend charts."
+                )
+
+                emptyStateFeatureCard(
+                    icon: "trophy.fill",
+                    iconColor: .yellow,
+                    title: "Personal Records",
+                    description: "Track your best lifts and estimated one-rep maxes for each exercise."
+                )
+
+                emptyStateFeatureCard(
+                    icon: "calendar",
+                    iconColor: .green,
+                    title: "Workout Streaks",
+                    description: "Monitor your consistency with active day counts and best streaks."
+                )
+
+                emptyStateFeatureCard(
+                    icon: "chart.pie.fill",
+                    iconColor: .purple,
+                    title: "Intensity Distribution",
+                    description: "Understand your training intensity across different RPE levels."
+                )
+            }
+
+            // Call to Action
+            VStack(spacing: 8) {
+                Text("Ready to begin?")
+                    .font(.headline)
+                    .foregroundStyle(.primary)
+
+                Text("Complete a set in your routine and check back here.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(.top, 8)
+        }
+        .padding()
+    }
+
+    @ViewBuilder
+    private func emptyStateFeatureCard(
+        icon: String,
+        iconColor: Color,
+        title: String,
+        description: String
+    ) -> some View {
+        HStack(spacing: 16) {
+            Image(systemName: icon)
+                .font(.title2)
+                .foregroundStyle(iconColor)
+                .frame(width: 44, height: 44)
+                .background(
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .fill(iconColor.opacity(0.15))
+                )
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.subheadline).bold()
+                    .foregroundStyle(.primary)
+
+                Text(description)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Spacer(minLength: 0)
+        }
+        .padding(12)
+        .background(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(.ultraThinMaterial)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .stroke(Color.primary.opacity(0.08), lineWidth: 1)
+                )
+        )
+    }
+
     var allHistory: [SetDeckSetHistory] {
         // Read changeStamp to trigger view updates when ExerciseManager saves
         let _ = exerciseManager.changeStamp
@@ -143,6 +282,10 @@ struct StatsView: View {
 
     var exercise1RMPoints: [String: [OneRMPoint]] {
         viewModel.exercise1RMPoints(filteredHistory: filteredHistory)
+    }
+
+    var weeklyMuscleVolumes: [MuscleGroup: Double] {
+        viewModel.thisWeekMuscleVolumes(allHistory: allHistory, inferredMuscleGroups: inferredMuscleGroups)
     }
 }
 

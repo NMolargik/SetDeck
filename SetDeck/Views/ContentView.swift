@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import TipKit
 
 struct ContentView: View {
     @Environment(ExerciseManager.self) private var exerciseManager: ExerciseManager
@@ -53,6 +54,7 @@ struct ContentView: View {
             case .onboarding:
                 OnboardingView(onFinished: {
                     isOnboardingComplete = true
+                    Task { await TipEvents.onboardingCompleted.donate() }
                     withAnimation(.easeInOut(duration: 0.3)) {
                         viewModel.appStage = .main
                     }

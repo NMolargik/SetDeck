@@ -11,7 +11,6 @@ import SwiftData
 @Model
 class ExerciseSet: Identifiable {
     var id: UUID = UUID()
-    var goalType: GoalType = GoalType.weight
     var repetitionsToDo: Int = 5
     var durationToDo: Int = 10
     var weightToLift: Int = 100
@@ -21,9 +20,11 @@ class ExerciseSet: Identifiable {
     @Relationship(inverse: \Exercise.exerciseSets)
     var exercise: Exercise?
 
-    init(goalType: GoalType = .weight, repetitionsToDo: Int = 5, durationToDo: Int = 10, weightToLift: Int = 100, timestamp: Date = .now) {
+    // goalType removed - was causing deserialization crashes with legacy data
+    // Migration now infers type from other properties
+
+    init(repetitionsToDo: Int = 5, durationToDo: Int = 10, weightToLift: Int = 100, timestamp: Date = .now) {
         self.id = UUID()
-        self.goalType = goalType
         self.repetitionsToDo = repetitionsToDo
         self.durationToDo = durationToDo
         self.weightToLift = weightToLift

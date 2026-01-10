@@ -15,8 +15,7 @@ struct ExercisePRCardView: View {
     @AppStorage(AppStorageKeys.useDayMonthYearDates) private var useDayMonthYearDates = false
 
     private func displayWeight(_ lbs: Double) -> String {
-        let value = useMetricUnits ? lbs * 0.45359237 : lbs
-        return String(Int(value.rounded()))
+        String(Int(lbs.weight(useMetric: useMetricUnits).rounded()))
     }
     private var unitLabel: String { useMetricUnits ? "kg" : "lb" }
     private func formatDate(_ date: Date) -> String {
