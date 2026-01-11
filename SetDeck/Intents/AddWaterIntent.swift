@@ -11,7 +11,7 @@ import WidgetKit
 /// App Intent to add water intake from widgets and Shortcuts
 struct AddWaterIntent: AppIntent {
     static var title: LocalizedStringResource = "Add Water"
-    static var description = IntentDescription("Log water intake to Apple Health")
+    static var description = IntentDescription("Log water intake to Health")
 
     @Parameter(title: "Amount (ml)", default: 250)
     var amountML: Int

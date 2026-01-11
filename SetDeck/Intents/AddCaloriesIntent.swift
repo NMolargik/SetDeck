@@ -11,7 +11,7 @@ import WidgetKit
 /// App Intent to add calorie intake from widgets and Shortcuts
 struct AddCaloriesIntent: AppIntent {
     static var title: LocalizedStringResource = "Add Calories"
-    static var description = IntentDescription("Log calorie intake to Apple Health")
+    static var description = IntentDescription("Log calorie intake to Health")
 
     @Parameter(title: "Amount (kcal)", default: 100)
     var amountKcal: Int
