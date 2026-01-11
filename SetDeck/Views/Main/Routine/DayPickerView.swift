@@ -50,6 +50,7 @@ struct DayPickerView: View {
                         .accessibilityAddTraits(isSelected ? .isSelected : [])
                 }
                 .buttonStyle(.plain)
+                .hoverEffectIfAvailable(.highlight)
             }
         }
         .onAppear {

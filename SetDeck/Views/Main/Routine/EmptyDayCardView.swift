@@ -21,6 +21,7 @@ struct EmptyDayCardView: View {
                 Image(systemName: "square.stack.3d.up.slash")
                     .imageScale(.large)
                     .foregroundStyle(.secondary)
+                    .accessibilityHidden(true)
                 Text("No routine for today.\nEdit your routines or enjoy your day off!")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
@@ -29,6 +30,8 @@ struct EmptyDayCardView: View {
             .padding(20)
         }
         .padding(6)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("No routine for today. Edit your routines or enjoy your day off.")
     }
 }
 

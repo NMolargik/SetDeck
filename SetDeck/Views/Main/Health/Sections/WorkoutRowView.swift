@@ -74,7 +74,9 @@ struct WorkoutRowView: View {
             }
         )
         .contentShape(RoundedRectangle(cornerRadius: 12))
-        .hoverEffect(.highlight)
+        .hoverEffectIfAvailable(.highlight)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(title), \(subtitle), duration \(durationString)")
     }
 }
 #Preview {

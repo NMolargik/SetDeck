@@ -38,6 +38,8 @@ struct SummaryCardView: View {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(.thinMaterial)
         )
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(title): \(value)")
     }
 }
 

@@ -52,6 +52,9 @@ struct VolumeTrendCardView: View {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(.thinMaterial)
         )
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Training volume chart showing \(points.count) data points")
+        .accessibilityHint("Bar chart displaying workout volume over time")
     }
 }
 

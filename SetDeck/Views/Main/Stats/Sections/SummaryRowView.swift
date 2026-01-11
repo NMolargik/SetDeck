@@ -26,6 +26,8 @@ struct SummaryRowView: View {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(.thinMaterial)
         )
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Workout summary: Volume \(formattedVolume), \(totalSets) sets, \(activeDays) active days, best streak \(bestStreak) days")
     }
     
     private var formattedVolume: String {

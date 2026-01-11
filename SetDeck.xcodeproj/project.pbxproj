@@ -10,6 +10,10 @@
 		EB80BD782EDF31B6005FD199 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB1388282EBE625F001011D3 /* WidgetKit.framework */; };
 		EB80BD792EDF31B6005FD199 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB13882A2EBE625F001011D3 /* SwiftUI.framework */; };
 		EB80BD842EDF31B7005FD199 /* SetDeckWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = EB80BD772EDF31B6005FD199 /* SetDeckWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		EBD95F412F11EE7E00F5149E /* SetDeck Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = EBD95F212F11EE7D00F5149E /* SetDeck Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		EBD95F892F13408300F5149E /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB1388282EBE625F001011D3 /* WidgetKit.framework */; };
+		EBD95F8A2F13408300F5149E /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB13882A2EBE625F001011D3 /* SwiftUI.framework */; };
+		EBD95F952F13408400F5149E /* SetDeck Watch WidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = EBD95F882F13408300F5149E /* SetDeck Watch WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +38,34 @@
 			remoteGlobalIDString = EB80BD762EDF31B6005FD199;
 			remoteInfo = SetDeckWidgetExtension;
 		};
+		EBD95F2E2F11EE7E00F5149E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EB1385962EBE5678001011D3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EBD95F202F11EE7D00F5149E;
+			remoteInfo = "SetDeck Watch App";
+		};
+		EBD95F382F11EE7E00F5149E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EB1385962EBE5678001011D3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EBD95F202F11EE7D00F5149E;
+			remoteInfo = "SetDeck Watch App";
+		};
+		EBD95F3F2F11EE7E00F5149E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EB1385962EBE5678001011D3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EBD95F202F11EE7D00F5149E;
+			remoteInfo = "SetDeck Watch App";
+		};
+		EBD95F932F13408400F5149E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EB1385962EBE5678001011D3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EBD95F872F13408300F5149E;
+			remoteInfo = "SetDeck Watch WidgetExtension";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -43,6 +75,7 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
+				EBD95F412F11EE7E00F5149E /* SetDeck Watch App.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -58,6 +91,17 @@
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EBD95F832F13405E00F5149E /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				EBD95F952F13408400F5149E /* SetDeck Watch WidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +112,11 @@
 		EB13882A2EBE625F001011D3 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = /System/Library/Frameworks/SwiftUI.framework; sourceTree = "<absolute>"; };
 		EB80BD772EDF31B6005FD199 /* SetDeckWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SetDeckWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBA524C72EDF6F8E00810342 /* SetDeckWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SetDeckWidgetExtension.entitlements; sourceTree = "<group>"; };
+		EBD95F212F11EE7D00F5149E /* SetDeck Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SetDeck Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EBD95F2D2F11EE7E00F5149E /* SetDeck Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SetDeck Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EBD95F372F11EE7E00F5149E /* SetDeck Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SetDeck Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EBD95F882F13408300F5149E /* SetDeck Watch WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "SetDeck Watch WidgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EBD95FA12F1340DB00F5149E /* SetDeck Watch WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "SetDeck Watch WidgetExtension.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -102,6 +151,13 @@
 			);
 			target = EB80BD762EDF31B6005FD199 /* SetDeckWidgetExtension */;
 		};
+		EBD95F992F13408400F5149E /* Exceptions for "SetDeck Watch Widget" folder in "SetDeck Watch WidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = EBD95F872F13408300F5149E /* SetDeck Watch WidgetExtension */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -130,6 +186,29 @@
 				EB80BD882EDF31B7005FD199 /* Exceptions for "SetDeckWidget" folder in "SetDeckWidgetExtension" target */,
 			);
 			path = SetDeckWidget;
+			sourceTree = "<group>";
+		};
+		EBD95F222F11EE7D00F5149E /* SetDeck Watch App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "SetDeck Watch App";
+			sourceTree = "<group>";
+		};
+		EBD95F302F11EE7E00F5149E /* SetDeck Watch AppTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "SetDeck Watch AppTests";
+			sourceTree = "<group>";
+		};
+		EBD95F3A2F11EE7E00F5149E /* SetDeck Watch AppUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "SetDeck Watch AppUITests";
+			sourceTree = "<group>";
+		};
+		EBD95F8B2F13408300F5149E /* SetDeck Watch Widget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				EBD95F992F13408400F5149E /* Exceptions for "SetDeck Watch Widget" folder in "SetDeck Watch WidgetExtension" target */,
+			);
+			path = "SetDeck Watch Widget";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -165,17 +244,52 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EBD95F1E2F11EE7D00F5149E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EBD95F2A2F11EE7E00F5149E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EBD95F342F11EE7E00F5149E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EBD95F852F13408300F5149E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EBD95F8A2F13408300F5149E /* SwiftUI.framework in Frameworks */,
+				EBD95F892F13408300F5149E /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		EB1385952EBE5678001011D3 = {
 			isa = PBXGroup;
 			children = (
+				EBD95FA12F1340DB00F5149E /* SetDeck Watch WidgetExtension.entitlements */,
 				EBA524C72EDF6F8E00810342 /* SetDeckWidgetExtension.entitlements */,
 				EB1385A02EBE5678001011D3 /* SetDeck */,
 				EB1385B22EBE567A001011D3 /* SetDeckTests */,
 				EB1385BC2EBE567A001011D3 /* SetDeckUITests */,
 				EB80BD7A2EDF31B6005FD199 /* SetDeckWidget */,
+				EBD95F222F11EE7D00F5149E /* SetDeck Watch App */,
+				EBD95F302F11EE7E00F5149E /* SetDeck Watch AppTests */,
+				EBD95F3A2F11EE7E00F5149E /* SetDeck Watch AppUITests */,
+				EBD95F8B2F13408300F5149E /* SetDeck Watch Widget */,
 				EB1388272EBE625F001011D3 /* Frameworks */,
 				EB13859F2EBE5678001011D3 /* Products */,
 			);
@@ -188,6 +302,10 @@
 				EB1385AF2EBE567A001011D3 /* SetDeckTests.xctest */,
 				EB1385B92EBE567A001011D3 /* SetDeckUITests.xctest */,
 				EB80BD772EDF31B6005FD199 /* SetDeckWidgetExtension.appex */,
+				EBD95F212F11EE7D00F5149E /* SetDeck Watch App.app */,
+				EBD95F2D2F11EE7E00F5149E /* SetDeck Watch AppTests.xctest */,
+				EBD95F372F11EE7E00F5149E /* SetDeck Watch AppUITests.xctest */,
+				EBD95F882F13408300F5149E /* SetDeck Watch WidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -218,6 +336,7 @@
 			);
 			dependencies = (
 				EB80BD832EDF31B7005FD199 /* PBXTargetDependency */,
+				EBD95F402F11EE7E00F5149E /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				EB1385A02EBE5678001011D3 /* SetDeck */,
@@ -297,6 +416,98 @@
 			productReference = EB80BD772EDF31B6005FD199 /* SetDeckWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		EBD95F202F11EE7D00F5149E /* SetDeck Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EBD95F422F11EE7E00F5149E /* Build configuration list for PBXNativeTarget "SetDeck Watch App" */;
+			buildPhases = (
+				EBD95F1D2F11EE7D00F5149E /* Sources */,
+				EBD95F1E2F11EE7D00F5149E /* Frameworks */,
+				EBD95F1F2F11EE7D00F5149E /* Resources */,
+				EBD95F832F13405E00F5149E /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EBD95F942F13408400F5149E /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				EBD95F222F11EE7D00F5149E /* SetDeck Watch App */,
+			);
+			name = "SetDeck Watch App";
+			packageProductDependencies = (
+			);
+			productName = "SetDeck Watch App";
+			productReference = EBD95F212F11EE7D00F5149E /* SetDeck Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
+		EBD95F2C2F11EE7E00F5149E /* SetDeck Watch AppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EBD95F452F11EE7E00F5149E /* Build configuration list for PBXNativeTarget "SetDeck Watch AppTests" */;
+			buildPhases = (
+				EBD95F292F11EE7E00F5149E /* Sources */,
+				EBD95F2A2F11EE7E00F5149E /* Frameworks */,
+				EBD95F2B2F11EE7E00F5149E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EBD95F2F2F11EE7E00F5149E /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				EBD95F302F11EE7E00F5149E /* SetDeck Watch AppTests */,
+			);
+			name = "SetDeck Watch AppTests";
+			packageProductDependencies = (
+			);
+			productName = "SetDeck Watch AppTests";
+			productReference = EBD95F2D2F11EE7E00F5149E /* SetDeck Watch AppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		EBD95F362F11EE7E00F5149E /* SetDeck Watch AppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EBD95F482F11EE7E00F5149E /* Build configuration list for PBXNativeTarget "SetDeck Watch AppUITests" */;
+			buildPhases = (
+				EBD95F332F11EE7E00F5149E /* Sources */,
+				EBD95F342F11EE7E00F5149E /* Frameworks */,
+				EBD95F352F11EE7E00F5149E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EBD95F392F11EE7E00F5149E /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				EBD95F3A2F11EE7E00F5149E /* SetDeck Watch AppUITests */,
+			);
+			name = "SetDeck Watch AppUITests";
+			packageProductDependencies = (
+			);
+			productName = "SetDeck Watch AppUITests";
+			productReference = EBD95F372F11EE7E00F5149E /* SetDeck Watch AppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		EBD95F872F13408300F5149E /* SetDeck Watch WidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EBD95F962F13408400F5149E /* Build configuration list for PBXNativeTarget "SetDeck Watch WidgetExtension" */;
+			buildPhases = (
+				EBD95F842F13408300F5149E /* Sources */,
+				EBD95F852F13408300F5149E /* Frameworks */,
+				EBD95F862F13408300F5149E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				EBD95F8B2F13408300F5149E /* SetDeck Watch Widget */,
+			);
+			name = "SetDeck Watch WidgetExtension";
+			packageProductDependencies = (
+			);
+			productName = "SetDeck Watch WidgetExtension";
+			productReference = EBD95F882F13408300F5149E /* SetDeck Watch WidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -321,6 +532,20 @@
 					EB80BD762EDF31B6005FD199 = {
 						CreatedOnToolsVersion = 26.2;
 					};
+					EBD95F202F11EE7D00F5149E = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					EBD95F2C2F11EE7E00F5149E = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = EBD95F202F11EE7D00F5149E;
+					};
+					EBD95F362F11EE7E00F5149E = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = EBD95F202F11EE7D00F5149E;
+					};
+					EBD95F872F13408300F5149E = {
+						CreatedOnToolsVersion = 26.2;
+					};
 				};
 			};
 			buildConfigurationList = EB1385992EBE5678001011D3 /* Build configuration list for PBXProject "SetDeck" */;
@@ -343,6 +568,10 @@
 				EB1385AE2EBE567A001011D3 /* SetDeckTests */,
 				EB1385B82EBE567A001011D3 /* SetDeckUITests */,
 				EB80BD762EDF31B6005FD199 /* SetDeckWidgetExtension */,
+				EBD95F202F11EE7D00F5149E /* SetDeck Watch App */,
+				EBD95F2C2F11EE7E00F5149E /* SetDeck Watch AppTests */,
+				EBD95F362F11EE7E00F5149E /* SetDeck Watch AppUITests */,
+				EBD95F872F13408300F5149E /* SetDeck Watch WidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -370,6 +599,34 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		EB80BD752EDF31B6005FD199 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EBD95F1F2F11EE7D00F5149E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EBD95F2B2F11EE7E00F5149E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EBD95F352F11EE7E00F5149E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EBD95F862F13408300F5149E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -407,6 +664,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EBD95F1D2F11EE7D00F5149E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EBD95F292F11EE7E00F5149E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EBD95F332F11EE7E00F5149E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EBD95F842F13408300F5149E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -424,6 +709,26 @@
 			isa = PBXTargetDependency;
 			target = EB80BD762EDF31B6005FD199 /* SetDeckWidgetExtension */;
 			targetProxy = EB80BD822EDF31B7005FD199 /* PBXContainerItemProxy */;
+		};
+		EBD95F2F2F11EE7E00F5149E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EBD95F202F11EE7D00F5149E /* SetDeck Watch App */;
+			targetProxy = EBD95F2E2F11EE7E00F5149E /* PBXContainerItemProxy */;
+		};
+		EBD95F392F11EE7E00F5149E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EBD95F202F11EE7D00F5149E /* SetDeck Watch App */;
+			targetProxy = EBD95F382F11EE7E00F5149E /* PBXContainerItemProxy */;
+		};
+		EBD95F402F11EE7E00F5149E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EBD95F202F11EE7D00F5149E /* SetDeck Watch App */;
+			targetProxy = EBD95F3F2F11EE7E00F5149E /* PBXContainerItemProxy */;
+		};
+		EBD95F942F13408400F5149E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EBD95F872F13408300F5149E /* SetDeck Watch WidgetExtension */;
+			targetProxy = EBD95F932F13408400F5149E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -462,7 +767,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -506,7 +811,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -813,6 +1118,238 @@
 			};
 			name = Release;
 		};
+		EBD95F432F11EE7E00F5149E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "SetDeck Watch App/SetDeck Watch App.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R8Q8DM58C6;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "SetDeck Watch";
+				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "SetDeck requires access to Health Share to track and display ongoing workouts. ";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "SetDeck requires access to the listed health metrics to serve trends and tools to you. Without all of these, the app will not work.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "SetDeck can write to your workout data to store water and caloric intake.";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = nickmolargik.ReadySet;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = nickmolargik.ReadySet.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Debug;
+		};
+		EBD95F442F11EE7E00F5149E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "SetDeck Watch App/SetDeck Watch App.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R8Q8DM58C6;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "SetDeck Watch";
+				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "SetDeck requires access to Health Share to track and display ongoing workouts. ";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "SetDeck requires access to the listed health metrics to serve trends and tools to you. Without all of these, the app will not work.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "SetDeck can write to your workout data to store water and caloric intake.";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = nickmolargik.ReadySet;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = nickmolargik.ReadySet.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Release;
+		};
+		EBD95F462F11EE7E00F5149E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R8Q8DM58C6;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.molargiksoftware.SetDeck-Watch-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SetDeck Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SetDeck Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Debug;
+		};
+		EBD95F472F11EE7E00F5149E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R8Q8DM58C6;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.molargiksoftware.SetDeck-Watch-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SetDeck Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SetDeck Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Release;
+		};
+		EBD95F492F11EE7E00F5149E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R8Q8DM58C6;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.molargiksoftware.SetDeck-Watch-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "SetDeck Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Debug;
+		};
+		EBD95F4A2F11EE7E00F5149E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R8Q8DM58C6;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.molargiksoftware.SetDeck-Watch-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "SetDeck Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Release;
+		};
+		EBD95F972F13408400F5149E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = "SetDeck Watch WidgetExtension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R8Q8DM58C6;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SetDeck Watch Widget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "SetDeck Watch Widget";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "nickmolargik.ReadySet.watchkitapp.SetDeck-Watch-Widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Debug;
+		};
+		EBD95F982F13408400F5149E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = "SetDeck Watch WidgetExtension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R8Q8DM58C6;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SetDeck Watch Widget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "SetDeck Watch Widget";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "nickmolargik.ReadySet.watchkitapp.SetDeck-Watch-Widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -857,6 +1394,42 @@
 			buildConfigurations = (
 				EB80BD852EDF31B7005FD199 /* Debug */,
 				EB80BD862EDF31B7005FD199 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EBD95F422F11EE7E00F5149E /* Build configuration list for PBXNativeTarget "SetDeck Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EBD95F432F11EE7E00F5149E /* Debug */,
+				EBD95F442F11EE7E00F5149E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EBD95F452F11EE7E00F5149E /* Build configuration list for PBXNativeTarget "SetDeck Watch AppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EBD95F462F11EE7E00F5149E /* Debug */,
+				EBD95F472F11EE7E00F5149E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EBD95F482F11EE7E00F5149E /* Build configuration list for PBXNativeTarget "SetDeck Watch AppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EBD95F492F11EE7E00F5149E /* Debug */,
+				EBD95F4A2F11EE7E00F5149E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EBD95F962F13408400F5149E /* Build configuration list for PBXNativeTarget "SetDeck Watch WidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EBD95F972F13408400F5149E /* Debug */,
+				EBD95F982F13408400F5149E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

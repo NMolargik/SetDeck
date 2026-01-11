@@ -122,7 +122,6 @@ struct MainView: View {
                             Image(systemName: "gearshape.fill")
                         }
                         .accessibilityLabel("Settings")
-                        .tint(.orangeStart)
                     }
                 }
                 .navigationDestination(for: Exercise.self) { deliveryId in

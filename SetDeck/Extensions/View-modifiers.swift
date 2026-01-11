@@ -69,3 +69,31 @@ extension View {
         if condition { transform(self) } else { self }
     }
 }
+
+// MARK: - Cross-Platform Hover Effect
+
+/// Platform-agnostic hover effect style that maps to HoverEffect on iOS/visionOS
+enum HoverEffectStyle {
+    case automatic
+    case highlight
+    case lift
+}
+
+extension View {
+    /// Applies hoverEffect on platforms that support it (iOS, visionOS), no-op elsewhere
+    @ViewBuilder
+    func hoverEffectIfAvailable(_ style: HoverEffectStyle = .automatic) -> some View {
+        #if os(iOS) || os(visionOS)
+        switch style {
+        case .automatic:
+            self.hoverEffect(.automatic)
+        case .highlight:
+            self.hoverEffect(.highlight)
+        case .lift:
+            self.hoverEffect(.lift)
+        }
+        #else
+        self
+        #endif
+    }
+}

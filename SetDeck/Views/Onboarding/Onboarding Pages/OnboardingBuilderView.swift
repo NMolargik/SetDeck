@@ -11,9 +11,7 @@ import SwiftData
 struct OnboardingBuilderView: View {
     @Bindable var viewModel: OnboardingView.ViewModel
     @Environment(ExerciseManager.self) var exerciseManager: ExerciseManager
-    
-    var onContinue: () -> Void
-    
+
     var body: some View {
         VStack(spacing: 5) {
             Spacer(minLength: 12)
@@ -23,26 +21,17 @@ struct OnboardingBuilderView: View {
                     .font(.largeTitle).bold()
                     .foregroundStyle(.white)
                     .shadow(radius: 5, x: 1, y: -1)
+
+                Text("Add at least one exercise to continue")
+                    .font(.subheadline)
+                    .foregroundStyle(.white.opacity(0.7))
             }
-            
+
             EditRoutineView()
                 .padding(.horizontal)
                 .environment(exerciseManager)
 
             Spacer(minLength: 12)
-
-            Button(action: {
-                onContinue()
-            }) {
-                Text("Continue")
-                    .font(.title3).bold()
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .foregroundStyle(.white)
-            }
-            .adaptiveGlass(tint: .purpleStart)
-            .shadow(radius: 6, y: 3)
-            .padding(.horizontal)
         }
     }
 }
@@ -66,8 +55,7 @@ struct OnboardingBuilderView: View {
     }
 
     return OnboardingBuilderView(
-        viewModel: OnboardingView.ViewModel(),
-        onContinue: {}
+        viewModel: OnboardingView.ViewModel()
     )
     .environment(exerciseManager)
     .preferredColorScheme(.dark)

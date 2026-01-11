@@ -72,6 +72,9 @@ struct EditRoutineView: View {
                                 .contentShape(Capsule())
                             }
                             .buttonStyle(.plain)
+                            .hoverEffectIfAvailable(.highlight)
+                            .accessibilityLabel("Add exercise")
+                            .accessibilityHint("Creates a new exercise for this day's routine")
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .popoverTip(addExerciseTip, arrowEdge: .top)
                         }
@@ -163,6 +166,9 @@ struct EditRoutineView: View {
                             .contentShape(Capsule())
                         }
                         .buttonStyle(.plain)
+                        .hoverEffectIfAvailable(.highlight)
+                        .accessibilityLabel("Add exercise")
+                        .accessibilityHint("Creates a new exercise for this day's routine")
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal, 16)
                         .padding(.vertical, 8)
@@ -226,6 +232,9 @@ struct EditRoutineView: View {
             .contentShape(Capsule())
         }
         .buttonStyle(.plain)
+        .hoverEffectIfAvailable(.highlight)
+        .accessibilityLabel("Add set to \(exercise.name)")
+        .accessibilityHint("Creates a new set for this exercise")
         .frame(maxWidth: .infinity, alignment: .trailing)
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
@@ -263,6 +272,9 @@ struct EditRoutineView: View {
                     .stroke(Color.primary.opacity(0.2), lineWidth: 1)
             )
             .focused($focusedExerciseID, equals: exercise.uuid)
+            .accessibilityLabel("Exercise name")
+            .accessibilityValue(exercise.name)
+            .accessibilityHint("Double tap to edit the exercise name")
 
             // When focused, show a checkmark button to clear focus
             if focusedExerciseID == exercise.uuid {
@@ -274,6 +286,9 @@ struct EditRoutineView: View {
                         .font(.title3)
                 }
                 .buttonStyle(.plain)
+                .hoverEffectIfAvailable(.highlight)
+                .accessibilityLabel("Done editing")
+                .accessibilityHint("Confirms the exercise name change")
             }
 
             Spacer()
@@ -283,6 +298,7 @@ struct EditRoutineView: View {
                     Text("Warmup?")
                         .font(.caption)
                         .foregroundStyle(.primary)
+                        .accessibilityHidden(true)
 
                     Toggle("", isOn: Binding(
                         get: { exercise.isWarmup },
@@ -292,6 +308,9 @@ struct EditRoutineView: View {
                     ))
                     .labelsHidden()
                     .toggleStyle(SwitchToggleStyle(tint: .orangeStart))
+                    .accessibilityLabel("Warmup exercise")
+                    .accessibilityValue(exercise.isWarmup ? "On" : "Off")
+                    .accessibilityHint("Mark this exercise as a warmup")
                 }
 
                 Button {
@@ -309,6 +328,9 @@ struct EditRoutineView: View {
                         .foregroundStyle(.red)
                 }
                 .buttonStyle(.plain)
+                .hoverEffectIfAvailable(.highlight)
+                .accessibilityLabel("Delete \(exercise.name)")
+                .accessibilityHint("Removes this exercise and all its sets")
             }
         }
         .padding(.horizontal, 16)

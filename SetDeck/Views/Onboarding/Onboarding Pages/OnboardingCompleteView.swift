@@ -94,12 +94,16 @@ struct OnboardingCompleteView: View {
                 .padding(.vertical, 14)
             }
             .adaptiveGlass(tint: .purpleStart)
+            .hoverEffectIfAvailable(.highlight)
+            .accessibilityLabel("Enter SetDeck")
+            .accessibilityHint("Completes setup and opens the main app")
             .shadow(radius: 6, y: 3)
             .padding(.horizontal)
             .opacity(showButton ? 1 : 0)
             .offset(y: showButton ? 0 : 12)
             .animation(.spring(response: 1.2, dampingFraction: 0.85), value: showButton)
         }
+        .accessibilityElement(children: .contain)
         .task {
             for i in 0..<shownRows.count {
                 try? await Task.sleep(nanoseconds: 600_000_000)

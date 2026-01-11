@@ -72,11 +72,14 @@ struct RoutineDayDeckView: View {
                     .contentShape(Capsule())
                 }
                 .buttonStyle(.plain)
+                .hoverEffectIfAvailable(.highlight)
+                .accessibilityLabel("Go to first exercise")
+                .accessibilityHint("Returns to the first exercise in the routine")
                 .padding(.horizontal, 8)
                 .tint(.secondary)
                 .foregroundStyle(.secondary)
                 .opacity(pageSelection > 0 ? 1 : 0.4)
-                
+
                 Button(action: {
                     withAnimation(.easeInOut) {
                         if pageSelection > 0 { pageSelection -= 1 }
@@ -100,11 +103,14 @@ struct RoutineDayDeckView: View {
                     .contentShape(Capsule())
                 }
                 .buttonStyle(.plain)
+                .hoverEffectIfAvailable(.highlight)
+                .accessibilityLabel("Previous exercise")
+                .accessibilityHint("Shows the previous exercise in the routine")
                 .padding(.horizontal, 8)
                 .tint(.secondary)
                 .foregroundStyle(.secondary)
                 .opacity(pageSelection > 0 ? 1 : 0.4)
-                
+
                 // Progress label after left chevron
                 let total = exercises.count
                 let current = min(max(pageSelection + 1, 0), max(total, 1))
@@ -114,6 +120,7 @@ struct RoutineDayDeckView: View {
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
                         .padding(.horizontal, 8)
+                        .accessibilityLabel("Exercise \(current) of \(total)")
                 }
 
                 Spacer(minLength: 0)
@@ -146,6 +153,9 @@ struct RoutineDayDeckView: View {
                     .contentShape(Capsule())
                 }
                 .buttonStyle(.plain)
+                .hoverEffectIfAvailable(.highlight)
+                .accessibilityLabel("Next exercise")
+                .accessibilityHint("Shows the next exercise in the routine")
                 .tint(.secondary)
                 .foregroundStyle(.secondary)
                 .opacity(pageSelection < (exercises.count - 1) ? 1 : 0.4)
@@ -153,6 +163,8 @@ struct RoutineDayDeckView: View {
                 .padding(.horizontal, 8)
             }
             .padding(.vertical, 10)
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel("Exercise navigation")
         }
     }
 }

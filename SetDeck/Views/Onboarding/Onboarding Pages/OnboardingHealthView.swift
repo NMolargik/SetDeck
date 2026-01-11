@@ -51,9 +51,13 @@ struct OnboardingHealthView: View {
                 .foregroundStyle(.white)
             }
             .adaptiveGlass(tint: .purpleStart)
+            .hoverEffectIfAvailable(.highlight)
+            .accessibilityLabel("Continue to Apple Health authorization")
+            .accessibilityHint("Opens the Apple Health permission dialog")
             .shadow(radius: 6, y: 3)
             .padding(.horizontal)
         }
+        .accessibilityElement(children: .contain)
     }
 }
 

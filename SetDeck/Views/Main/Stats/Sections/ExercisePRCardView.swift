@@ -54,6 +54,8 @@ struct ExercisePRCardView: View {
                                 .foregroundStyle(.purpleStart)
                         }
                         .padding(.vertical, 2)
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel("\(pr.exerciseName), best weight \(displayWeight(pr.bestWeight)) \(unitLabel), estimated one rep max \(displayWeight(pr.best1RM)) \(unitLabel), achieved on \(formatDate(pr.bestDate))")
                     }
                 }
             }
@@ -64,6 +66,8 @@ struct ExercisePRCardView: View {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(.thinMaterial)
         )
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Personal Records section, \(prs.count) exercises")
     }
 }
 

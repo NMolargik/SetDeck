@@ -142,6 +142,8 @@ struct EditSetRowView: View {
                 }
                 .pickerStyle(.segmented)
                 .labelsHidden()
+                .accessibilityLabel("Set type")
+                .accessibilityHint("Choose between reps, as many as possible, timed, or freeform sets")
 
                 Spacer()
 
@@ -158,6 +160,9 @@ struct EditSetRowView: View {
                             .foregroundStyle(.red)
                     }
                     .buttonStyle(.plain)
+                    .hoverEffectIfAvailable(.highlight)
+                    .accessibilityLabel("Delete set")
+                    .accessibilityHint("Removes this set from the exercise")
                 }
             }
             .padding(.vertical, 8)
@@ -171,7 +176,7 @@ struct EditSetRowView: View {
                             Text(set.setType == .amap ? "Reps Attempted" : "Reps")
                                 .font(.body)
                                 .foregroundStyle(.primary)
-                            StepperControl(value: repsNonOptionalBinding, step: 1, display: "\(repsNonOptionalBinding.wrappedValue)")
+                            StepperControl(value: repsNonOptionalBinding, step: 1, display: "\(repsNonOptionalBinding.wrappedValue)", label: "Reps")
                         }
                         HStack {
                             Spacer()
@@ -181,7 +186,9 @@ struct EditSetRowView: View {
                             StepperControlDouble(
                                 value: weightNonOptionalBinding,
                                 step: useMetricUnits ? 2.5 : 5.0,
-                                display: trimTrailingZeros(weightNonOptionalBinding.wrappedValue)
+                                display: trimTrailingZeros(weightNonOptionalBinding.wrappedValue),
+                                label: "Weight",
+                                unit: useMetricUnits ? "kilograms" : "pounds"
                             )
                         }
                         HStack {
@@ -196,17 +203,28 @@ struct EditSetRowView: View {
                                 .font(.title)
                                 .foregroundStyle(.primary)
                                 .buttonStyle(.plain)
+                                .hoverEffectIfAvailable(.highlight)
+                                .accessibilityLabel("Decrease RPE")
+
                                 Text("\(rpeNonOptionalBinding.wrappedValue)")
                                     .font(.title3.monospacedDigit())
                                     .foregroundStyle(.primary)
                                     .frame(minWidth: 36)
+                                    .accessibilityHidden(true)
+
                                 Button(action: { rpeNonOptionalBinding.wrappedValue = min(10, rpeNonOptionalBinding.wrappedValue + 1) }) {
                                     Image(systemName: "plus.circle.fill")
                                 }
                                 .font(.title)
                                 .foregroundStyle(.primary)
                                 .buttonStyle(.plain)
+                                .hoverEffectIfAvailable(.highlight)
+                                .accessibilityLabel("Increase RPE")
                             }
+                            .accessibilityElement(children: .contain)
+                            .accessibilityLabel("RPE, \(rpeNonOptionalBinding.wrappedValue)")
+                            .accessibilityValue("\(rpeNonOptionalBinding.wrappedValue)")
+                            .accessibilityHint("Rate of perceived exertion, 0 to 10")
                         }
                     }
                     VStack(alignment: .leading, spacing: 10) {
@@ -215,7 +233,7 @@ struct EditSetRowView: View {
                             Text(set.setType == .amap ? "Reps Attempted" : "Reps")
                                 .font(.body)
                                 .foregroundStyle(.primary)
-                            StepperControl(value: repsNonOptionalBinding, step: 1, display: "\(repsNonOptionalBinding.wrappedValue)")
+                            StepperControl(value: repsNonOptionalBinding, step: 1, display: "\(repsNonOptionalBinding.wrappedValue)", label: "Reps")
                         }
                         HStack {
                             Spacer()
@@ -225,7 +243,9 @@ struct EditSetRowView: View {
                             StepperControlDouble(
                                 value: weightNonOptionalBinding,
                                 step: useMetricUnits ? 2.5 : 5.0,
-                                display: trimTrailingZeros(weightNonOptionalBinding.wrappedValue)
+                                display: trimTrailingZeros(weightNonOptionalBinding.wrappedValue),
+                                label: "Weight",
+                                unit: useMetricUnits ? "kilograms" : "pounds"
                             )
                         }
                         HStack {
@@ -240,17 +260,28 @@ struct EditSetRowView: View {
                                 .font(.title)
                                 .foregroundStyle(.primary)
                                 .buttonStyle(.plain)
+                                .hoverEffectIfAvailable(.highlight)
+                                .accessibilityLabel("Decrease RPE")
+
                                 Text("\(rpeNonOptionalBinding.wrappedValue)")
                                     .font(.title3.monospacedDigit())
                                     .foregroundStyle(.primary)
                                     .frame(minWidth: 36)
+                                    .accessibilityHidden(true)
+
                                 Button(action: { rpeNonOptionalBinding.wrappedValue = min(10, rpeNonOptionalBinding.wrappedValue + 1) }) {
                                     Image(systemName: "plus.circle.fill")
                                 }
                                 .font(.title)
                                 .foregroundStyle(.primary)
                                 .buttonStyle(.plain)
+                                .hoverEffectIfAvailable(.highlight)
+                                .accessibilityLabel("Increase RPE")
                             }
+                            .accessibilityElement(children: .contain)
+                            .accessibilityLabel("RPE, \(rpeNonOptionalBinding.wrappedValue)")
+                            .accessibilityValue("\(rpeNonOptionalBinding.wrappedValue)")
+                            .accessibilityHint("Rate of perceived exertion, 0 to 10")
                         }
                     }
                 }
@@ -262,7 +293,7 @@ struct EditSetRowView: View {
                             Text("Duration (min)")
                                 .font(.body)
                                 .foregroundStyle(.primary)
-                            StepperControl(value: durationMinutesBinding, step: 1, display: "\(durationMinutesBinding.wrappedValue)")
+                            StepperControl(value: durationMinutesBinding, step: 1, display: "\(durationMinutesBinding.wrappedValue)", label: "Duration in minutes")
                         }
                         HStack {
                             Spacer()
@@ -276,17 +307,28 @@ struct EditSetRowView: View {
                                 .font(.title)
                                 .foregroundStyle(.primary)
                                 .buttonStyle(.plain)
+                                .hoverEffectIfAvailable(.highlight)
+                                .accessibilityLabel("Decrease RPE")
+
                                 Text("\(rpeNonOptionalBinding.wrappedValue)")
                                     .font(.title3.monospacedDigit())
                                     .foregroundStyle(.primary)
                                     .frame(minWidth: 36)
+                                    .accessibilityHidden(true)
+
                                 Button(action: { rpeNonOptionalBinding.wrappedValue = min(10, rpeNonOptionalBinding.wrappedValue + 1) }) {
                                     Image(systemName: "plus.circle.fill")
                                 }
                                 .font(.title)
                                 .foregroundStyle(.primary)
                                 .buttonStyle(.plain)
+                                .hoverEffectIfAvailable(.highlight)
+                                .accessibilityLabel("Increase RPE")
                             }
+                            .accessibilityElement(children: .contain)
+                            .accessibilityLabel("RPE, \(rpeNonOptionalBinding.wrappedValue)")
+                            .accessibilityValue("\(rpeNonOptionalBinding.wrappedValue)")
+                            .accessibilityHint("Rate of perceived exertion, 0 to 10")
                         }
                     }
                     VStack(alignment: .leading, spacing: 10) {
@@ -295,7 +337,7 @@ struct EditSetRowView: View {
                             Text("Duration (min)")
                                 .font(.body)
                                 .foregroundStyle(.primary)
-                            StepperControl(value: durationMinutesBinding, step: 1, display: "\(durationMinutesBinding.wrappedValue)")
+                            StepperControl(value: durationMinutesBinding, step: 1, display: "\(durationMinutesBinding.wrappedValue)", label: "Duration in minutes")
                         }
                         HStack {
                             Spacer()
@@ -309,17 +351,28 @@ struct EditSetRowView: View {
                                 .font(.title)
                                 .foregroundStyle(.primary)
                                 .buttonStyle(.plain)
+                                .hoverEffectIfAvailable(.highlight)
+                                .accessibilityLabel("Decrease RPE")
+
                                 Text("\(rpeNonOptionalBinding.wrappedValue)")
                                     .font(.title3.monospacedDigit())
                                     .foregroundStyle(.primary)
                                     .frame(minWidth: 36)
+                                    .accessibilityHidden(true)
+
                                 Button(action: { rpeNonOptionalBinding.wrappedValue = min(10, rpeNonOptionalBinding.wrappedValue + 1) }) {
                                     Image(systemName: "plus.circle.fill")
                                 }
                                 .font(.title)
                                 .foregroundStyle(.primary)
                                 .buttonStyle(.plain)
+                                .hoverEffectIfAvailable(.highlight)
+                                .accessibilityLabel("Increase RPE")
                             }
+                            .accessibilityElement(children: .contain)
+                            .accessibilityLabel("RPE, \(rpeNonOptionalBinding.wrappedValue)")
+                            .accessibilityValue("\(rpeNonOptionalBinding.wrappedValue)")
+                            .accessibilityHint("Rate of perceived exertion, 0 to 10")
                         }
                     }
                 }
@@ -338,17 +391,28 @@ struct EditSetRowView: View {
                                 .font(.title)
                                 .foregroundStyle(.primary)
                                 .buttonStyle(.plain)
+                                .hoverEffectIfAvailable(.highlight)
+                                .accessibilityLabel("Decrease RPE")
+
                                 Text("\(rpeNonOptionalBinding.wrappedValue)")
                                     .font(.title3.monospacedDigit())
                                     .foregroundStyle(.primary)
                                     .frame(minWidth: 36)
+                                    .accessibilityHidden(true)
+
                                 Button(action: { rpeNonOptionalBinding.wrappedValue = min(10, rpeNonOptionalBinding.wrappedValue + 1) }) {
                                     Image(systemName: "plus.circle.fill")
                                 }
                                 .font(.title)
                                 .foregroundStyle(.primary)
                                 .buttonStyle(.plain)
+                                .hoverEffectIfAvailable(.highlight)
+                                .accessibilityLabel("Increase RPE")
                             }
+                            .accessibilityElement(children: .contain)
+                            .accessibilityLabel("RPE, \(rpeNonOptionalBinding.wrappedValue)")
+                            .accessibilityValue("\(rpeNonOptionalBinding.wrappedValue)")
+                            .accessibilityHint("Rate of perceived exertion, 0 to 10")
                         }
                     }
                     VStack(alignment: .leading, spacing: 10) {
@@ -364,17 +428,28 @@ struct EditSetRowView: View {
                                 .font(.title)
                                 .foregroundStyle(.primary)
                                 .buttonStyle(.plain)
+                                .hoverEffectIfAvailable(.highlight)
+                                .accessibilityLabel("Decrease RPE")
+
                                 Text("\(rpeNonOptionalBinding.wrappedValue)")
                                     .font(.title3.monospacedDigit())
                                     .foregroundStyle(.primary)
                                     .frame(minWidth: 36)
+                                    .accessibilityHidden(true)
+
                                 Button(action: { rpeNonOptionalBinding.wrappedValue = min(10, rpeNonOptionalBinding.wrappedValue + 1) }) {
                                     Image(systemName: "plus.circle.fill")
                                 }
                                 .font(.title)
                                 .foregroundStyle(.primary)
                                 .buttonStyle(.plain)
+                                .hoverEffectIfAvailable(.highlight)
+                                .accessibilityLabel("Increase RPE")
                             }
+                            .accessibilityElement(children: .contain)
+                            .accessibilityLabel("RPE, \(rpeNonOptionalBinding.wrappedValue)")
+                            .accessibilityValue("\(rpeNonOptionalBinding.wrappedValue)")
+                            .accessibilityHint("Rate of perceived exertion, 0 to 10")
                         }
                     }
                 }
@@ -396,6 +471,8 @@ struct EditSetRowView: View {
         @Binding var value: Int
         let step: Int
         let display: String
+        var label: String = "Value"
+
         var body: some View {
             HStack(spacing: 6) {
                 Button(action: {
@@ -413,10 +490,16 @@ struct EditSetRowView: View {
                 .font(.title)
                 .foregroundStyle(.primary)
                 .buttonStyle(.plain)
+                .hoverEffectIfAvailable(.highlight)
+                .accessibilityLabel("Decrease \(label)")
+                .accessibilityHint("Decreases by \(step)")
+
                 Text(display)
                     .font(.title3.monospacedDigit())
                     .foregroundStyle(.primary)
                     .frame(minWidth: 36)
+                    .accessibilityHidden(true)
+
                 Button(action: {
                     let updated = max(0, value + step)
                     if updated != value {
@@ -432,6 +515,22 @@ struct EditSetRowView: View {
                 .font(.title)
                 .foregroundStyle(.primary)
                 .buttonStyle(.plain)
+                .hoverEffectIfAvailable(.highlight)
+                .accessibilityLabel("Increase \(label)")
+                .accessibilityHint("Increases by \(step)")
+            }
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel("\(label), \(display)")
+            .accessibilityValue(display)
+            .accessibilityAdjustableAction { direction in
+                switch direction {
+                case .increment:
+                    value = max(0, value + step)
+                case .decrement:
+                    value = max(0, value - step)
+                @unknown default:
+                    break
+                }
             }
         }
     }
@@ -440,6 +539,9 @@ struct EditSetRowView: View {
         @Binding var value: Double
         let step: Double
         let display: String
+        var label: String = "Value"
+        var unit: String = ""
+
         var body: some View {
             HStack(spacing: 6) {
                 Button(action: {
@@ -457,10 +559,16 @@ struct EditSetRowView: View {
                 .font(.title)
                 .foregroundStyle(.primary)
                 .buttonStyle(.plain)
+                .hoverEffectIfAvailable(.highlight)
+                .accessibilityLabel("Decrease \(label)")
+                .accessibilityHint("Decreases by \(String(format: "%.1f", step))\(unit.isEmpty ? "" : " \(unit)")")
+
                 Text(display)
                     .font(.title3.monospacedDigit())
                     .foregroundStyle(.primary)
                     .frame(minWidth: 36)
+                    .accessibilityHidden(true)
+
                 Button(action: {
                     let updated = max(0.0, value + step)
                     if updated != value {
@@ -476,6 +584,22 @@ struct EditSetRowView: View {
                 .font(.title)
                 .foregroundStyle(.primary)
                 .buttonStyle(.plain)
+                .hoverEffectIfAvailable(.highlight)
+                .accessibilityLabel("Increase \(label)")
+                .accessibilityHint("Increases by \(String(format: "%.1f", step))\(unit.isEmpty ? "" : " \(unit)")")
+            }
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel("\(label), \(display)\(unit.isEmpty ? "" : " \(unit)")")
+            .accessibilityValue("\(display)\(unit.isEmpty ? "" : " \(unit)")")
+            .accessibilityAdjustableAction { direction in
+                switch direction {
+                case .increment:
+                    value = max(0.0, value + step)
+                case .decrement:
+                    value = max(0.0, value - step)
+                @unknown default:
+                    break
+                }
             }
         }
     }

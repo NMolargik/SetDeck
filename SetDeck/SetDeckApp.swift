@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 import TipKit
+import WatchConnectivity
 
 @main
 struct SetDeckApp: App {
@@ -15,10 +16,10 @@ struct SetDeckApp: App {
 
     @AppStorage(AppStorageKeys.useDayMonthYearDates) private var useDayMonthYearDates: Bool = false
     @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits: Bool = false
-    
+
     private let sharedModelContainer: ModelContainer
     private let exerciseManager: ExerciseManager
-    
+
     init() {
         let cloudKitContainerID = "iCloud.com.molargiksoftware.SetDeck"
 
@@ -43,6 +44,15 @@ struct SetDeckApp: App {
         exerciseManager = ExerciseManager(context: sharedModelContainer.mainContext)
 
         try? Tips.configure([.displayFrequency(.immediate)])
+
+        // Setup Watch connectivity
+        setupWatchConnectivity()
+    }
+
+    private func setupWatchConnectivity() {
+        let connectivityManager = PhoneConnectivityManager.shared
+        connectivityManager.exerciseManager = exerciseManager
+        connectivityManager.activate()
     }
 
     var body: some Scene {
@@ -53,10 +63,15 @@ struct SetDeckApp: App {
             .modelContainer(sharedModelContainer)
             .environment(exerciseManager)
             .preferredColorScheme(.dark)
-                
+            .onChange(of: scenePhase) { _, newPhase in
+                if newPhase == .active {
+                    // Send updated routine to Watch when app becomes active
+                    PhoneConnectivityManager.shared.sendTodayRoutineToWatch()
+                }
+            }
         }
     }
-    
+
     private func resetApplication() {
         useMetricUnits = false
         useDayMonthYearDates = false

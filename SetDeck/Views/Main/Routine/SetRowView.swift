@@ -84,6 +84,7 @@ struct SetRowView: View {
                                         .fixedSize(horizontal: true, vertical: false)
                                         .padding(.vertical, 6)
                                         .padding(.horizontal, 8)
+                                        .hoverEffectIfAvailable(.highlight)
                                     Button {
                                         saveEdits()
                                     } label: {
@@ -97,6 +98,7 @@ struct SetRowView: View {
                                             .fixedSize(horizontal: true, vertical: false)
                                     }
                                     .buttonStyle(.plain)
+                                    .hoverEffectIfAvailable(.highlight)
                                 }
 
                                 // Vertical editor fields in a horizontal row
@@ -332,6 +334,7 @@ struct SetRowView: View {
                 Button(action: { value = max(0, value - step) }) { Image(systemName: "minus.circle.fill") }
                     .font(.title2)
                     .foregroundStyle(.black)
+                    .hoverEffectIfAvailable(.highlight)
                 Text(display)
                     .font(.title3.monospacedDigit())
                     .foregroundStyle(.black)
@@ -339,6 +342,7 @@ struct SetRowView: View {
                 Button(action: { value = max(0, value + step) }) { Image(systemName: "plus.circle.fill") }
                     .font(.title2)
                     .foregroundStyle(.black)
+                    .hoverEffectIfAvailable(.highlight)
             }
             .buttonStyle(.plain)
             .padding(.horizontal, 8)
@@ -365,6 +369,7 @@ struct SetRowView: View {
                 Button(action: { value = max(0.0, value - step) }) { Image(systemName: "minus.circle.fill") }
                     .font(.title2)
                     .foregroundStyle(.black)
+                    .hoverEffectIfAvailable(.highlight)
                 Text(display)
                     .font(.title3.monospacedDigit())
                     .foregroundStyle(.black)
@@ -372,6 +377,7 @@ struct SetRowView: View {
                 Button(action: { value = max(0.0, value + step) }) { Image(systemName: "plus.circle.fill") }
                     .font(.title2)
                     .foregroundStyle(.black)
+                    .hoverEffectIfAvailable(.highlight)
             }
             .buttonStyle(.plain)
             .padding(.horizontal, 8)

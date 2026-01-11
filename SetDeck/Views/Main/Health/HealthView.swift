@@ -132,6 +132,8 @@ struct HealthView: View {
                                 }
                                 .buttonStyle(.borderedProminent)
                                 .tint(.red)
+                                .accessibilityLabel("Stop workout")
+                                .accessibilityHint("Ends the current strength training workout and saves it to Apple Health")
                             } else {
                                 Button {
                                     recordWorkoutTip.invalidate(reason: .actionPerformed)
@@ -141,12 +143,16 @@ struct HealthView: View {
                                 }
                                 .buttonStyle(.borderedProminent)
                                 .tint(.greenStart)
+                                .accessibilityLabel("Start workout")
+                                .accessibilityHint("Begins recording a strength training workout to Apple Health")
                                 .popoverTip(recordWorkoutTip, arrowEdge: .bottom)
                             }
                         }
                     }
                     .padding()
                     .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20))
+                    .accessibilityElement(children: .contain)
+                    .accessibilityLabel(isStrengthWorkoutActive ? "Workout in progress, \(workoutElapsedString)" : "Record workout")
                 }
 
                 HydrationSectionView(newWaterIntakeOZ: $newWaterIntakeOZ, isExpanded: $isWaterExpanded, didAddWater: $didAddWater)

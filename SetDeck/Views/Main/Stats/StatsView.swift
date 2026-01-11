@@ -82,13 +82,15 @@ struct StatsView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Picker("Range", selection: $range) {
-                        ForEach(TimeRange.allCases, id: \.self) { range in
-                            Text(range.title).tag(range)
+                    if !allHistory.isEmpty {
+                        Picker("Range", selection: $range) {
+                            ForEach(TimeRange.allCases, id: \.self) { range in
+                                Text(range.title).tag(range)
+                            }
                         }
+                        .pickerStyle(.segmented)
+                        .frame(maxWidth: 280)
                     }
-                    .pickerStyle(.segmented)
-                    .frame(maxWidth: 280)
                 }
             }
         }

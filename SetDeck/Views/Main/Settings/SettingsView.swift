@@ -59,6 +59,7 @@ struct SettingsView: View {
                     Label("Clear Set History", systemImage: "clock.arrow.circlepath")
                         .foregroundStyle(.red)
                 }
+                .hoverEffectIfAvailable(.highlight)
 
                 Button {
                     Haptics.lightImpact()
@@ -67,6 +68,7 @@ struct SettingsView: View {
                     Label("Delete All Routines", systemImage: "trash.fill")
                         .foregroundStyle(.red)
                 }
+                .hoverEffectIfAvailable(.highlight)
             } header: {
                 Text("Danger Zone")
             } footer: {

@@ -55,14 +55,17 @@ struct OnboardingView: View {
                             .bold()
                             .padding()
                             .adaptiveGlass(tint: .red)
+                            .hoverEffectIfAvailable(.highlight)
+                            .accessibilityLabel("Go back")
+                            .accessibilityHint("Returns to the previous onboarding step")
                         }
-                        
+
                         Spacer()
                         
                         if viewModel.currentPage != .complete {
                             Button("Next") {
                                 Haptics.lightImpact()
-                                let allowed = viewModel.criteriaMet(healthManager: healthManager)
+                                let allowed = viewModel.criteriaMet(healthManager: healthManager, exerciseManager: exerciseManager)
                                 viewModel.isMovingForward = true
                                 let next = viewModel.currentPage.next
                                 withAnimation {
@@ -76,8 +79,11 @@ struct OnboardingView: View {
                             .foregroundStyle(.white)
                             .bold()
                             .padding()
-                            .adaptiveGlass(tint: viewModel.criteriaMet(healthManager: healthManager) ? .greenStart : .gray)
-                            .disabled(!viewModel.criteriaMet(healthManager: healthManager))
+                            .adaptiveGlass(tint: viewModel.criteriaMet(healthManager: healthManager, exerciseManager: exerciseManager) ? .greenStart : .gray)
+                            .hoverEffectIfAvailable(.highlight)
+                            .accessibilityLabel("Continue")
+                            .accessibilityHint(viewModel.criteriaMet(healthManager: healthManager, exerciseManager: exerciseManager) ? "Proceeds to the next onboarding step" : "Complete the current step to continue")
+                            .disabled(!viewModel.criteriaMet(healthManager: healthManager, exerciseManager: exerciseManager))
                         }
                     }
                     .padding(.horizontal)
@@ -92,9 +98,7 @@ struct OnboardingView: View {
         case .health:
             OnboardingHealthView(viewModel: viewModel)
         case .builder:
-            OnboardingBuilderView(viewModel: viewModel, onContinue: {
-                viewModel.currentPage = .complete
-            })
+            OnboardingBuilderView(viewModel: viewModel)
         case .complete:
             OnboardingCompleteView(viewModel: viewModel, finishOnboarding: {
                 Haptics.success()
