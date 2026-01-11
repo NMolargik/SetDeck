@@ -140,6 +140,25 @@ class WatchConnectivityManager: NSObject {
             saveRoutineForComplications(data)
 
             logger.info("Received routine: \(routine.dayName) with \(routine.exerciseCount) exercises")
+
+            // Log exercise details for debugging
+            for (index, exercise) in routine.exercises.enumerated() {
+                logger.debug("  Exercise \(index + 1): \(exercise.name) with \(exercise.sets.count) sets")
+            }
+        } catch let decodingError as DecodingError {
+            // Provide detailed decoding error information
+            switch decodingError {
+            case .keyNotFound(let key, let context):
+                logger.error("Decode error: Key '\(key.stringValue)' not found - \(context.debugDescription)")
+            case .typeMismatch(let type, let context):
+                logger.error("Decode error: Type mismatch for \(type) - \(context.debugDescription)")
+            case .valueNotFound(let type, let context):
+                logger.error("Decode error: Value not found for \(type) - \(context.debugDescription)")
+            case .dataCorrupted(let context):
+                logger.error("Decode error: Data corrupted - \(context.debugDescription)")
+            @unknown default:
+                logger.error("Decode error: Unknown decoding error - \(decodingError.localizedDescription)")
+            }
         } catch {
             logger.error("Failed to decode routine: \(error.localizedDescription)")
         }

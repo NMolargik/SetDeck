@@ -19,7 +19,7 @@ class HealthManager: NSObject {
     // MARK: - HealthKit
     @ObservationIgnored
     private let healthStore = HKHealthStore()
-    
+
     convenience init(forWidget: Bool = false) {
         self.init()
         if forWidget {
@@ -46,8 +46,10 @@ class HealthManager: NSObject {
     // MARK: - Workout session state
     @ObservationIgnored
     private var workoutSession: HKWorkoutSession?
+
+    // Only available on iOS 26+
     @ObservationIgnored
-    private var workoutBuilder: HKLiveWorkoutBuilder?
+    private var workoutBuilder: Any?
 
     var workoutState: HKWorkoutSessionState = .notStarted
     var workoutStartDate: Date?
@@ -253,64 +255,103 @@ class HealthManager: NSObject {
     }
 
     // MARK: - Workout (Strength Training)
+    /// Note: Full workout session functionality requires iOS 26+.
+    /// On iOS 18-25, workouts are tracked via Live Activity only.
+    var isWorkoutSessionSupported: Bool {
+        if #available(iOS 26.0, *) {
+            return true
+        }
+        return false
+    }
+
     func startStrengthTraining() async throws {
         guard workoutSession == nil else { return }
-
-        let config = HKWorkoutConfiguration()
-        config.activityType = .traditionalStrengthTraining
-        config.locationType = .indoor
-
-        let session = try HKWorkoutSession(healthStore: healthStore, configuration: config)
-        let builder = session.associatedWorkoutBuilder()
-        builder.dataSource = HKLiveWorkoutDataSource(healthStore: healthStore, workoutConfiguration: config)
-
-        session.delegate = self
-        builder.delegate = self
-
-        workoutSession = session
-        workoutBuilder = builder
 
         let start = Date()
         workoutStartDate = start
         accumulatedPauseTime = 0
         lastPauseDate = nil
 
-        session.startActivity(with: start)
-        try await builder.beginCollection(at: start)
+        // Full HKWorkoutSession only available on iOS 26+
+        if #available(iOS 26.0, *) {
+            let config = HKWorkoutConfiguration()
+            config.activityType = .traditionalStrengthTraining
+            config.locationType = .indoor
 
-        // Start Live Activity
+            let session = try HKWorkoutSession(healthStore: healthStore, configuration: config)
+            session.delegate = self
+
+            workoutSession = session
+
+            let builder = session.associatedWorkoutBuilder()
+            builder.dataSource = HKLiveWorkoutDataSource(healthStore: healthStore, workoutConfiguration: config)
+            builder.delegate = self
+            workoutBuilder = builder
+
+            session.startActivity(with: start)
+            try await builder.beginCollection(at: start)
+        } else {
+            // iOS 18-25: Track workout state manually without HKWorkoutSession
+            workoutState = .running
+        }
+
+        // Start Live Activity (works on all iOS versions)
         startLiveActivity(startDate: start)
     }
 
     func pauseWorkout() {
-        guard let session = workoutSession, workoutState == .running else { return }
-        session.pause()
+        guard workoutState == .running else { return }
+
+        if #available(iOS 26.0, *) {
+            workoutSession?.pause()
+        } else {
+            // iOS 18-25: Update state manually
+            workoutState = .paused
+        }
         updateLiveActivityForPause()
     }
 
     func resumeWorkout() {
-        guard let session = workoutSession, workoutState == .paused else { return }
-        session.resume()
+        guard workoutState == .paused else { return }
+
+        if #available(iOS 26.0, *) {
+            workoutSession?.resume()
+        } else {
+            // iOS 18-25: Update state manually
+            workoutState = .running
+        }
         updateLiveActivityForResume()
     }
 
     func endWorkout() async {
-        guard let session = workoutSession, let builder = workoutBuilder else { return }
+        guard workoutState == .running || workoutState == .paused || workoutStartDate != nil else { return }
 
         // End Live Activity before resetting state
         endLiveActivity()
 
-        session.end()
-        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
-            builder.endCollection(withEnd: Date()) { _, _ in
-                builder.finishWorkout { _, _ in
-                    Task { @MainActor in
-                        self.resetWorkoutState()
+        // Use HKWorkoutSession only on iOS 26+
+        if #available(iOS 26.0, *) {
+            if let session = workoutSession {
+                session.end()
+
+                if let builder = workoutBuilder as? HKLiveWorkoutBuilder {
+                    await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+                        builder.endCollection(withEnd: Date()) { _, _ in
+                            builder.finishWorkout { _, _ in
+                                Task { @MainActor in
+                                    self.resetWorkoutState()
+                                }
+                                continuation.resume()
+                            }
+                        }
                     }
-                    continuation.resume()
+                    return
                 }
             }
         }
+
+        // Fallback for iOS 18-25 or if session wasn't available
+        resetWorkoutState()
     }
 
     // Convenience wrappers used by HealthView (safe attempts)
@@ -510,8 +551,8 @@ class HealthManager: NSObject {
     }
 }
 
-// MARK: - Delegates
-extension HealthManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate {
+// MARK: - HKWorkoutSessionDelegate
+extension HealthManager: HKWorkoutSessionDelegate {
     func workoutSession(_ workoutSession: HKWorkoutSession, didChangeTo toState: HKWorkoutSessionState, from fromState: HKWorkoutSessionState, date: Date) {
         // Update observable state on main thread
         self.workoutState = toState
@@ -520,9 +561,12 @@ extension HealthManager: HKWorkoutSessionDelegate, HKLiveWorkoutBuilderDelegate 
     func workoutSession(_ workoutSession: HKWorkoutSession, didFailWithError error: Error) {
         self.resetWorkoutState()
     }
+}
 
+// MARK: - HKLiveWorkoutBuilderDelegate (iOS 26+)
+@available(iOS 26.0, *)
+extension HealthManager: HKLiveWorkoutBuilderDelegate {
     func workoutBuilderDidCollectEvent(_ workoutBuilder: HKLiveWorkoutBuilder) { }
 
     func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) { }
 }
-

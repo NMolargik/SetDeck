@@ -10,10 +10,15 @@ import SwiftUI
 struct OnboardingCompleteView: View {
     @Bindable var viewModel: OnboardingView.ViewModel
     var finishOnboarding: () -> Void
-    
+
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var shownRows: [Bool] = [false, false, false, false]
     @State private var showButton: Bool = false
-    
+
+    private var maxContentWidth: CGFloat? {
+        horizontalSizeClass == .regular ? 500 : nil
+    }
+
     var body: some View {
         VStack(spacing: 24) {
             Spacer(minLength: 12)
@@ -23,7 +28,7 @@ struct OnboardingCompleteView: View {
                     .font(.largeTitle).bold()
                     .foregroundStyle(.white)
                     .shadow(radius: 5, x: 1, y: -1)
-                
+
                 Text("Here's what you've got to look forward to.")
                     .font(.callout)
                     .foregroundStyle(.secondary)
@@ -77,10 +82,11 @@ struct OnboardingCompleteView: View {
                 .animation(.spring(response: 1.2, dampingFraction: 0.85), value: shownRows[3])
                 .symbolEffect(.bounce, value: shownRows[3])
             }
+            .frame(maxWidth: maxContentWidth)
             .padding(.horizontal)
 
             Spacer(minLength: 12)
-            
+
             Button(action: finishOnboarding) {
                 HStack(spacing: 10) {
                     Image(systemName: "checkmark.circle.fill")
@@ -90,7 +96,7 @@ struct OnboardingCompleteView: View {
                         .font(.title3).bold()
                 }
                 .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: maxContentWidth ?? .infinity)
                 .padding(.vertical, 14)
             }
             .adaptiveGlass(tint: .purpleStart)

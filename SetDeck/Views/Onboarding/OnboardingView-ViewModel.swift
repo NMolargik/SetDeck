@@ -26,6 +26,9 @@ extension OnboardingView {
         }
 
         private func hasAtLeastOneExercise(exerciseManager: ExerciseManager) -> Bool {
+            // Read changeStamp to establish SwiftUI dependency - triggers re-evaluation when data changes
+            _ = exerciseManager.changeStamp
+
             for day in 0..<7 {
                 if !exerciseManager.exercises(forDay: day).isEmpty {
                     return true

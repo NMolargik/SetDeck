@@ -11,6 +11,11 @@ import SwiftData
 struct OnboardingBuilderView: View {
     @Bindable var viewModel: OnboardingView.ViewModel
     @Environment(ExerciseManager.self) var exerciseManager: ExerciseManager
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
+    private var maxContentWidth: CGFloat? {
+        horizontalSizeClass == .regular ? 600 : nil
+    }
 
     var body: some View {
         VStack(spacing: 5) {
@@ -29,6 +34,7 @@ struct OnboardingBuilderView: View {
 
             EditRoutineView()
                 .padding(.horizontal)
+                .frame(maxWidth: maxContentWidth)
                 .environment(exerciseManager)
 
             Spacer(minLength: 12)

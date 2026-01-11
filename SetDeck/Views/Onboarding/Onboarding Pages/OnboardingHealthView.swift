@@ -10,7 +10,12 @@ import SwiftUI
 struct OnboardingHealthView: View {
     @Bindable var viewModel: OnboardingView.ViewModel
     @Environment(HealthManager.self) var healthManager: HealthManager
-    
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
+    private var maxContentWidth: CGFloat? {
+        horizontalSizeClass == .regular ? 500 : nil
+    }
+
     var body: some View {
         VStack(spacing: 20) {
             Spacer(minLength: 12)
@@ -26,6 +31,7 @@ struct OnboardingHealthView: View {
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.secondary)
                     .padding(.horizontal)
+                    .frame(maxWidth: maxContentWidth)
             }
 
             Image("appleHealth")
@@ -46,7 +52,7 @@ struct OnboardingHealthView: View {
                     Text("Continue")
                         .font(.title3).bold()
                 }
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: maxContentWidth ?? .infinity)
                 .padding(.vertical, 14)
                 .foregroundStyle(.white)
             }

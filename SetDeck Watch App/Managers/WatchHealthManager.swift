@@ -37,7 +37,10 @@ class WatchHealthManager: NSObject {
     // MARK: - Private State
     private let healthStore = HKHealthStore()
     private var workoutSession: HKWorkoutSession?
-    private var workoutBuilder: HKLiveWorkoutBuilder?
+
+    // Only available on watchOS 26+
+    private var workoutBuilder: Any?
+
     private var accumulatedPauseTime: TimeInterval = 0
     private var lastPauseDate: Date?
     private var elapsedTimer: Timer?
@@ -91,19 +94,26 @@ class WatchHealthManager: NSObject {
 
         do {
             workoutSession = try HKWorkoutSession(healthStore: healthStore, configuration: configuration)
-            workoutBuilder = workoutSession?.associatedWorkoutBuilder()
-
             workoutSession?.delegate = self
-            workoutBuilder?.delegate = self
-
-            workoutBuilder?.dataSource = HKLiveWorkoutDataSource(
-                healthStore: healthStore,
-                workoutConfiguration: configuration
-            )
 
             let startDate = Date()
-            workoutSession?.startActivity(with: startDate)
-            try await workoutBuilder?.beginCollection(at: startDate)
+
+            // Use HKLiveWorkoutBuilder only on watchOS 26+
+            if #available(watchOS 26.0, *) {
+                let builder = workoutSession?.associatedWorkoutBuilder()
+                builder?.delegate = self
+                builder?.dataSource = HKLiveWorkoutDataSource(
+                    healthStore: healthStore,
+                    workoutConfiguration: configuration
+                )
+                workoutBuilder = builder
+
+                workoutSession?.startActivity(with: startDate)
+                try await builder?.beginCollection(at: startDate)
+            } else {
+                // Fallback for watchOS < 26: just start the session without builder
+                workoutSession?.startActivity(with: startDate)
+            }
 
             workoutStartDate = startDate
             workoutState = .running
@@ -152,7 +162,7 @@ class WatchHealthManager: NSObject {
     }
 
     func endWorkout() async {
-        guard let session = workoutSession, let builder = workoutBuilder else {
+        guard let session = workoutSession else {
             logger.warning("Cannot end: no active workout")
             return
         }
@@ -162,12 +172,17 @@ class WatchHealthManager: NSObject {
         let endDate = Date()
         session.end()
 
-        do {
-            try await builder.endCollection(at: endDate)
-            try await builder.finishWorkout()
-            logger.info("Workout saved to HealthKit")
-        } catch {
-            logger.error("Failed to save workout: \(error.localizedDescription)")
+        // Use HKLiveWorkoutBuilder only on watchOS 26+
+        if #available(watchOS 26.0, *) {
+            if let builder = workoutBuilder as? HKLiveWorkoutBuilder {
+                do {
+                    try await builder.endCollection(at: endDate)
+                    try await builder.finishWorkout()
+                    logger.info("Workout saved to HealthKit")
+                } catch {
+                    logger.error("Failed to save workout: \(error.localizedDescription)")
+                }
+            }
         }
 
         // Reset state
@@ -237,7 +252,8 @@ extension WatchHealthManager: HKWorkoutSessionDelegate {
     }
 }
 
-// MARK: - HKLiveWorkoutBuilderDelegate
+// MARK: - HKLiveWorkoutBuilderDelegate (watchOS 26+)
+@available(watchOS 26.0, *)
 extension WatchHealthManager: HKLiveWorkoutBuilderDelegate {
     nonisolated func workoutBuilderDidCollectEvent(_ workoutBuilder: HKLiveWorkoutBuilder) {
         // Handle workout events if needed

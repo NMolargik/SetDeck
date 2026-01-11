@@ -74,6 +74,24 @@ struct SettingsView: View {
             } footer: {
                 Text("These actions cannot be undone.")
             }
+
+            #if DEBUG
+            // MARK: - Debug
+            Section {
+                Button {
+                    Haptics.lightImpact()
+                    viewModel.showGenerateSampleDataConfirmation = true
+                } label: {
+                    Label("Generate Sample Routines", systemImage: "wand.and.stars")
+                        .foregroundStyle(.purple)
+                }
+                .hoverEffectIfAvailable(.highlight)
+            } header: {
+                Text("Debug")
+            } footer: {
+                Text("Creates sample exercises and sets for all 7 days, plus 30 days of workout history.")
+            }
+            #endif
         }
         .alert("Clear Set History?", isPresented: $viewModel.showDeleteConfirmation) {
             Button("Delete History", role: .destructive) {
@@ -109,6 +127,25 @@ struct SettingsView: View {
         } message: {
             Text("All routines, exercises, sets, and history have been deleted.")
         }
+        #if DEBUG
+        .alert("Generate Sample Data?", isPresented: $viewModel.showGenerateSampleDataConfirmation) {
+            Button("Generate", role: .none) {
+                Haptics.lightImpact()
+                exerciseManager.generateSampleDataForLast30Days()
+                viewModel.showSampleDataGeneratedAlert = true
+            }
+            Button("Cancel", role: .cancel) {
+                Haptics.lightImpact()
+            }
+        } message: {
+            Text("This will create sample exercises for all 7 days and generate 30 days of workout history. Existing routines will be preserved.")
+        }
+        .alert("Sample Data Generated", isPresented: $viewModel.showSampleDataGeneratedAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Sample routines and 30 days of history have been created.")
+        }
+        #endif
     }
 }
 

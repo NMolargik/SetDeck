@@ -62,7 +62,7 @@ struct WatchSet: Codable, Identifiable {
     let rpe: Int?
     let orderIndex: Int
 
-    // Completed state (updated when user logs)
+    // Completed state (updated when user logs) - not sent from iPhone
     var isCompleted: Bool = false
     var actualReps: Int?
     var actualWeight: Double?
@@ -90,6 +90,39 @@ struct WatchSet: Codable, Identifiable {
         case .freeform:
             return "Freeform"
         }
+    }
+
+    // Custom decoder to handle missing keys from iPhone (isCompleted, actualReps, actualWeight)
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(UUID.self, forKey: .id)
+        setType = try container.decode(WatchSetType.self, forKey: .setType)
+        targetReps = try container.decodeIfPresent(Int.self, forKey: .targetReps)
+        weight = try container.decodeIfPresent(Double.self, forKey: .weight)
+        weightUnit = try container.decode(String.self, forKey: .weightUnit)
+        targetDuration = try container.decodeIfPresent(TimeInterval.self, forKey: .targetDuration)
+        rpe = try container.decodeIfPresent(Int.self, forKey: .rpe)
+        orderIndex = try container.decode(Int.self, forKey: .orderIndex)
+
+        // These are not sent from iPhone, so use defaults
+        isCompleted = try container.decodeIfPresent(Bool.self, forKey: .isCompleted) ?? false
+        actualReps = try container.decodeIfPresent(Int.self, forKey: .actualReps)
+        actualWeight = try container.decodeIfPresent(Double.self, forKey: .actualWeight)
+    }
+
+    // Memberwise init for local construction
+    init(id: UUID, setType: WatchSetType, targetReps: Int?, weight: Double?, weightUnit: String, targetDuration: TimeInterval?, rpe: Int?, orderIndex: Int, isCompleted: Bool = false, actualReps: Int? = nil, actualWeight: Double? = nil) {
+        self.id = id
+        self.setType = setType
+        self.targetReps = targetReps
+        self.weight = weight
+        self.weightUnit = weightUnit
+        self.targetDuration = targetDuration
+        self.rpe = rpe
+        self.orderIndex = orderIndex
+        self.isCompleted = isCompleted
+        self.actualReps = actualReps
+        self.actualWeight = actualWeight
     }
 }
 

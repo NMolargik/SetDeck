@@ -19,7 +19,20 @@ struct SetRowView: View {
     @State private var editRPE: Int = 0
     @State private var editDurationMinutes: Int = 0
 
+    // Track original values to detect changes
+    @State private var originalReps: Int = 0
+    @State private var originalWeight: Double = 0
+    @State private var originalRPE: Int = 0
+    @State private var originalDurationMinutes: Int = 0
+
     let set: SetDeckSet
+
+    private var hasChanges: Bool {
+        editReps != originalReps ||
+        editWeight != originalWeight ||
+        editRPE != originalRPE ||
+        editDurationMinutes != originalDurationMinutes
+    }
 
     private func lbsToKg(_ lbs: Double) -> Double { lbs * 0.45359237 }
     private func kgToLbs(_ kg: Double) -> Double { kg / 0.45359237 }
@@ -77,23 +90,29 @@ struct SetRowView: View {
                                 // Action buttons
                                 HStack(spacing: 10) {
                                     Spacer()
-                                    Button("Cancel") { withAnimation { isEditing = false } }
-                                        .font(.caption.bold())
-                                        .foregroundStyle(.red.gradient)
-                                        .lineLimit(1)
-                                        .fixedSize(horizontal: true, vertical: false)
-                                        .padding(.vertical, 6)
-                                        .padding(.horizontal, 8)
-                                        .hoverEffectIfAvailable(.highlight)
                                     Button {
-                                        saveEdits()
+                                        withAnimation { isEditing = false }
                                     } label: {
-                                        Text("Save")
+                                        Text("Cancel")
                                             .font(.caption.bold())
                                             .foregroundStyle(.white)
                                             .padding(.vertical, 6)
                                             .padding(.horizontal, 8)
-                                            .background(Color.blueStart, in: Capsule())
+                                            .background(Color.red, in: Capsule())
+                                            .lineLimit(1)
+                                            .fixedSize(horizontal: true, vertical: false)
+                                    }
+                                    .buttonStyle(.plain)
+                                    .hoverEffectIfAvailable(.highlight)
+                                    Button {
+                                        saveEdits()
+                                    } label: {
+                                        Text(hasChanges ? "Save" : "Log")
+                                            .font(.caption.bold())
+                                            .foregroundStyle(.white)
+                                            .padding(.vertical, 6)
+                                            .padding(.horizontal, 8)
+                                            .background(hasChanges ? Color.blueStart : Color.greenStart, in: Capsule())
                                             .lineLimit(1)
                                             .fixedSize(horizontal: true, vertical: false)
                                     }
@@ -235,6 +254,13 @@ struct SetRowView: View {
         editWeight = useMetricUnits ? lbsToKg(baseWeightLbs) : baseWeightLbs
         editRPE = set.rpe ?? 0
         editRPE = max(0, editRPE)
+
+        // Store original values to detect changes
+        originalReps = editReps
+        originalWeight = editWeight
+        originalRPE = editRPE
+        originalDurationMinutes = editDurationMinutes
+
         isEditing = true
     }
 

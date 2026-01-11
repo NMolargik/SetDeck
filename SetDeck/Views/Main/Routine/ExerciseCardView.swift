@@ -27,7 +27,7 @@ struct ExerciseCardView: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(LinearGradient(colors: [Color.white.opacity(0.9), Color.white.opacity(1.0)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                .fill(LinearGradient(colors: [Color(white: 0.97), Color.white], startPoint: .topLeading, endPoint: .bottomTrailing))
                 .overlay(
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
                         .stroke(Color.gray, lineWidth: 7)
@@ -65,6 +65,11 @@ struct ExerciseCardView: View {
             }
             .padding(16)
             .scrollIndicators(.hidden)
+            .scrollBounceBehavior(.basedOnSize)
+            .simultaneousGesture(
+                DragGesture(minimumDistance: 1)
+                    .onChanged { _ in }
+            )
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel("\(exercise.name), exercise \(index)")

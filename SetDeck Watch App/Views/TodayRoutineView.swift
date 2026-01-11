@@ -80,6 +80,16 @@ struct TodayRoutineView: View {
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
+
+                Button {
+                    WatchHaptics.buttonTapped()
+                    connectivityManager.requestTodayRoutine()
+                } label: {
+                    Label("Refresh", systemImage: "arrow.clockwise")
+                        .font(.caption2)
+                }
+                .buttonStyle(.bordered)
+                .padding(.top, 8)
             }
             .padding()
         }

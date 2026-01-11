@@ -51,10 +51,18 @@ class PhoneConnectivityManager: NSObject {
 
     // MARK: - Send Routine to Watch
     func sendTodayRoutineToWatch() {
-        guard let session = session,
-              session.isPaired,
-              session.isWatchAppInstalled else {
-            logger.debug("Cannot send routine: Watch not paired or app not installed")
+        guard let session = session else {
+            logger.warning("Cannot send routine: WCSession not initialized")
+            return
+        }
+
+        guard session.isPaired else {
+            logger.debug("Cannot send routine: Watch not paired")
+            return
+        }
+
+        guard session.isWatchAppInstalled else {
+            logger.debug("Cannot send routine: Watch app not installed")
             return
         }
 
@@ -67,22 +75,33 @@ class PhoneConnectivityManager: NSObject {
         let routine = exerciseManager.routine(for: todayIndex)
         let exercises = exerciseManager.exercises(for: routine)
 
+        logger.info("Preparing to send routine for day \(todayIndex) with \(exercises.count) exercises")
+
+        // Log each exercise for debugging
+        for (index, exercise) in exercises.enumerated() {
+            let sets = exerciseManager.sets(for: exercise)
+            logger.debug("  Exercise \(index + 1): \(exercise.name) with \(sets.count) sets")
+        }
+
         let watchRoutine = convertToWatchRoutine(routine: routine, exercises: exercises, exerciseManager: exerciseManager)
 
         do {
             let data = try JSONEncoder().encode(watchRoutine)
+            logger.debug("Encoded routine to \(data.count) bytes")
 
             // Always update application context so Watch has cached data
             try session.updateApplicationContext([WatchMessageKey.routineData: data])
-            logger.debug("Updated application context with routine")
+            logger.info("Updated application context with routine (\(watchRoutine.exercises.count) exercises)")
 
             // Also send immediately if reachable for faster sync
             if session.isReachable {
                 let message: [String: Any] = [WatchMessageKey.routineData: data]
                 session.sendMessage(message, replyHandler: nil) { error in
-                    logger.error("Failed to send routine: \(error.localizedDescription)")
+                    logger.error("Failed to send routine via message: \(error.localizedDescription)")
                 }
-                logger.debug("Sent routine to Watch via message")
+                logger.debug("Sent routine to Watch via direct message")
+            } else {
+                logger.debug("Watch not reachable, routine cached in application context")
             }
         } catch {
             logger.error("Failed to encode/send routine: \(error.localizedDescription)")
