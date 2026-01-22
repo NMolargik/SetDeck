@@ -8,11 +8,10 @@
 import Foundation
 
 enum AppStage: String, Identifiable {
-    case start
-    case splash
-    case migration
-    case onboarding
-    case main
-    
+    case splash      // Animated branding, "Get Started" button
+    case onboarding  // Privacy, Location, Health, Complete
+    case syncing     // iCloud data check with timeout
+    case main        // Main app experience
+
     var id: String { self.rawValue }
 }

@@ -61,6 +61,9 @@ class HealthManager: NSObject {
     private var accumulatedPauseTime: TimeInterval = 0
     @ObservationIgnored
     private var lastPauseDate: Date?
+    
+    private(set) var lastError: Error?
+
 
     // Convenience accessors used by HealthView
     var isStrengthTrainingActive: Bool {
@@ -108,6 +111,7 @@ class HealthManager: NSObject {
             }
             isAuthorized = true
         } catch {
+            lastError = error
             isAuthorized = false
         }
     }
@@ -159,6 +163,7 @@ class HealthManager: NSObject {
             WidgetCenter.shared.reloadTimelines(ofKind: "WaterWidgetLiter")
             WidgetCenter.shared.reloadTimelines(ofKind: "WaterWidgetOZ")
         } catch {
+            lastError = error
             logger.error("Failed to add water intake: \(error.localizedDescription)")
         }
     }
@@ -170,6 +175,7 @@ class HealthManager: NSObject {
             await refreshCalorieIntakeSeries(days: 14)
             WidgetCenter.shared.reloadTimelines(ofKind: "EnergyWidget")
         } catch {
+            lastError = error
             logger.error("Failed to add calorie intake: \(error.localizedDescription)")
         }
     }
@@ -179,6 +185,7 @@ class HealthManager: NSObject {
             try await addActiveEnergy(kcal: amount, date: date)
             await refreshCalorieBurnSeries(days: 14)
         } catch {
+            lastError = error
             logger.error("Failed to add calorie burn: \(error.localizedDescription)")
         }
     }
@@ -274,22 +281,28 @@ class HealthManager: NSObject {
 
         // Full HKWorkoutSession only available on iOS 26+
         if #available(iOS 26.0, *) {
-            let config = HKWorkoutConfiguration()
-            config.activityType = .traditionalStrengthTraining
-            config.locationType = .indoor
+            do {
+                let config = HKWorkoutConfiguration()
+                config.activityType = .traditionalStrengthTraining
+                config.locationType = .indoor
 
-            let session = try HKWorkoutSession(healthStore: healthStore, configuration: config)
-            session.delegate = self
+                let session = try HKWorkoutSession(healthStore: healthStore, configuration: config)
+                session.delegate = self
 
-            workoutSession = session
+                workoutSession = session
 
-            let builder = session.associatedWorkoutBuilder()
-            builder.dataSource = HKLiveWorkoutDataSource(healthStore: healthStore, workoutConfiguration: config)
-            builder.delegate = self
-            workoutBuilder = builder
+                let builder = session.associatedWorkoutBuilder()
+                builder.dataSource = HKLiveWorkoutDataSource(healthStore: healthStore, workoutConfiguration: config)
+                builder.delegate = self
+                workoutBuilder = builder
 
-            session.startActivity(with: start)
-            try await builder.beginCollection(at: start)
+                session.startActivity(with: start)
+                try await builder.beginCollection(at: start)
+            } catch {
+                lastError = error
+                // Fallback to manual state if HKWorkoutSession setup fails
+                workoutState = .running
+            }
         } else {
             // iOS 18-25: Track workout state manually without HKWorkoutSession
             workoutState = .running
@@ -403,6 +416,7 @@ class HealthManager: NSObject {
             currentActivity = activity
             logger.info("Live Activity started: \(activity.id)")
         } catch {
+            lastError = error
             logger.error("Failed to start Live Activity: \(error.localizedDescription)")
         }
     }
@@ -472,6 +486,9 @@ class HealthManager: NSObject {
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             healthStore.save(sample) { _, error in
                 if let error = error {
+                    Task { @MainActor in
+                        self.lastError = error
+                    }
                     continuation.resume(throwing: error)
                     return
                 }
@@ -486,6 +503,9 @@ class HealthManager: NSObject {
             let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: .strictStartDate)
             let query = HKStatisticsQuery(quantityType: type, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, stats, error in
                 if let error = error {
+                    Task { @MainActor in
+                        self.lastError = error
+                    }
                     continuation.resume(throwing: error)
                     return
                 }
@@ -501,6 +521,9 @@ class HealthManager: NSObject {
             let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: .strictStartDate)
             let query = HKStatisticsQuery(quantityType: type, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, stats, error in
                 if let error = error {
+                    Task { @MainActor in
+                        self.lastError = error
+                    }
                     continuation.resume(throwing: error)
                     return
                 }
@@ -559,6 +582,7 @@ extension HealthManager: HKWorkoutSessionDelegate {
     }
 
     func workoutSession(_ workoutSession: HKWorkoutSession, didFailWithError error: Error) {
+        self.lastError = error
         self.resetWorkoutState()
     }
 }
@@ -570,3 +594,4 @@ extension HealthManager: HKLiveWorkoutBuilderDelegate {
 
     func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) { }
 }
+

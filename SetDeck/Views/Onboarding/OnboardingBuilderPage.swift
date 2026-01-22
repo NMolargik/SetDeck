@@ -1,5 +1,5 @@
 //
-//  OnboardingBuilderView.swift
+//  OnboardingBuilderPage.swift
 //  SetDeck
 //
 //  Created by Nick Molargik on 11/29/25.
@@ -8,8 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct OnboardingBuilderView: View {
-    @Bindable var viewModel: OnboardingView.ViewModel
+struct OnboardingBuilderPage: View {
     @Environment(ExerciseManager.self) var exerciseManager: ExerciseManager
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
@@ -60,9 +59,7 @@ struct OnboardingBuilderView: View {
         try? context.save()
     }
 
-    return OnboardingBuilderView(
-        viewModel: OnboardingView.ViewModel()
-    )
+    return OnboardingBuilderPage()
     .environment(exerciseManager)
     .preferredColorScheme(.dark)
 }

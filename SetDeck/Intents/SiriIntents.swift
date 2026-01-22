@@ -26,7 +26,6 @@ enum IntentModelContainer {
 
             return try ModelContainer(
                 for:
-                    Exercise.self,
                     SetDeckExercise.self,
                     SetDeckRoutine.self,
                     SetDeckSet.self,

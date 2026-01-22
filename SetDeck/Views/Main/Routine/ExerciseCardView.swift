@@ -66,10 +66,6 @@ struct ExerciseCardView: View {
             .padding(16)
             .scrollIndicators(.hidden)
             .scrollBounceBehavior(.basedOnSize)
-            .simultaneousGesture(
-                DragGesture(minimumDistance: 1)
-                    .onChanged { _ in }
-            )
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel("\(exercise.name), exercise \(index)")

@@ -10,18 +10,28 @@ import SwiftData
 
 struct RoutineDayDeckView: View {
     let routine: SetDeckRoutine
+    var animateEntrance: Bool = false
+
     @State private var pageSelection: Int = 0
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     // Drag state for the top card
     @State private var dragOffset: CGSize = .zero
     @State private var dragRotation: Double = 0
+    @State private var isDraggingHorizontally: Bool = false
 
     // Track cards being dismissed
     @State private var dismissedCards: Set<Int> = []
 
+    // Deal/transition animation state
+    @State private var dealtCards: Set<Int> = []
+    @State private var hasCompletedInitialDeal: Bool = false
+    @State private var isTransitioning: Bool = false
+    @State private var displayedRoutine: SetDeckRoutine?
+    @State private var previousRoutineID: UUID?
+
     private var exercises: [SetDeckExercise] {
-        routine.exercises ?? []
+        (displayedRoutine ?? routine).exercises ?? []
     }
 
     // Configuration for the card stack appearance
@@ -58,6 +68,91 @@ struct RoutineDayDeckView: View {
                 pageSelection = max(0, newCount - 1)
             }
             dismissedCards.removeAll()
+        }
+        .onChange(of: routine.uuid) { oldID, newID in
+            guard oldID != newID, !isTransitioning else { return }
+            transitionToNewRoutine()
+        }
+        .onAppear {
+            displayedRoutine = routine
+            previousRoutineID = routine.uuid
+
+            if animateEntrance && !exercises.isEmpty {
+                dealCardsIn()
+            } else {
+                // If not animating, mark deal as complete so all cards show immediately
+                hasCompletedInitialDeal = true
+            }
+        }
+    }
+
+    // MARK: - Transition Animation
+
+    private func transitionToNewRoutine() {
+        isTransitioning = true
+
+        // Animate current cards out (top card first, then down the stack)
+        let cardsToExit = visibleCardIndices
+        let exitDuration = Double(cardsToExit.count) * 0.08
+
+        for (exitOrder, cardIndex) in cardsToExit.enumerated() {
+            let delay = Double(exitOrder) * 0.08
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                    _ = dealtCards.remove(cardIndex)
+                }
+            }
+        }
+
+        // After exit animation, switch to new routine and animate in
+        DispatchQueue.main.asyncAfter(deadline: .now() + exitDuration + 0.1) {
+            // Reset state for new routine
+            displayedRoutine = routine
+            previousRoutineID = routine.uuid
+            pageSelection = 0
+            dealtCards.removeAll()
+            dismissedCards.removeAll()
+            hasCompletedInitialDeal = false
+
+            // Animate new cards in
+            dealCardsIn()
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                isTransitioning = false
+            }
+        }
+    }
+
+    // MARK: - Deal Animation
+
+    private func dealCardsIn() {
+        let cardsToDeal = visibleCardIndices.reversed() // Deal bottom cards first
+        let totalCards = cardsToDeal.count
+
+        guard totalCards > 0 else {
+            hasCompletedInitialDeal = true
+            return
+        }
+
+        for (dealOrder, cardIndex) in cardsToDeal.enumerated() {
+            let delay = Double(dealOrder) * 0.08 // Stagger each card by 80ms
+            let isLastCard = dealOrder == totalCards - 1
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                withAnimation(.spring(response: 0.45, dampingFraction: 0.75)) {
+                    _ = dealtCards.insert(cardIndex)
+                }
+                // Haptic feedback for each card dealt
+                Haptics.lightImpact()
+
+                // After the last card is dealt, mark deal as complete
+                if isLastCard {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        hasCompletedInitialDeal = true
+                    }
+                }
+            }
         }
     }
 
@@ -99,19 +194,30 @@ struct RoutineDayDeckView: View {
         cardWidth: CGFloat
     ) -> some View {
         let isTopCard = relativeIndex == 0
+        // Card is considered dealt if: it was part of initial deal animation, OR the initial deal is complete
+        let isDealt = dealtCards.contains(index) || hasCompletedInitialDeal
+        let isLastCard = pageSelection >= exercises.count - 1
+        let canSwipe = isTopCard && isDealt && !isTransitioning && !isLastCard
 
         ExerciseCardView(index: index, exercise: exercise)
             .frame(width: cardWidth)
+            .contentShape(Rectangle())
             .offset(x: offsetX(for: relativeIndex, isTop: isTopCard),
-                    y: offsetY(for: relativeIndex))
-            .rotationEffect(rotation(for: relativeIndex, isTop: isTopCard))
-            .scaleEffect(scale(for: relativeIndex))
-            .opacity(opacity(for: relativeIndex))
+                    y: isDealt ? offsetY(for: relativeIndex) : dealStartOffsetY)
+            .rotationEffect(rotation(for: relativeIndex, isTop: isTopCard, isDealt: isDealt))
+            .scaleEffect(isDealt ? scale(for: relativeIndex) : dealStartScale)
+            .opacity(isDealt ? opacity(for: relativeIndex) : 0)
             .zIndex(Double(exercises.count - relativeIndex))
-            .gesture(isTopCard ? dragGesture : nil)
+            .simultaneousGesture(canSwipe ? horizontalDragGesture : nil)
             .animation(.interactiveSpring(response: 0.4, dampingFraction: 0.75), value: dragOffset)
             .animation(.spring(response: 0.5, dampingFraction: 0.8), value: pageSelection)
+            .animation(.spring(response: 0.5, dampingFraction: 0.7), value: isDealt)
     }
+
+    // Deal animation constants
+    private let dealStartOffsetY: CGFloat = 400  // Start below the screen
+    private let dealStartScale: CGFloat = 0.8    // Start slightly smaller
+    private let dealStartRotation: Double = -15  // Start with a tilt
 
     // MARK: - Card Transformations
 
@@ -128,7 +234,11 @@ struct RoutineDayDeckView: View {
         return CGFloat(relativeIndex) * cardOffsetY
     }
 
-    private func rotation(for relativeIndex: Int, isTop: Bool) -> Angle {
+    private func rotation(for relativeIndex: Int, isTop: Bool, isDealt: Bool = true) -> Angle {
+        if !isDealt {
+            // Undealt cards have a tilt
+            return .degrees(dealStartRotation)
+        }
         if isTop {
             // Top card rotates based on drag
             return .degrees(dragRotation)
@@ -154,14 +264,38 @@ struct RoutineDayDeckView: View {
 
     // MARK: - Drag Gesture
 
-    private var dragGesture: some Gesture {
-        DragGesture()
+    private var horizontalDragGesture: some Gesture {
+        DragGesture(minimumDistance: 10)
             .onChanged { value in
-                dragOffset = value.translation
-                // Rotate based on horizontal drag
-                dragRotation = Double(value.translation.width) * rotationFactor
+                let horizontal = abs(value.translation.width)
+                let vertical = abs(value.translation.height)
+
+                // Only start tracking if we haven't committed yet
+                if !isDraggingHorizontally {
+                    // Require predominantly horizontal movement to start
+                    if horizontal > vertical && horizontal > 10 {
+                        isDraggingHorizontally = true
+                    }
+                }
+
+                // Only update offset if we're in horizontal drag mode
+                if isDraggingHorizontally {
+                    dragOffset = CGSize(width: value.translation.width, height: 0)
+                    dragRotation = Double(value.translation.width) * rotationFactor
+                }
             }
             .onEnded { value in
+                defer {
+                    isDraggingHorizontally = false
+                }
+
+                // Only process if we were dragging horizontally
+                guard isDraggingHorizontally else {
+                    dragOffset = .zero
+                    dragRotation = 0
+                    return
+                }
+
                 let horizontalSwipe = abs(value.translation.width)
                 let velocity = abs(value.velocity.width)
 
@@ -239,8 +373,8 @@ struct RoutineDayDeckView: View {
             .accessibilityHint("Returns to the first exercise in the routine")
             .tint(.secondary)
             .foregroundStyle(.secondary)
-            .opacity(pageSelection > 0 ? 1 : 0.4)
-            .disabled(pageSelection == 0)
+            .opacity(pageSelection > 0 && !isTransitioning ? 1 : 0.4)
+            .disabled(pageSelection == 0 || isTransitioning)
 
             // Previous button
             Button(action: {
@@ -272,8 +406,8 @@ struct RoutineDayDeckView: View {
             .accessibilityHint("Shows the previous exercise in the routine")
             .tint(.secondary)
             .foregroundStyle(.secondary)
-            .opacity(pageSelection > 0 ? 1 : 0.4)
-            .disabled(pageSelection == 0)
+            .opacity(pageSelection > 0 && !isTransitioning ? 1 : 0.4)
+            .disabled(pageSelection == 0 || isTransitioning)
 
             // Progress label
             let total = exercises.count
@@ -319,8 +453,8 @@ struct RoutineDayDeckView: View {
             .accessibilityHint("Shows the next exercise in the routine")
             .tint(.secondary)
             .foregroundStyle(.secondary)
-            .opacity(pageSelection < (exercises.count - 1) ? 1 : 0.4)
-            .disabled(!(pageSelection < (exercises.count - 1)))
+            .opacity(pageSelection < (exercises.count - 1) && !isTransitioning ? 1 : 0.4)
+            .disabled(!(pageSelection < (exercises.count - 1)) || isTransitioning)
         }
         .padding(.vertical, 10)
         .padding(.horizontal, horizontalSizeClass == .compact ? 20 : 8)
@@ -346,7 +480,7 @@ struct RoutineDayDeckView: View {
     }
     try? context.save()
 
-    return RoutineDayDeckView(routine: SetDeckRoutine.sample())
+    return RoutineDayDeckView(routine: SetDeckRoutine.sample(), animateEntrance: true)
         .environment(exerciseManager)
         .preferredColorScheme(.dark)
 }

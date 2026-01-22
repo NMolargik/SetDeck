@@ -6,6 +6,7 @@
 //
 
 import TipKit
+import SwiftUI
 
 // MARK: - Tip Events
 
@@ -30,6 +31,10 @@ struct EditRoutineTip: Tip {
         Image(systemName: "plus.circle.fill")
     }
 
+    var options: [TipOption] {
+        Tips.MaxDisplayCount(3)
+    }
+
     var rules: [Rule] {
         #Rule(TipEvents.onboardingCompleted) { event in
             event.donations.count >= 1
@@ -51,6 +56,9 @@ struct AddExerciseTip: Tip {
     }
 
     var rules: [Rule] {
+        #Rule(TipEvents.onboardingCompleted) { event in
+            event.donations.count >= 1
+        }
         #Rule(TipEvents.editRoutineOpened) { event in
             event.donations.count >= 1
         }

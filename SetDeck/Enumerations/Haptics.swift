@@ -1,6 +1,6 @@
 //
 //  Haptics.swift
-//  Stork
+//  SetDeck
 //
 //  Created by Nick Molargik on 9/16/25.
 //

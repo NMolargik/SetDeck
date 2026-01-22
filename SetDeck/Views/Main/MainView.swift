@@ -12,21 +12,18 @@ import TipKit
 struct MainView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @Environment(\.scenePhase) private var scenePhase
-    
     @Environment(ExerciseManager.self) private var exerciseManager: ExerciseManager
     @Environment(HealthManager.self) private var healthManager: HealthManager
 
-    var resetApplication: () -> Void
-    
+    var animateDeckEntrance: Bool = false
+
+    @Binding var pendingDeepLink: DeepLink?
+
     @State private var viewModel: ViewModel = ViewModel()
-    @State private var showingEditRoutineSheet: Bool = false
-    
-    // Workout timer state for toolbar
+    @State private var showingRoutineEditSheet: Bool = false
     @State private var workoutNow: Date = Date()
     @State private var workoutToolbarTimer: Timer? = nil
 
-    // TipKit
     private let editRoutineTip = EditRoutineTip()
 
     private var isStrengthWorkoutActive: Bool {
@@ -68,7 +65,7 @@ struct MainView: View {
             ZStack {
                 NavigationStack {
                     VStack(spacing: 0) {
-                        RoutineView()
+                        RoutineView(animateEntrance: animateDeckEntrance)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     .padding(.horizontal, 16)
@@ -77,16 +74,20 @@ struct MainView: View {
                         ToolbarItem(placement: .topBarLeading) {
                             Button {
                                 editRoutineTip.invalidate(reason: .actionPerformed)
-                                showingEditRoutineSheet = true
+                                showingRoutineEditSheet = true
                             } label: {
                                 Text("Edit Routine")
                                     .bold()
                             }
                             .tint(.greenStart)
-                            .popoverTip(editRoutineTip)
+                            .overlay {
+                                Color.clear
+                                    .popoverTip(editRoutineTip, arrowEdge: .bottom)
+                                    .tint(.blue)
+                            }
                         }
                     }
-                    .sheet(isPresented: $showingEditRoutineSheet) {
+                    .sheet(isPresented: $showingRoutineEditSheet) {
                         NavigationStack {
                             EditRoutineView()
                                 .navigationTitle("Edit Routine")
@@ -124,8 +125,6 @@ struct MainView: View {
                         .accessibilityLabel("Settings")
                     }
                 }
-                .navigationDestination(for: Exercise.self) { deliveryId in
-                    }
             }
         }
         .sheet(isPresented: $viewModel.showingSettingsSheet) {
@@ -143,6 +142,32 @@ struct MainView: View {
                 }
             }
         }
+        .onChange(of: pendingDeepLink) { _, newLink in
+            handleDeepLink(newLink)
+        }
+        .onAppear {
+            // Handle any pending deep link on appear
+            if pendingDeepLink != nil {
+                handleDeepLink(pendingDeepLink)
+            }
+        }
+    }
+    
+    private func handleDeepLink(_ link: DeepLink?) {
+        guard let link = link else { return }
+
+        // Reset the deep link after handling
+        defer { pendingDeepLink = nil }
+
+        switch link {
+        case .routine:
+            viewModel.appTab = .routine
+        case .settings:
+            viewModel.appTab = .settings
+            viewModel.showingSettingsSheet = true
+        case .stats:
+            viewModel.appTab = .stats
+        }
     }
     
     // MARK: - iPHONE
@@ -151,7 +176,7 @@ struct MainView: View {
     private func compactWidthView() -> some View {
         TabView(selection: $viewModel.appTab) {
             NavigationStack {
-                RoutineView()
+                RoutineView(animateEntrance: animateDeckEntrance)
                     .navigationTitle("SetDeck")
                     .toolbar {
                         ToolbarItem(placement: .topBarTrailing) {
@@ -167,7 +192,11 @@ struct MainView: View {
                             .simultaneousGesture(TapGesture().onEnded {
                                 editRoutineTip.invalidate(reason: .actionPerformed)
                             })
-                            .popoverTip(editRoutineTip)
+                            .overlay {
+                                Color.clear
+                                    .popoverTip(editRoutineTip, arrowEdge: .bottom)
+                                    .tint(.blue)
+                            }
                         }
                         if isStrengthWorkoutActive {
                             ToolbarItem(placement: .topBarTrailing) {
@@ -247,8 +276,9 @@ struct MainView: View {
     }
     try? context.save()
     
-    return MainView(resetApplication: {})
+    return MainView(pendingDeepLink: .constant(nil))
         .preferredColorScheme(.dark)
+        .modelContainer(container)
         .environment(ExerciseManager(context: context))
         .environment(HealthManager())
 

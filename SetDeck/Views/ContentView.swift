@@ -10,89 +10,126 @@ import SwiftData
 import TipKit
 
 struct ContentView: View {
-    @Environment(ExerciseManager.self) private var exerciseManager: ExerciseManager
-    @AppStorage(AppStorageKeys.hasMigratedFromReadySet) private var hasMigratedFromReadySet: Bool = false
-    @AppStorage(AppStorageKeys.isOnboardingComplete) private var isOnboardingComplete: Bool = false
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.scenePhase) private var scenePhase
 
-    var resetApplication: () -> Void
+    @AppStorage(AppStorageKeys.isOnboardingComplete) private var isOnboardingComplete: Bool = false
+    
+    @Binding var pendingDeepLink: DeepLink?
     
     @State private var viewModel: ContentView.ViewModel = ViewModel()
+    @State private var exerciseManager: ExerciseManager?
     @State private var healthManager: HealthManager = HealthManager()
-
+    @State private var cloudSyncManager = CloudSyncManager()
+    @State private var shouldAnimateDeckEntrance: Bool = false
+    
     var body: some View {
         ZStack {
             switch viewModel.appStage {
-            case .start:
-                ProgressView()
-                    .id("start")
-                    .zIndex(0)
-                    .task {
-                        viewModel.prepareApp(isOnboardingComplete: isOnboardingComplete)
-                    }
             case .splash:
                 SplashView(
-                    moveToMigration: {
-                        viewModel.appStage = hasMigratedFromReadySet ? .onboarding : .migration
+                    onContinue: {
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            viewModel.appStage = .onboarding
+                        }
                     }
                 )
                 .id("splash")
                 .transition(viewModel.leadingTransition)
                 .zIndex(1)
-            case .migration:
-                MigrationView(
-                    migrationComplete: {
-                        hasMigratedFromReadySet = true
-                        withAnimation {
-                            viewModel.appStage = .onboarding
-                        }
-                    }
-                )
-                .id("migration")
-                .environment(exerciseManager)
-                .transition(viewModel.leadingTransition)
-                .zIndex(1)
+                
             case .onboarding:
                 OnboardingView(onFinished: {
                     isOnboardingComplete = true
                     Task { await TipEvents.onboardingCompleted.donate() }
                     withAnimation(.easeInOut(duration: 0.3)) {
-                        viewModel.appStage = .main
+                        viewModel.appStage = .syncing
                     }
                 })
                 .id("onboarding")
-                .transition(viewModel.leadingTransition)
-                .zIndex(1)
                 .environment(healthManager)
                 .environment(exerciseManager)
-            case .main:
-                MainView(
-                    resetApplication: {
+                .transition(viewModel.leadingTransition)
+                .zIndex(1)
+                
+            case .syncing:
+                SyncingView(
+                    onSyncComplete: { foundData in
+                        shouldAnimateDeckEntrance = true
                         withAnimation(.easeInOut(duration: 0.3)) {
-                            resetApplication()
+                            viewModel.appStage = .main
                         }
                     }
                 )
+                .environment(exerciseManager)
+                .environment(cloudSyncManager)
+                .id("syncing")
+                .transition(viewModel.leadingTransition)
+                .zIndex(1)
+
+            case .main:
+                MainView(
+                    animateDeckEntrance: shouldAnimateDeckEntrance,
+                    pendingDeepLink: $pendingDeepLink
+                )
                 .id("main")
                 .transition(viewModel.leadingTransition)
+                .zIndex(0)
                 .environment(exerciseManager)
                 .environment(healthManager)
-                .zIndex(0)
+                .environment(cloudSyncManager)
             }
         }
+        
+        .task {
+            // Ensure managers exist in the View
+            await MainActor.run {
+                if self.exerciseManager == nil {
+                    self.exerciseManager = ExerciseManager(context: modelContext)
+                }
+                // Configure cloud sync manager with model context
+                self.cloudSyncManager.configure(with: modelContext)
+            }
+            await viewModel.prepareApp(isOnboardingComplete: isOnboardingComplete)
+            
+            try? Tips.configure([.displayFrequency(.immediate)])
+    
+            // Setup Watch connectivity
+            setupWatchConnectivity()
+        }
+        .onAppear {
+            viewModel.configure(cloudSyncManager: cloudSyncManager)
+        }
+    }
+    
+    private func setupWatchConnectivity() {
+        let connectivityManager = PhoneConnectivityManager.shared
+        connectivityManager.exerciseManager = exerciseManager
+        connectivityManager.activate()
     }
 }
-
-#Preview {
+    
+#Preview("ContentView") {
+    // Set up an in-memory ModelContainer for preview
     let container: ModelContainer
     do {
-        container = try ModelContainer(for: Exercise.self, SetDeckExercise.self, SetDeckRoutine.self, SetDeckSet.self, SetDeckSetHistory.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
+        container = try ModelContainer(
+            for:
+                SetDeckExercise.self,
+                SetDeckRoutine.self,
+                SetDeckSet.self,
+                SetDeckSetHistory.self,
+            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+        )
     } catch {
         fatalError("Preview ModelContainer setup failed: \(error)")
     }
+
     let previewExerciseManager = ExerciseManager(context: container.mainContext)
-    return ContentView(
-        resetApplication: {}
-    )
+    let previewHealthManager = HealthManager()
+
+    return ContentView(pendingDeepLink: .constant(nil))
         .modelContainer(container)
         .environment(previewExerciseManager)
+        .environment(previewHealthManager)
 }

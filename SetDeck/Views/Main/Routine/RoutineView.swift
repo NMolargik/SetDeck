@@ -9,7 +9,10 @@ import SwiftUI
 import SwiftData
 
 struct RoutineView: View {
+    var animateEntrance: Bool = false
+
     @State private var selectedDay: Int = 0 // 0 = Sunday
+    @State private var hasAnimatedInitialEntrance: Bool = false
 
     @Environment(ExerciseManager.self) private var exerciseManager
     @Environment(\.scenePhase) private var scenePhase
@@ -24,14 +27,22 @@ struct RoutineView: View {
 
         VStack(spacing: 0) {
             DayPickerView(selectedDay: $selectedDay)
-            
-            RoutineDayDeckView(routine: exerciseManager.routine(for: selectedDay))
-                .animation(.spring(response: 0.35, dampingFraction: 0.8), value: selectedDay)
+
+            RoutineDayDeckView(
+                routine: exerciseManager.routine(for: selectedDay),
+                animateEntrance: animateEntrance && !hasAnimatedInitialEntrance
+            )
         }
         .padding(.top, 12)
         .animation(.spring(response: 0.35, dampingFraction: 0.8), value: selectedDay)
         .onAppear {
             selectedDay = todayIndex
+            // Mark that we've done the initial entrance animation
+            if animateEntrance {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                    hasAnimatedInitialEntrance = true
+                }
+            }
         }
         .onChange(of: scenePhase) { oldValue, newValue in
             if newValue == .active {

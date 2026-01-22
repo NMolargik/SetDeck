@@ -9,119 +9,105 @@ import SwiftUI
 import SwiftData
 
 struct OnboardingView: View {
-    @Environment(ExerciseManager.self) private var exerciseManager: ExerciseManager
     @Environment(HealthManager.self) private var healthManager: HealthManager
+    @Environment(ExerciseManager.self) private var exerciseManager: ExerciseManager
+
     
     var onFinished: () -> Void = {}
-
-    @State private var viewModel: OnboardingView.ViewModel = OnboardingView.ViewModel()
+    
+    @State private var viewModel = ViewModel()
+    
+    private var steps: [OnboardingStep] {
+        OnboardingStep.allCases
+    }
+    
+    private var currentIndex: Int {
+        steps.firstIndex(of: viewModel.currentStep) ?? 0
+    }
+    
+    private var canContinue: Bool {
+        // `canContinue` on the view model expects an `ExerciseManager?` and returns a Bool.
+        // Pass the manager from the environment if available; otherwise, default to false-safe logic inside the view model.
+        return viewModel.canContinue(exerciseManager: exerciseManager)
+    }
     
     var body: some View {
-        ZStack {
-            LinearGradient(
-                colors: [
-                    Color(red: 0.03, green: 0.10, blue: 0.22),
-                    Color(red: 0.01, green: 0.03, blue: 0.10)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
-            
-            VStack {
-                Group {
-                    ZStack {
-                        pageView()
-                            .id(viewModel.currentPage) // important for transition
-                            .transition(viewModel.isMovingForward ? viewModel.forwardTransition : viewModel.backwardTransition)
+        VStack(spacing: 0) {
+            // Page Indicators
+            if viewModel.currentStep != .complete {
+                HStack(spacing: 8) {
+                    ForEach(Array(steps.enumerated()), id: \.offset) { index, step in
+                        Capsule()
+                            .fill(index <= currentIndex ? Color.greenStart : Color.secondary.opacity(0.3))
+                            .frame(height: 4)
+                            .animation(.easeInOut(duration: 0.3), value: currentIndex)
                     }
-                    .animation(.easeInOut(duration: 0.3), value: viewModel.currentPage)
-                    .padding(.bottom)
-                    
-                    Spacer()
-                    
-                    HStack {
-                        if viewModel.currentPage != .health && viewModel.currentPage != .complete {
-                            Button("Back") {
-                                Haptics.lightImpact()
-                                viewModel.isMovingForward = false
-                                let previous = viewModel.currentPage.previous
-                                withAnimation {
-                                    viewModel.currentPage = previous
-                                }
-                            }
-                            .frame(width: 80)
-                            .foregroundStyle(.white)
-                            .bold()
-                            .padding()
-                            .adaptiveGlass(tint: .red)
-                            .hoverEffectIfAvailable(.highlight)
-                            .accessibilityLabel("Go back")
-                            .accessibilityHint("Returns to the previous onboarding step")
-                        }
-
-                        Spacer()
-                        
-                        if viewModel.currentPage != .complete {
-                            Button("Next") {
-                                Haptics.lightImpact()
-                                let allowed = viewModel.criteriaMet(healthManager: healthManager, exerciseManager: exerciseManager)
-                                viewModel.isMovingForward = true
-                                let next = viewModel.currentPage.next
-                                withAnimation {
-                                    viewModel.currentPage = next
-                                }
-                                if allowed {
-                                    Haptics.success()
-                                }
-                            }
-                            .frame(width: 80)
-                            .foregroundStyle(.white)
-                            .bold()
-                            .padding()
-                            .adaptiveGlass(tint: viewModel.criteriaMet(healthManager: healthManager, exerciseManager: exerciseManager) ? .greenStart : .gray)
-                            .hoverEffectIfAvailable(.highlight)
-                            .accessibilityLabel("Continue")
-                            .accessibilityHint(viewModel.criteriaMet(healthManager: healthManager, exerciseManager: exerciseManager) ? "Proceeds to the next onboarding step" : "Complete the current step to continue")
-                            .disabled(!viewModel.criteriaMet(healthManager: healthManager, exerciseManager: exerciseManager))
-                        }
-                    }
-                    .padding(.horizontal)
                 }
+                .frame(maxWidth: 500)
+                .padding(.horizontal, 24)
+                .padding(.top, 16)
+                .padding(.bottom, 8)
+            }
+            
+            // Content
+            TabView(selection: $viewModel.currentStep) {
+                OnboardingPrivacyPage()
+                    .tag(OnboardingStep.privacy)
+                
+                OnboardingHealthPage()
+                    .tag(OnboardingStep.health)
+                
+                OnboardingBuilderPage()
+                    .tag(OnboardingStep.builder)
+                
+                OnboardingCompletePage(onFinish: onFinished)
+                    .tag(OnboardingStep.complete)
+            }
+            .tabViewStyle(.page(indexDisplayMode: .never))
+            .animation(.easeInOut(duration: 0.3), value: viewModel.currentStep)
+            
+            // Bottom Buttons
+            if viewModel.currentStep != .complete {
+                VStack(spacing: 12) {
+                    // Continue Button
+                    Button {
+                        Haptics.mediumImpact()
+                        Task {
+                            await viewModel.handleContinueTapped(
+                                healthManager: healthManager
+                            )
+                        }
+                    } label: {
+                        HStack(spacing: 8) {
+                            if viewModel.isRequestingPermission {
+                                ProgressView()
+                                    .tint(.white)
+                            } else {
+                                Text("Continue")
+                                    .font(.headline)
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 50)
+                        .background(canContinue ? Color.blueStart : Color.secondary.opacity(0.3))
+                        .foregroundStyle(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                    }
+                    .disabled(!canContinue)
+                }
+                .frame(maxWidth: 500)
+                .padding(.horizontal, 24)
+                .padding(.bottom, 24)
+                .padding(.top, 12)
+                .frame(maxWidth: .infinity)
+                .background(.ultraThinMaterial)
             }
         }
-    }
-    
-    @ViewBuilder
-    private func pageView() -> some View {
-        switch viewModel.currentPage {
-        case .health:
-            OnboardingHealthView(viewModel: viewModel)
-        case .builder:
-            OnboardingBuilderView(viewModel: viewModel)
-        case .complete:
-            OnboardingCompleteView(viewModel: viewModel, finishOnboarding: {
-                Haptics.success()
-                onFinished()
-            })
+        .background(Color(uiColor: .systemGroupedBackground))
+        .task {
+            viewModel.currentStep = .privacy
         }
+        .environment(viewModel)
     }
 }
 
-#Preview {
-    let container: ModelContainer
-
-    do {
-        container = try ModelContainer(for: Exercise.self, SetDeckExercise.self, SetDeckRoutine.self, SetDeckSet.self, SetDeckSetHistory.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
-        
-    } catch {
-        fatalError("Preview ModelContainer setup failed: \(error)")
-    }
-    let previewExerciseManager = ExerciseManager(context: container.mainContext)
-    return OnboardingView(
-        onFinished: {}
-    )
-        .environment(previewExerciseManager)
-        .environment(HealthManager())
-        .preferredColorScheme(.dark)
-}

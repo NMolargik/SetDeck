@@ -31,6 +31,36 @@ class ExerciseManager {
         logger.debug("Init complete. History count: \(histories.count)")
     }
 
+    // MARK: - Refresh
+    /// Refreshes in-memory state by prefetching common entities and bumping the change stamp
+    /// to notify SwiftUI observers. Intended to be called when external changes may have
+    /// modified the underlying store.
+    func refresh() async {
+        do {
+            // Optional maintenance to keep data consistent
+            cleanupDuplicateRoutines()
+            
+            // Prefetch frequently used entities
+            let routinesDesc = FetchDescriptor<SetDeckRoutine>(
+                sortBy: [SortDescriptor(\.day, order: .forward)]
+            )
+            _ = try context.fetch(routinesDesc)
+            
+            let historyDesc = FetchDescriptor<SetDeckSetHistory>(
+                sortBy: [SortDescriptor(\.completedDate, order: .reverse)]
+            )
+            _ = try context.fetch(historyDesc)
+            
+            // Notify observers
+            changeStamp &+= 1
+            logger.debug("Refresh complete. changeStamp=\(self.changeStamp)")
+        } catch {
+            logger.error("Refresh failed: \(error.localizedDescription)")
+            // Still bump to trigger any dependent UI to reevaluate
+            changeStamp &+= 1
+        }
+    }
+
     // MARK: - Routines
     /// Returns all routines, sorted by day (0...6)
     func allRoutines() -> [SetDeckRoutine] {

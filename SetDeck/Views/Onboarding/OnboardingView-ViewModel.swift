@@ -10,46 +10,55 @@ import SwiftUI
 extension OnboardingView {
     @Observable
     class ViewModel {
-        var currentPage: OnboardingPage = .health
-        var isMovingForward: Bool = true
+        var currentStep: OnboardingStep = .privacy
+        var isRequestingPermission: Bool = false
         
-        func criteriaMet(healthManager: HealthManager, exerciseManager: ExerciseManager) -> Bool {
-            switch(self.currentPage) {
-            case .health:
-                return healthManager.isAuthorized
+        func canContinue(exerciseManager: ExerciseManager?) -> Bool {
+            switch currentStep {
+            case .privacy, .health, .complete:
+                return !isRequestingPermission
             case .builder:
-                // Require at least one exercise in any routine
                 return hasAtLeastOneExercise(exerciseManager: exerciseManager)
-            case .complete:
-                return true
             }
         }
 
-        private func hasAtLeastOneExercise(exerciseManager: ExerciseManager) -> Bool {
+        private func hasAtLeastOneExercise(exerciseManager: ExerciseManager?) -> Bool {
+            // Safely unwrap the optional manager; if unavailable, criteria isn't met
+            guard let manager = exerciseManager else { return false }
+
             // Read changeStamp to establish SwiftUI dependency - triggers re-evaluation when data changes
-            _ = exerciseManager.changeStamp
+            _ = manager.changeStamp
 
             for day in 0..<7 {
-                if !exerciseManager.exercises(forDay: day).isEmpty {
+                if !manager.exercises(forDay: day).isEmpty {
                     return true
                 }
             }
             return false
         }
         
-        var forwardTransition: AnyTransition {
-            .asymmetric(
-                insertion: .move(edge: .trailing).combined(with: .opacity),
-                removal: .move(edge: .leading).combined(with: .opacity)
-            )
-        }
-        
-        var backwardTransition: AnyTransition {
-            .asymmetric(
-                insertion: .move(edge: .leading).combined(with: .opacity),
-                // when going back: outgoing page exits toward trailing
-                removal: .move(edge: .trailing).combined(with: .opacity)
-            )
+        @MainActor
+        func handleContinueTapped(
+            healthManager: HealthManager
+        ) async {
+            switch currentStep {
+            case .privacy:
+                currentStep = .health
+            case .health:
+                let hasBeenRequested = healthManager.isAuthorized || healthManager.lastError != nil
+                if !hasBeenRequested {
+                    // Request permission - user must tap Continue again after dialog
+                    isRequestingPermission = true
+                    await healthManager.requestAuthorization()
+                    isRequestingPermission = false
+                    // Stay on page - user will see updated UI and tap Continue again
+                } else {
+                    // Already requested (authorized or denied), move forward
+                    currentStep = .complete
+                }
+            case .builder, .complete:
+                break
+            }
         }
     }
 }

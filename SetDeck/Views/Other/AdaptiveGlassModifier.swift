@@ -1,6 +1,6 @@
 //
 //  AdaptiveGlassModifier.swift
-//  Stork
+//  SetDeck
 //
 //  Created by Nick Molargik on 9/23/25.
 //
