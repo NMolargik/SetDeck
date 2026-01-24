@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="Icons/AppIcon-iOS-Default-1024x1024@1x.png" alt="SetDeck" width="128" height="128">
-</p>
+<img src="Icons/AppIcon-iOS-Default-1024x1024@1x.png" alt="SetDeck" width="128" height="128">
 
 # SetDeck
 
