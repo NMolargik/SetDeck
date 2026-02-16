@@ -20,22 +20,7 @@
     },
     {
       "appearance" : "dark",
-      "value" : {
-        "linear-gradient" : [
-          "display-p3:0.07924,0.17751,0.27418,1.00000",
-          "display-p3:0.72264,0.78277,0.96783,1.00000"
-        ],
-        "orientation" : {
-          "start" : {
-            "x" : 0.5,
-            "y" : 0
-          },
-          "stop" : {
-            "x" : 0.5,
-            "y" : 0.7
-          }
-        }
-      }
+      "value" : "system-dark"
     }
   ],
   "groups" : [

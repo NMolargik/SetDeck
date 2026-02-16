@@ -16,6 +16,9 @@ extension SettingsView {
         var showRoutinesDeletedAlert: Bool = false
         var showGenerateSampleDataConfirmation: Bool = false
         var showSampleDataGeneratedAlert: Bool = false
+        var showResetAchievementsConfirmation: Bool = false
+        var showAchievementsResetAlert: Bool = false
+        var showAchievementsSheet: Bool = false
         var appVersion: String {
             Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "—"
         }

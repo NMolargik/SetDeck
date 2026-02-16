@@ -14,6 +14,7 @@ struct MainView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(ExerciseManager.self) private var exerciseManager: ExerciseManager
     @Environment(HealthManager.self) private var healthManager: HealthManager
+    @Environment(AchievementManager.self) private var achievementManager: AchievementManager?
 
     var animateDeckEntrance: Bool = false
 
@@ -35,13 +36,24 @@ struct MainView: View {
     }
 
     var body: some View {
-        Group {
-            if isRegularWidth {
-                regularWidthView()
-            } else {
-                compactWidthView()
+        ZStack {
+            Group {
+                if isRegularWidth {
+                    regularWidthView()
+                } else {
+                    compactWidthView()
+                }
+            }
+
+            if let celebration = achievementManager?.pendingCelebration {
+                AchievementCelebrationView(achievement: celebration) {
+                    achievementManager?.dismissCelebration()
+                }
+                .zIndex(100)
+                .transition(.opacity)
             }
         }
+        .animation(.easeInOut(duration: 0.3), value: achievementManager?.pendingCelebration != nil)
         .onAppear {
             workoutToolbarTimer?.invalidate()
             workoutToolbarTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
@@ -80,11 +92,7 @@ struct MainView: View {
                                     .bold()
                             }
                             .tint(.greenStart)
-                            .overlay {
-                                Color.clear
-                                    .popoverTip(editRoutineTip, arrowEdge: .bottom)
-                                    .tint(.blue)
-                            }
+                            .popoverTip(editRoutineTip, arrowEdge: .bottom)
                         }
                     }
                     .sheet(isPresented: $showingRoutineEditSheet) {
@@ -93,6 +101,7 @@ struct MainView: View {
                                 .navigationTitle("Edit Routine")
                                 .navigationBarTitleDisplayMode(.inline)
                         }
+                        .preferredColorScheme(.dark)
                     }
                 }
             }
@@ -180,23 +189,15 @@ struct MainView: View {
                     .navigationTitle("SetDeck")
                     .toolbar {
                         ToolbarItem(placement: .topBarTrailing) {
-                            NavigationLink {
-                                EditRoutineView()
-                                    .navigationTitle("Edit Routine")
-                                    .navigationBarTitleDisplayMode(.inline)
+                            Button {
+                                editRoutineTip.invalidate(reason: .actionPerformed)
+                                viewModel.showingEditRoutineSheet = true
                             } label: {
                                 Text("Edit Routine")
                                     .bold()
-                                    .tint(.greenStart)
                             }
-                            .simultaneousGesture(TapGesture().onEnded {
-                                editRoutineTip.invalidate(reason: .actionPerformed)
-                            })
-                            .overlay {
-                                Color.clear
-                                    .popoverTip(editRoutineTip, arrowEdge: .bottom)
-                                    .tint(.blue)
-                            }
+                            .tint(.greenStart)
+                            .popoverTip(editRoutineTip, arrowEdge: .bottom)
                         }
                         if isStrengthWorkoutActive {
                             ToolbarItem(placement: .topBarTrailing) {
@@ -218,6 +219,14 @@ struct MainView: View {
                                 .accessibilityValue(workoutElapsedString)
                             }
                         }
+                    }
+                    .sheet(isPresented: $viewModel.showingEditRoutineSheet) {
+                        NavigationStack {
+                            EditRoutineView()
+                                .navigationTitle("Edit Routine")
+                                .navigationBarTitleDisplayMode(.inline)
+                        }
+                        .preferredColorScheme(.dark)
                     }
             }
             .tabItem {

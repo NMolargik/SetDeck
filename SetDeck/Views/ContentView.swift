@@ -19,6 +19,7 @@ struct ContentView: View {
     
     @State private var viewModel: ContentView.ViewModel = ViewModel()
     @State private var exerciseManager: ExerciseManager?
+    @State private var achievementManager: AchievementManager?
     @State private var healthManager: HealthManager = HealthManager()
     @State private var cloudSyncManager = CloudSyncManager()
     @State private var shouldAnimateDeckEntrance: Bool = false
@@ -78,14 +79,18 @@ struct ContentView: View {
                 .environment(exerciseManager)
                 .environment(healthManager)
                 .environment(cloudSyncManager)
+                .environment(achievementManager)
             }
         }
-        
+
         .task {
             // Ensure managers exist in the View
             await MainActor.run {
                 if self.exerciseManager == nil {
                     self.exerciseManager = ExerciseManager(context: modelContext)
+                }
+                if self.achievementManager == nil, let em = self.exerciseManager {
+                    self.achievementManager = AchievementManager(exerciseManager: em)
                 }
                 // Configure cloud sync manager with model context
                 self.cloudSyncManager.configure(with: modelContext)

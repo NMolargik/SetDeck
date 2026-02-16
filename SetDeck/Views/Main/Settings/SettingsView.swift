@@ -12,6 +12,7 @@ import SwiftData
 struct SettingsView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(ExerciseManager.self) private var exerciseManager: ExerciseManager
+    @Environment(AchievementManager.self) private var achievementManager: AchievementManager?
 
     @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
     @AppStorage(AppStorageKeys.useDayMonthYearDates) private var useDayMonthYearDates = false
@@ -50,6 +51,32 @@ struct SettingsView: View {
                 }
             }
 
+            // MARK: - Achievements
+            Section {
+                Button {
+                    Haptics.lightImpact()
+                    viewModel.showAchievementsSheet = true
+                } label: {
+                    HStack {
+                        Label("View Achievements", systemImage: "trophy.fill")
+                            .foregroundStyle(.primary)
+
+                        Spacer()
+
+                        if let am = achievementManager {
+                            Text("\(am.unlockedAchievements.count)/\(Achievement.allCases.count)")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
+
+                        Image(systemName: "chevron.right")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .hoverEffectIfAvailable(.highlight)
+            }
+
             // MARK: - Danger Zone
             Section {
                 Button {
@@ -66,6 +93,15 @@ struct SettingsView: View {
                     viewModel.showDeleteRoutinesConfirmation = true
                 } label: {
                     Label("Delete All Routines", systemImage: "trash.fill")
+                        .foregroundStyle(.red)
+                }
+                .hoverEffectIfAvailable(.highlight)
+
+                Button {
+                    Haptics.lightImpact()
+                    viewModel.showResetAchievementsConfirmation = true
+                } label: {
+                    Label("Reset Achievements", systemImage: "trophy.fill")
                         .foregroundStyle(.red)
                 }
                 .hoverEffectIfAvailable(.highlight)
@@ -92,6 +128,13 @@ struct SettingsView: View {
                 Text("Creates sample exercises and sets for all 7 days, plus 30 days of workout history.")
             }
             #endif
+        }
+        .sheet(isPresented: $viewModel.showAchievementsSheet) {
+            NavigationStack {
+                AchievementsView(
+                    unlockedAchievements: achievementManager?.unlockedAchievements ?? []
+                )
+            }
         }
         .alert("Clear Set History?", isPresented: $viewModel.showDeleteConfirmation) {
             Button("Delete History", role: .destructive) {
@@ -126,6 +169,23 @@ struct SettingsView: View {
             Button("OK", role: .cancel) { }
         } message: {
             Text("All routines, exercises, sets, and history have been deleted.")
+        }
+        .alert("Reset Achievements?", isPresented: $viewModel.showResetAchievementsConfirmation) {
+            Button("Reset", role: .destructive) {
+                Haptics.lightImpact()
+                achievementManager?.resetAllAchievements()
+                viewModel.showAchievementsResetAlert = true
+            }
+            Button("Cancel", role: .cancel) {
+                Haptics.lightImpact()
+            }
+        } message: {
+            Text("This will reset all of your achievement progress. You can earn them again by continuing to work out.")
+        }
+        .alert("Achievements Reset", isPresented: $viewModel.showAchievementsResetAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("All achievements have been reset. Keep working out to earn them again!")
         }
         #if DEBUG
         .alert("Generate Sample Data?", isPresented: $viewModel.showGenerateSampleDataConfirmation) {

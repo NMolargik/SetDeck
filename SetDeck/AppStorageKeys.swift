@@ -12,4 +12,5 @@ struct AppStorageKeys {
     static let hasCompletedInitialSync = "hasCompletedInitialSync"
     static let useMetricUnits = "useMetricUnits"
     static let useDayMonthYearDates = "useDayMonthYearDates"
+    static let celebratedAchievements = "celebratedAchievements"
 }

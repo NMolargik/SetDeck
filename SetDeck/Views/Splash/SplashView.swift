@@ -11,6 +11,7 @@ struct SplashView: View {
     var onContinue: () -> Void
 
     @State private var viewModel = SplashView.ViewModel()
+    @State private var iconPulsing = false
     @Environment(\.horizontalSizeClass) private var hSizeClass
 
     var body: some View {
@@ -41,11 +42,18 @@ struct SplashView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(maxWidth: hSizeClass == .regular ? 200 : 220)
+                .scaleEffect(iconPulsing ? 1.06 : 1.0)
                 .opacity(viewModel.subtitleVisible ? 1 : 0)
                 .scaleEffect(viewModel.subtitleVisible ? 1 : 0)
                 .animation(.bouncy(duration: 0.6).delay(0.8), value: viewModel.subtitleVisible)
+                .animation(.easeInOut(duration: 1.2).repeatForever(autoreverses: true), value: iconPulsing)
                 .padding()
                 .accessibilityLabel("SetDeck app logo")
+                .onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.4) {
+                        iconPulsing = true
+                    }
+                }
 
             Spacer()
 
@@ -79,7 +87,9 @@ struct SplashView: View {
         }
         .padding(.top, hSizeClass == .regular ? 40 : 80)
         .frame(maxWidth: hSizeClass == .regular ? 520 : .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.horizontal, 24)
+        .background(Color.black)
     }
 }
 

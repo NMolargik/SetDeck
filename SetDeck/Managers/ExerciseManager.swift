@@ -20,6 +20,9 @@ class ExerciseManager {
     // Observed change token to trigger SwiftUI updates when data mutates
     var changeStamp: Int = 0
 
+    // Callback fired after data mutations (used by AchievementManager)
+    var onDataMutated: (() -> Void)?
+
     // MARK: - Init
     init(context: ModelContext) {
         logger.debug("Initializing with context: \(String(describing: ObjectIdentifier(context)))")
@@ -146,7 +149,8 @@ class ExerciseManager {
                    targetDuration: nil,
                    setDescription: nil,
                    rpe: 6)
-        
+
+        onDataMutated?()
         return exercise
     }
     
@@ -329,6 +333,7 @@ class ExerciseManager {
             routine.lastUpdated = Date()
         }
         saveContext()
+        onDataMutated?()
         return history
     }
 
