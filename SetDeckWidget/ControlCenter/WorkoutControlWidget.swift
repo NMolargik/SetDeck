@@ -11,8 +11,8 @@ import AppIntents
 
 // MARK: - Workout Toggle Intent for Control Center
 struct ToggleWorkoutIntent: AppIntent {
-    static var title: LocalizedStringResource = "Toggle Workout"
-    static var description = IntentDescription("Start or stop a strength training workout")
+    static let title: LocalizedStringResource = "Toggle Workout"
+    static let description = IntentDescription("Start or stop a strength training workout")
 
     func perform() async throws -> some IntentResult {
         let healthManager = await HealthManager(forWidget: true)
@@ -70,8 +70,8 @@ struct StartWorkoutControl: ControlWidget {
 
 // MARK: - Start Workout Intent
 struct StartWorkoutIntent: AppIntent {
-    static var title: LocalizedStringResource = "Start Workout"
-    static var description = IntentDescription("Start a strength training workout")
+    static let title: LocalizedStringResource = "Start Workout"
+    static let description = IntentDescription("Start a strength training workout")
 
     func perform() async throws -> some IntentResult {
         let healthManager = await HealthManager(forWidget: true)
@@ -107,8 +107,8 @@ struct StopWorkoutControl: ControlWidget {
 
 // MARK: - Stop Workout Intent
 struct StopWorkoutIntent: AppIntent {
-    static var title: LocalizedStringResource = "Stop Workout"
-    static var description = IntentDescription("Stop the current workout")
+    static let title: LocalizedStringResource = "Stop Workout"
+    static let description = IntentDescription("Stop the current workout")
 
     func perform() async throws -> some IntentResult {
         let healthManager = await HealthManager(forWidget: true)

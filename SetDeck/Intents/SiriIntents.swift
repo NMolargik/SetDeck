@@ -95,10 +95,10 @@ enum WorkoutDay: String, AppEnum {
 
 /// "Hey Siri, what's my workout today?"
 struct GetTodayWorkoutIntent: AppIntent {
-    static var title: LocalizedStringResource = "What's My Workout Today"
-    static var description = IntentDescription("Get your scheduled workout for today")
+    static let title: LocalizedStringResource = "What's My Workout Today"
+    static let description = IntentDescription("Get your scheduled workout for today")
 
-    static var openAppWhenRun: Bool = false
+    static let openAppWhenRun: Bool = false
 
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
@@ -142,10 +142,10 @@ struct GetTodayWorkoutIntent: AppIntent {
 
 /// "Hey Siri, what's my workout on Monday?"
 struct GetWorkoutForDayIntent: AppIntent {
-    static var title: LocalizedStringResource = "What's My Workout On"
-    static var description = IntentDescription("Get your scheduled workout for a specific day")
+    static let title: LocalizedStringResource = "What's My Workout On"
+    static let description = IntentDescription("Get your scheduled workout for a specific day")
 
-    static var openAppWhenRun: Bool = false
+    static let openAppWhenRun: Bool = false
 
     @Parameter(title: "Day")
     var day: WorkoutDay
@@ -188,10 +188,10 @@ struct GetWorkoutForDayIntent: AppIntent {
 
 /// "Hey Siri, am I working out?"
 struct GetWorkoutStatusIntent: AppIntent {
-    static var title: LocalizedStringResource = "Am I Working Out"
-    static var description = IntentDescription("Check if you have an active workout session")
+    static let title: LocalizedStringResource = "Am I Working Out"
+    static let description = IntentDescription("Check if you have an active workout session")
 
-    static var openAppWhenRun: Bool = false
+    static let openAppWhenRun: Bool = false
 
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
@@ -221,10 +221,10 @@ struct GetWorkoutStatusIntent: AppIntent {
 
 /// "Hey Siri, how many exercises do I have today?"
 struct GetExerciseCountIntent: AppIntent {
-    static var title: LocalizedStringResource = "How Many Exercises Today"
-    static var description = IntentDescription("Get the number of exercises in today's workout")
+    static let title: LocalizedStringResource = "How Many Exercises Today"
+    static let description = IntentDescription("Get the number of exercises in today's workout")
 
-    static var openAppWhenRun: Bool = false
+    static let openAppWhenRun: Bool = false
 
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {

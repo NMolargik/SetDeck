@@ -10,7 +10,7 @@ import SwiftUI
 
 // MARK: - Tip Events
 
-enum TipEvents {
+nonisolated enum TipEvents {
     static let onboardingCompleted = Tips.Event(id: "onboardingCompleted")
     static let editRoutineOpened = Tips.Event(id: "editRoutineOpened")
     static let firstExerciseAdded = Tips.Event(id: "firstExerciseAdded")

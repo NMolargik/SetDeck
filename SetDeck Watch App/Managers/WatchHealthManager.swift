@@ -246,8 +246,9 @@ extension WatchHealthManager: HKWorkoutSessionDelegate {
 
     nonisolated func workoutSession(_ workoutSession: HKWorkoutSession,
                                      didFailWithError error: Error) {
+        let errorDescription = error.localizedDescription
         Task { @MainActor in
-            logger.error("Workout session failed: \(error.localizedDescription)")
+            logger.error("Workout session failed: \(errorDescription)")
         }
     }
 }

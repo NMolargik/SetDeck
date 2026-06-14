@@ -145,7 +145,10 @@ struct SetCompletionMessage: Codable {
 }
 
 // MARK: - Message Keys
-enum WatchMessageKey {
+/// Plain string constants shared with the nonisolated WatchConnectivity
+/// delegate callbacks, so the enum is marked nonisolated to opt out of the
+/// target's default main-actor isolation.
+nonisolated enum WatchMessageKey {
     static let routineRequest = "routineRequest"
     static let routineData = "routineData"
     static let setCompletion = "setCompletion"

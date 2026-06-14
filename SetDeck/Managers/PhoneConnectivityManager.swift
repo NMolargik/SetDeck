@@ -118,9 +118,12 @@ class PhoneConnectivityManager: NSObject {
         do {
             let completion = try JSONDecoder().decode(SetCompletionMessage.self, from: data)
 
-            // Find the set and record history
+            // Find the set and record history. Bind setId to a local Sendable
+            // UUID so the #Predicate macro doesn't capture a key path through
+            // the main-actor-isolated SetCompletionMessage type.
+            let setId = completion.setId
             let setsDescriptor = FetchDescriptor<SetDeckSet>(
-                predicate: #Predicate { $0.uuid == completion.setId }
+                predicate: #Predicate { $0.uuid == setId }
             )
 
             if let sets = try? exerciseManager.context.fetch(setsDescriptor),
@@ -188,17 +191,24 @@ class PhoneConnectivityManager: NSObject {
 // MARK: - WCSessionDelegate
 extension PhoneConnectivityManager: WCSessionDelegate {
     nonisolated func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        // Extract Sendable values before hopping to the main actor; WCSession
+        // and Error are not Sendable and must not cross the isolation boundary.
+        let isPaired = session.isPaired
+        let isWatchAppInstalled = session.isWatchAppInstalled
+        let isReachable = session.isReachable
+        let stateRawValue = activationState.rawValue
+        let errorDescription = error?.localizedDescription
         Task { @MainActor in
-            if let error = error {
-                logger.error("WatchConnectivity activation failed: \(error.localizedDescription)")
+            if let errorDescription {
+                logger.error("WatchConnectivity activation failed: \(errorDescription)")
             } else {
-                logger.info("WatchConnectivity activated with state: \(activationState.rawValue)")
-                self.isPaired = session.isPaired
-                self.isWatchAppInstalled = session.isWatchAppInstalled
-                self.isReachable = session.isReachable
+                logger.info("WatchConnectivity activated with state: \(stateRawValue)")
+                self.isPaired = isPaired
+                self.isWatchAppInstalled = isWatchAppInstalled
+                self.isReachable = isReachable
 
                 // Send routine on activation if Watch is reachable
-                if session.isReachable {
+                if isReachable {
                     self.sendTodayRoutineToWatch()
                 }
             }
@@ -220,38 +230,41 @@ extension PhoneConnectivityManager: WCSessionDelegate {
     }
 
     nonisolated func sessionReachabilityDidChange(_ session: WCSession) {
+        let isReachable = session.isReachable
         Task { @MainActor in
-            self.isReachable = session.isReachable
-            logger.debug("Watch reachability changed: \(session.isReachable)")
+            self.isReachable = isReachable
+            logger.debug("Watch reachability changed: \(isReachable)")
         }
     }
 
     nonisolated func sessionWatchStateDidChange(_ session: WCSession) {
+        let isPaired = session.isPaired
+        let isWatchAppInstalled = session.isWatchAppInstalled
         Task { @MainActor in
-            self.isPaired = session.isPaired
-            self.isWatchAppInstalled = session.isWatchAppInstalled
-            logger.debug("Watch state changed - paired: \(session.isPaired), installed: \(session.isWatchAppInstalled)")
+            self.isPaired = isPaired
+            self.isWatchAppInstalled = isWatchAppInstalled
+            logger.debug("Watch state changed - paired: \(isPaired), installed: \(isWatchAppInstalled)")
         }
     }
 
     // Handle messages from Watch
     nonisolated func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
+        // Extract Sendable values from the non-Sendable message before hopping.
+        let hasRoutineRequest = message[WatchMessageKey.routineRequest] != nil
+        let setCompletionData = message[WatchMessageKey.setCompletion] as? Data
+        let hasWorkoutStarted = message[WatchMessageKey.workoutStarted] != nil
+        let hasWorkoutEnded = message[WatchMessageKey.workoutEnded] != nil
         Task { @MainActor in
-            // Handle routine request
-            if message[WatchMessageKey.routineRequest] != nil {
+            if hasRoutineRequest {
                 self.sendTodayRoutineToWatch()
             }
-
-            // Handle set completion
-            if let data = message[WatchMessageKey.setCompletion] as? Data {
-                self.handleSetCompletion(from: data)
+            if let setCompletionData {
+                self.handleSetCompletion(from: setCompletionData)
             }
-
-            // Handle workout notifications
-            if message[WatchMessageKey.workoutStarted] != nil {
+            if hasWorkoutStarted {
                 logger.info("Watch started a workout")
             }
-            if message[WatchMessageKey.workoutEnded] != nil {
+            if hasWorkoutEnded {
                 logger.info("Watch ended a workout")
             }
         }
@@ -259,11 +272,14 @@ extension PhoneConnectivityManager: WCSessionDelegate {
 
     // Handle messages with reply
     nonisolated func session(_ session: WCSession, didReceiveMessage message: [String: Any], replyHandler: @escaping ([String: Any]) -> Void) {
+        let hasRoutineRequest = message[WatchMessageKey.routineRequest] != nil
+        // WCSession reply handlers are invoked once; box to transfer safely.
+        let replyBox = UncheckedSendableBox(value: replyHandler)
         Task { @MainActor in
             // Handle routine request with reply
-            if message[WatchMessageKey.routineRequest] != nil {
+            if hasRoutineRequest {
                 guard let exerciseManager = self.exerciseManager else {
-                    replyHandler([:])
+                    replyBox.value([:])
                     return
                 }
 
@@ -274,29 +290,30 @@ extension PhoneConnectivityManager: WCSessionDelegate {
 
                 do {
                     let data = try JSONEncoder().encode(watchRoutine)
-                    replyHandler([WatchMessageKey.routineData: data])
+                    replyBox.value([WatchMessageKey.routineData: data])
                 } catch {
                     logger.error("Failed to encode routine for reply: \(error.localizedDescription)")
-                    replyHandler([:])
+                    replyBox.value([:])
                 }
             } else {
-                replyHandler([:])
+                replyBox.value([:])
             }
         }
     }
 
     // Handle application context updates
     nonisolated func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
+        let setCompletionData = applicationContext[WatchMessageKey.setCompletion] as? Data
         Task { @MainActor in
-            if let data = applicationContext[WatchMessageKey.setCompletion] as? Data {
-                self.handleSetCompletion(from: data)
+            if let setCompletionData {
+                self.handleSetCompletion(from: setCompletionData)
             }
         }
     }
 }
 
 // MARK: - Watch Message Keys (shared)
-enum WatchMessageKey {
+nonisolated enum WatchMessageKey {
     static let routineRequest = "routineRequest"
     static let routineData = "routineData"
     static let setCompletion = "setCompletion"

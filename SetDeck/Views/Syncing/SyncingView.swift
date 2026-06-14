@@ -95,12 +95,17 @@ struct SyncingView: View {
     /// Animates the loading dots
     private func startDotAnimation() {
         Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
-            if hasTimedOut {
-                timer.invalidate()
-                return
+            // Invalidate from the (nonisolated) timer scope; only touch
+            // main-actor state inside assumeIsolated. Avoids sending `timer`.
+            let shouldStop = MainActor.assumeIsolated { () -> Bool in
+                if hasTimedOut { return true }
+                withAnimation {
+                    dotCount = (dotCount + 1) % 4
+                }
+                return false
             }
-            withAnimation {
-                dotCount = (dotCount + 1) % 4
+            if shouldStop {
+                timer.invalidate()
             }
         }
     }

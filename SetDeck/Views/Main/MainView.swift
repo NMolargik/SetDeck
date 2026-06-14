@@ -57,7 +57,7 @@ struct MainView: View {
         .onAppear {
             workoutToolbarTimer?.invalidate()
             workoutToolbarTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-                workoutNow = Date()
+                MainActor.assumeIsolated { workoutNow = Date() }
             }
         }
         .onDisappear {

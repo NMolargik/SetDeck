@@ -168,7 +168,7 @@ struct HealthView: View {
             // Start a periodic timer to update elapsed display
             workoutTimer?.invalidate()
             workoutTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-                now = Date()
+                MainActor.assumeIsolated { now = Date() }
             }
             isPulsing = isStrengthWorkoutActive
         }

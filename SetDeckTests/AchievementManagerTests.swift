@@ -11,27 +11,17 @@ import SwiftData
 @testable import SetDeck
 
 @MainActor
-@Suite("AchievementManager Tests")
+@Suite("AchievementManager Tests", .serialized)
 struct AchievementManagerTests {
     var container: ModelContainer!
     var exerciseManager: ExerciseManager!
     var sut: AchievementManager!
 
-    init() {
+    init() throws {
         // Clear any leftover celebrated achievements
         UserDefaults.standard.removeObject(forKey: AppStorageKeys.celebratedAchievements)
 
-        do {
-            container = try ModelContainer(
-                for: SetDeckRoutine.self,
-                SetDeckExercise.self,
-                SetDeckSet.self,
-                SetDeckSetHistory.self,
-                configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-            )
-        } catch {
-            #expect(Bool(false), "Failed to create in-memory ModelContainer: \(error)")
-        }
+        container = try TestSupport.makeContainer()
 
         let context = container.mainContext
         exerciseManager = ExerciseManager(context: context)

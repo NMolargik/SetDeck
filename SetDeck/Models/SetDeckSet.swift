@@ -108,10 +108,10 @@ extension SetDeckSet {
 
 // MARK: - Deterministic RNG helper
 /// A simple deterministic RNG for repeatable samples when a seed is provided
-struct SeededRandomNumberGenerator: nonisolated RandomNumberGenerator {
+nonisolated struct SeededRandomNumberGenerator: RandomNumberGenerator {
     private var state: UInt64
     init(seed: UInt64) { self.state = seed == 0 ? 0xdeadbeef : seed }
-    nonisolated mutating func next() -> UInt64 {
+    mutating func next() -> UInt64 {
         // Xorshift64*
         state &+= 0x9E3779B97F4A7C15
         var z = state

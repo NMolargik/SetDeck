@@ -10,8 +10,8 @@ import WidgetKit
 
 /// App Intent to add water intake from widgets and Shortcuts
 struct AddWaterIntent: AppIntent {
-    static var title: LocalizedStringResource = "Add Water"
-    static var description = IntentDescription("Log water intake to Health")
+    static let title: LocalizedStringResource = "Add Water"
+    static let description = IntentDescription("Log water intake to Health")
 
     @Parameter(title: "Amount (ml)", default: 250)
     var amountML: Int
@@ -35,8 +35,8 @@ struct AddWaterIntent: AppIntent {
 
 /// Quick add 250ml (8oz glass)
 struct AddWaterSmallIntent: AppIntent {
-    static var title: LocalizedStringResource = "Add Glass of Water"
-    static var description = IntentDescription("Log a glass of water (250ml / 8oz)")
+    static let title: LocalizedStringResource = "Add Glass of Water"
+    static let description = IntentDescription("Log a glass of water (250ml / 8oz)")
 
     func perform() async throws -> some IntentResult {
         let healthManager = await HealthManager()
@@ -52,8 +52,8 @@ struct AddWaterSmallIntent: AppIntent {
 
 /// Quick add 500ml (16oz bottle)
 struct AddWaterLargeIntent: AppIntent {
-    static var title: LocalizedStringResource = "Add Bottle of Water"
-    static var description = IntentDescription("Log a bottle of water (500ml / 16oz)")
+    static let title: LocalizedStringResource = "Add Bottle of Water"
+    static let description = IntentDescription("Log a bottle of water (500ml / 16oz)")
 
     func perform() async throws -> some IntentResult {
         let healthManager = await HealthManager()

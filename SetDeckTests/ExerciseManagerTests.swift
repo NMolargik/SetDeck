@@ -11,28 +11,16 @@ import SwiftData
 @testable import SetDeck
 
 @MainActor
-@Suite("ExerciseManager Tests")
+@Suite("ExerciseManager Tests", .serialized)
 struct ExerciseManagerTests {
     // Shared test context
     var container: ModelContainer!
     var sut: ExerciseManager!  // System under test
-    
-    init() {
-        do {
-            // In-memory container for isolated, non-persistent tests.
-            // Include all relevant models; add more if your schema has additional entities.
-            container = try ModelContainer(
-                for: SetDeckRoutine.self,
-                SetDeckExercise.self,
-                SetDeckSet.self,
-                SetDeckSetHistory.self,
-                configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-            )
-        } catch {
-            // In Swift Testing, use #expect with .failure to mark test failure
-            #expect(Bool(false), "Failed to create in-memory ModelContainer: \(error)")
-        }
-        
+
+    init() throws {
+        // Unique on-disk store per container; see TestSupport for why an
+        // in-memory store is unsafe under parallel Swift Testing.
+        container = try TestSupport.makeContainer()
         let context = container.mainContext
         sut = ExerciseManager(context: context)
     }

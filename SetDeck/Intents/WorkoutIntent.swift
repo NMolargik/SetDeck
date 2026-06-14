@@ -9,8 +9,8 @@ import AppIntents
 
 /// App Intent to toggle workout session
 struct ToggleWorkoutIntent: AppIntent {
-    static var title: LocalizedStringResource = "Toggle Workout"
-    static var description = IntentDescription("Start or stop a strength training workout")
+    static let title: LocalizedStringResource = "Toggle Workout"
+    static let description = IntentDescription("Start or stop a strength training workout")
 
     func perform() async throws -> some IntentResult {
         let healthManager = await HealthManager()
@@ -28,8 +28,8 @@ struct ToggleWorkoutIntent: AppIntent {
 
 /// Start workout intent
 struct StartWorkoutIntent: AppIntent {
-    static var title: LocalizedStringResource = "Start Workout"
-    static var description = IntentDescription("Start a strength training workout")
+    static let title: LocalizedStringResource = "Start Workout"
+    static let description = IntentDescription("Start a strength training workout")
 
     func perform() async throws -> some IntentResult {
         let healthManager = await HealthManager()
@@ -45,8 +45,8 @@ struct StartWorkoutIntent: AppIntent {
 
 /// Stop workout intent
 struct StopWorkoutIntent: AppIntent {
-    static var title: LocalizedStringResource = "Stop Workout"
-    static var description = IntentDescription("Stop the current workout")
+    static let title: LocalizedStringResource = "Stop Workout"
+    static let description = IntentDescription("Stop the current workout")
 
     func perform() async throws -> some IntentResult {
         let healthManager = await HealthManager()

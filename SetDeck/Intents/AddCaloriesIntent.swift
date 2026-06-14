@@ -10,8 +10,8 @@ import WidgetKit
 
 /// App Intent to add calorie intake from widgets and Shortcuts
 struct AddCaloriesIntent: AppIntent {
-    static var title: LocalizedStringResource = "Add Calories"
-    static var description = IntentDescription("Log calorie intake to Health")
+    static let title: LocalizedStringResource = "Add Calories"
+    static let description = IntentDescription("Log calorie intake to Health")
 
     @Parameter(title: "Amount (kcal)", default: 100)
     var amountKcal: Int
@@ -34,8 +34,8 @@ struct AddCaloriesIntent: AppIntent {
 
 /// Quick add 100 kcal (snack)
 struct AddCaloriesSnackIntent: AppIntent {
-    static var title: LocalizedStringResource = "Add Snack"
-    static var description = IntentDescription("Log a small snack (100 kcal)")
+    static let title: LocalizedStringResource = "Add Snack"
+    static let description = IntentDescription("Log a small snack (100 kcal)")
 
     func perform() async throws -> some IntentResult {
         let healthManager = await HealthManager()
@@ -50,8 +50,8 @@ struct AddCaloriesSnackIntent: AppIntent {
 
 /// Quick add 300 kcal (small meal)
 struct AddCaloriesMealIntent: AppIntent {
-    static var title: LocalizedStringResource = "Add Small Meal"
-    static var description = IntentDescription("Log a small meal (300 kcal)")
+    static let title: LocalizedStringResource = "Add Small Meal"
+    static let description = IntentDescription("Log a small meal (300 kcal)")
 
     func perform() async throws -> some IntentResult {
         let healthManager = await HealthManager()
@@ -66,8 +66,8 @@ struct AddCaloriesMealIntent: AppIntent {
 
 /// Quick add 500 kcal (regular meal)
 struct AddCaloriesLargeMealIntent: AppIntent {
-    static var title: LocalizedStringResource = "Add Meal"
-    static var description = IntentDescription("Log a meal (500 kcal)")
+    static let title: LocalizedStringResource = "Add Meal"
+    static let description = IntentDescription("Log a meal (500 kcal)")
 
     func perform() async throws -> some IntentResult {
         let healthManager = await HealthManager()

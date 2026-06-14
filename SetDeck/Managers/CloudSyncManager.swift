@@ -80,7 +80,6 @@ final class CloudSyncManager {
     private var networkMonitor: NWPathMonitor?
     private var isNetworkAvailable: Bool = true
     private var notificationObservers: [Any] = []
-    private var remoteChangeContinuations: [CheckedContinuation<Void, Never>] = []
 
     // MARK: - Initialization
 
@@ -161,13 +160,6 @@ final class CloudSyncManager {
         lastSyncDate = Date()
         hasReceivedRemoteChange = true
         updateSyncStatus()
-
-        // Resume any waiting continuations
-        let continuations = remoteChangeContinuations
-        remoteChangeContinuations.removeAll()
-        for continuation in continuations {
-            continuation.resume()
-        }
     }
 
     private func handleStoreChange() {
@@ -233,8 +225,13 @@ final class CloudSyncManager {
 
     /// Waits for a remote change notification or timeout, whichever comes first.
     /// Returns `true` if a remote change was received, `false` if timed out.
-    func waitForRemoteChange(timeout: TimeInterval) async -> Bool {
-        // If we've already received a remote change, return immediately
+    ///
+    /// Polls the `hasReceivedRemoteChange` flag (set by the
+    /// `NSPersistentStoreRemoteChange` observer) until it flips or the deadline
+    /// passes. This avoids storing `CheckedContinuation`s — which both leaked on
+    /// timeout and tripped the Swift 6 region-isolation checker — and is fully
+    /// cooperative-cancellation aware.
+    func waitForRemoteChange(timeout: TimeInterval, pollInterval: Duration = .milliseconds(200)) async -> Bool {
         if hasReceivedRemoteChange {
             return true
         }
@@ -244,37 +241,19 @@ final class CloudSyncManager {
             return false
         }
 
-        // Race between remote change notification and timeout
-        return await withTaskGroup(of: Bool.self) { group in
-            // Task 1: Wait for remote change notification
-            group.addTask { @MainActor in
-                await withCheckedContinuation { continuation in
-                    self.remoteChangeContinuations.append(continuation)
-                }
+        let deadline = ContinuousClock.now.advanced(by: .seconds(timeout))
+        while ContinuousClock.now < deadline {
+            if hasReceivedRemoteChange {
                 return true
             }
-
-            // Task 2: Timeout
-            group.addTask {
-                try? await Task.sleep(nanoseconds: UInt64(timeout * 1_000_000_000))
-                return false
+            do {
+                try await Task.sleep(for: pollInterval)
+            } catch {
+                // Task cancelled — report whatever we have so far.
+                return hasReceivedRemoteChange
             }
-
-            // Return the first result (either remote change or timeout)
-            let result = await group.next() ?? false
-
-            // Cancel remaining tasks
-            group.cancelAll()
-
-            // Clean up any pending continuations if we timed out
-            if !result {
-                await MainActor.run {
-                    self.remoteChangeContinuations.removeAll()
-                }
-            }
-
-            return result
         }
+        return hasReceivedRemoteChange
     }
 
     /// Resets the remote change tracking (useful for testing or re-checking)

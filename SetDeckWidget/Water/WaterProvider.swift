@@ -16,10 +16,11 @@ struct WaterProvider: TimelineProvider {
     }
 
     func getSnapshot(in context: Context, completion: @escaping (WaterEntry) -> Void) {
+        let completionBox = UncheckedSendableBox(value: completion)
         Task {
             let waterML: Double = await fetchWaterForTimeline()
             let entry = WaterEntry(date: Date(), waterML: waterML)
-            completion(entry)
+            completionBox.value(entry)
         }
     }
 
@@ -33,12 +34,13 @@ struct WaterProvider: TimelineProvider {
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<WaterEntry>) -> Void) {
+        let completionBox = UncheckedSendableBox(value: completion)
         Task {
             let waterML: Double = await fetchWaterForTimeline()
             let entry = WaterEntry(date: Date(), waterML: waterML)
             let refreshDate = Date().addingTimeInterval(15 * 60)
             let timeline = Timeline(entries: [entry], policy: .after(refreshDate))
-            completion(timeline)
+            completionBox.value(timeline)
         }
     }
 }

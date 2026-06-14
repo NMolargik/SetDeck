@@ -432,8 +432,9 @@ class HealthManager: NSObject {
             isPaused: true
         )
 
+        let activityBox = UncheckedSendableBox(value: activity)
         Task {
-            await activity.update(.init(state: state, staleDate: nil))
+            await activityBox.value.update(.init(state: state, staleDate: nil))
             logger.info("Live Activity updated for pause")
         }
     }
@@ -454,8 +455,9 @@ class HealthManager: NSObject {
             isPaused: false
         )
 
+        let activityBox = UncheckedSendableBox(value: activity)
         Task {
-            await activity.update(.init(state: state, staleDate: nil))
+            await activityBox.value.update(.init(state: state, staleDate: nil))
             logger.info("Live Activity updated for resume")
         }
     }
@@ -475,8 +477,9 @@ class HealthManager: NSObject {
             isPaused: false
         )
 
+        let activityBox = UncheckedSendableBox(value: activity)
         Task {
-            await activity.end(.init(state: finalState, staleDate: nil), dismissalPolicy: .default)
+            await activityBox.value.end(.init(state: finalState, staleDate: nil), dismissalPolicy: .default)
             logger.info("Live Activity ended")
         }
     }

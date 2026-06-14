@@ -46,7 +46,9 @@ extension HealthView {
         private func startTimer() {
             timer?.invalidate()
             timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-                self?.now = Date()
+                // Scheduled timers fire on the main run loop, so this body is
+                // already on the main actor; assert it to satisfy Swift 6.
+                MainActor.assumeIsolated { self?.now = Date() }
             }
         }
 

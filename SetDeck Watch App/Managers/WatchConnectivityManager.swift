@@ -180,14 +180,20 @@ class WatchConnectivityManager: NSObject {
 // MARK: - WCSessionDelegate
 extension WatchConnectivityManager: WCSessionDelegate {
     nonisolated func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        // Extract Sendable values before hopping to the main actor; WCSession
+        // and Error are not Sendable and must not cross the isolation boundary.
+        let isReachable = session.isReachable
+        let activated = activationState == .activated
+        let stateRawValue = activationState.rawValue
+        let errorDescription = error?.localizedDescription
         Task { @MainActor in
-            if let error = error {
-                logger.error("WatchConnectivity activation failed: \(error.localizedDescription)")
+            if let errorDescription {
+                logger.error("WatchConnectivity activation failed: \(errorDescription)")
                 self.isConnected = false
             } else {
-                logger.info("WatchConnectivity activated with state: \(activationState.rawValue)")
-                self.isConnected = activationState == .activated
-                self.isReachable = session.isReachable
+                logger.info("WatchConnectivity activated with state: \(stateRawValue)")
+                self.isConnected = activated
+                self.isReachable = isReachable
 
                 // Request routine on activation
                 if self.isReachable {
@@ -198,12 +204,13 @@ extension WatchConnectivityManager: WCSessionDelegate {
     }
 
     nonisolated func sessionReachabilityDidChange(_ session: WCSession) {
+        let isReachable = session.isReachable
         Task { @MainActor in
-            self.isReachable = session.isReachable
-            logger.debug("Reachability changed: \(session.isReachable)")
+            self.isReachable = isReachable
+            logger.debug("Reachability changed: \(isReachable)")
 
             // Request routine when iPhone becomes reachable
-            if session.isReachable && self.todayRoutine == nil {
+            if isReachable && self.todayRoutine == nil {
                 self.requestTodayRoutine()
             }
         }
@@ -211,8 +218,9 @@ extension WatchConnectivityManager: WCSessionDelegate {
 
     // Receive messages from iPhone
     nonisolated func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
+        let routineData = message[WatchMessageKey.routineData] as? Data
         Task { @MainActor in
-            if let routineData = message[WatchMessageKey.routineData] as? Data {
+            if let routineData {
                 self.decodeAndSetRoutine(from: routineData)
             }
         }
@@ -220,8 +228,9 @@ extension WatchConnectivityManager: WCSessionDelegate {
 
     // Receive application context updates
     nonisolated func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
+        let routineData = applicationContext[WatchMessageKey.routineData] as? Data
         Task { @MainActor in
-            if let routineData = applicationContext[WatchMessageKey.routineData] as? Data {
+            if let routineData {
                 self.decodeAndSetRoutine(from: routineData)
             }
         }

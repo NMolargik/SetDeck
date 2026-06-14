@@ -16,10 +16,11 @@ struct EnergyProvider: TimelineProvider {
     }
 
     func getSnapshot(in context: Context, completion: @escaping (EnergyEntry) -> Void) {
+        let completionBox = UncheckedSendableBox(value: completion)
         Task {
             let calories: Double = await fetchCaloriesForTimeline()
             let entry = EnergyEntry(date: Date(), caloriesKCal: calories)
-            completion(entry)
+            completionBox.value(entry)
         }
     }
 
@@ -33,12 +34,13 @@ struct EnergyProvider: TimelineProvider {
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<EnergyEntry>) -> Void) {
+        let completionBox = UncheckedSendableBox(value: completion)
         Task {
             let calories: Double = await fetchCaloriesForTimeline()
             let entry = EnergyEntry(date: Date(), caloriesKCal: calories)
             let refreshDate = Date().addingTimeInterval(15 * 60)
             let timeline = Timeline(entries: [entry], policy: .after(refreshDate))
-            completion(timeline)
+            completionBox.value(timeline)
         }
     }
 }
