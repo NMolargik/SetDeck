@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AppIntents
 
 extension HealthView {
     @Observable
@@ -76,10 +77,13 @@ extension HealthView {
 
         func startStrengthTraining() async {
             await healthManager?.startStrengthTrainingWorkoutIfSupported()
+            // Donate to Siri so it can predict/suggest starting a workout.
+            try? await IntentDonationManager.shared.donate(intent: StartWorkoutIntent())
         }
 
         func stopStrengthTraining() async {
             await healthManager?.stopStrengthTrainingWorkoutIfSupported()
+            try? await IntentDonationManager.shared.donate(intent: StopWorkoutIntent())
         }
     }
 }

@@ -16,6 +16,7 @@ struct DayPickerView: View {
 
     private let dayShortNames: [String] = ["S", "M", "T", "W", "T", "F", "S"]
     private let dayLongNames: [String] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+    private let dayFullNames: [String] = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
     private var todayIndex: Int {
         let weekday = Calendar.current.component(.weekday, from: Date())
         return (weekday - 1 + 7) % 7 // Convert 1...7 (Sun...Sat) to 0...6
@@ -46,8 +47,9 @@ struct DayPickerView: View {
                         .shadow(color: .black.opacity(isSelected ? 0.35 : 0.0), radius: isSelected ? 10 : 0, x: 0, y: 6)
                         .scaleEffect(isSelected ? 1.05 : 1.0)
                         .contentShape(Capsule())
-                        .accessibilityLabel(Text("\(title) routine"))
-                        .accessibilityAddTraits(isSelected ? .isSelected : [])
+                        .accessibilityLabel(Text("\(dayFullNames[index]) routine"))
+                        .accessibilityAddTraits(isSelected ? [.isSelected, .isButton] : .isButton)
+                        .accessibilityHint(Text("Shows the workout for \(dayFullNames[index])"))
                 }
                 .buttonStyle(.plain)
                 .hoverEffectIfAvailable(.highlight)

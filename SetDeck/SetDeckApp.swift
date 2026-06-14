@@ -79,6 +79,7 @@ struct SetDeckApp: App {
                 }
                 .task {
                     phoneConnectivityManager.activate()
+                    await SpotlightIndexer.indexExercises(in: sharedModelContainer)
                 }
         }
         .commands {
