@@ -23,7 +23,7 @@ struct DetailRowView<Trailing: View>: View {
         title: String,
         subtitle: String? = nil,
         tint: Color,
-        @ViewBuilder trailing: @escaping () -> Trailing = { EmptyView() }
+        @ViewBuilder trailing: @escaping () -> Trailing
     ) {
         self.style = style
         self.systemImage = systemImage
@@ -31,6 +31,23 @@ struct DetailRowView<Trailing: View>: View {
         self.subtitle = subtitle
         self.tint = tint
         self.trailing = trailing
+    }
+
+    init(
+        style: Style,
+        systemImage: String,
+        title: String,
+        subtitle: String? = nil,
+        tint: Color
+    ) where Trailing == EmptyView {
+        self.init(
+            style: style,
+            systemImage: systemImage,
+            title: title,
+            subtitle: subtitle,
+            tint: tint,
+            trailing: { EmptyView() }
+        )
     }
 
     var body: some View {

@@ -100,10 +100,11 @@ final class CloudSyncManager {
     private func startMonitoring() {
         // Monitor network status
         let monitor = NWPathMonitor()
-        monitor.pathUpdateHandler = { path in
+        monitor.pathUpdateHandler = { [weak self] path in
+            guard let self else { return }
             let isAvailable = path.status == .satisfied
-            Task { @MainActor [weak self] in
-                self?.handleNetworkChange(isAvailable: isAvailable)
+            Task { @MainActor in
+                self.handleNetworkChange(isAvailable: isAvailable)
             }
         }
         monitor.start(queue: DispatchQueue(label: "CloudSyncNetworkMonitor"))
@@ -114,9 +115,10 @@ final class CloudSyncManager {
             forName: NSNotification.Name.NSPersistentStoreRemoteChange,
             object: nil,
             queue: .main
-        ) { _ in
-            Task { @MainActor [weak self] in
-                self?.handleRemoteChange()
+        ) { [weak self] _ in
+            guard let self else { return }
+            Task { @MainActor in
+                self.handleRemoteChange()
             }
         }
         notificationObservers.append(remoteChangeObserver)
@@ -126,9 +128,10 @@ final class CloudSyncManager {
             forName: NSNotification.Name("NSPersistentStoreCoordinatorStoresDidChange"),
             object: nil,
             queue: .main
-        ) { _ in
-            Task { @MainActor [weak self] in
-                self?.handleStoreChange()
+        ) { [weak self] _ in
+            guard let self else { return }
+            Task { @MainActor in
+                self.handleStoreChange()
             }
         }
         notificationObservers.append(importObserver)

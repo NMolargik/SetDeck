@@ -8,7 +8,7 @@
 import Foundation
 import ActivityKit
 
-struct StrengthTrainingActivityAttributes: ActivityAttributes {
+nonisolated struct StrengthTrainingActivityAttributes: ActivityAttributes {
     public struct ContentState: Codable, Hashable {
         // The absolute start date of the workout
         var startDate: Date
