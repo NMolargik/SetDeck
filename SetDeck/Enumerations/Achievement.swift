@@ -9,7 +9,7 @@ import SwiftUI
 
 // MARK: - Achievement Category
 
-enum AchievementCategory: String, CaseIterable {
+nonisolated enum AchievementCategory: String, CaseIterable {
     case consistency
     case volume
     case routine
@@ -26,7 +26,9 @@ enum AchievementCategory: String, CaseIterable {
         }
     }
 
-    var color: Color {
+    // Reads asset-catalog colors (which inherit the target's main-actor
+    // isolation); only ever called from views, so isolate the accessor.
+    @MainActor var color: Color {
         switch self {
         case .consistency: return .orangeStart
         case .volume:      return .purpleStart
@@ -39,7 +41,7 @@ enum AchievementCategory: String, CaseIterable {
 
 // MARK: - Achievement
 
-enum Achievement: String, CaseIterable, Identifiable {
+nonisolated enum Achievement: String, CaseIterable, Identifiable {
     // Consistency
     case firstWorkout
     case weekWarrior
