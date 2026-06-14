@@ -161,15 +161,19 @@ struct RoutineDayDeckView: View {
     @ContentBuilder
     private func cardStack(in proxy: GeometryProxy) -> some View {
         let cardWidth = min(proxy.size.width, max(280, proxy.size.width * 0.88))
+        // Snapshot the relationship once so index math stays consistent within
+        // this render even if the underlying SwiftData array mutates mid-pass
+        // (e.g. an exercise is deleted from the Edit Routine sheet).
+        let currentExercises = exercises
 
         ZStack {
             // Render cards in reverse order so the current card is on top
             ForEach(visibleCardIndices.reversed(), id: \.self) { index in
                 let relativeIndex = index - pageSelection
 
-                if relativeIndex >= 0 && relativeIndex < maxVisibleCards {
+                if relativeIndex >= 0, relativeIndex < maxVisibleCards, currentExercises.indices.contains(index) {
                     cardView(
-                        for: exercises[index],
+                        for: currentExercises[index],
                         at: index,
                         relativeIndex: relativeIndex,
                         cardWidth: cardWidth
@@ -181,8 +185,12 @@ struct RoutineDayDeckView: View {
     }
 
     private var visibleCardIndices: [Int] {
-        let start = pageSelection
-        let end = min(pageSelection + maxVisibleCards, exercises.count)
+        let count = exercises.count
+        guard count > 0 else { return [] }
+        // Clamp the start so a stale pageSelection (after deletions) can never
+        // produce an invalid lowerBound > upperBound range.
+        let start = min(max(pageSelection, 0), count - 1)
+        let end = min(start + maxVisibleCards, count)
         return Array(start..<end)
     }
 
