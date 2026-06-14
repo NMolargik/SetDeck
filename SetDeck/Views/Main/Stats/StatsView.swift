@@ -80,6 +80,8 @@ struct StatsView: View {
                 }
                 .padding()
             }
+            .scrollContentBackground(.hidden)
+            .background(BrandBackground(tint: .blueStart))
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     if !allHistory.isEmpty {

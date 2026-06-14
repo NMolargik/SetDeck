@@ -161,6 +161,8 @@ struct HealthView: View {
             }
             .padding()
         }
+        .scrollContentBackground(.hidden)
+        .background(BrandBackground(tint: .red))
         .task {
             await refreshHealthData()
         }

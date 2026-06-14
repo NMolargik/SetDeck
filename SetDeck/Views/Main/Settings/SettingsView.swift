@@ -127,6 +127,8 @@ struct SettingsView: View {
             }
             #endif
         }
+        .scrollContentBackground(.hidden)
+        .background(BrandBackground(tint: .purpleStart))
         .sheet(isPresented: $viewModel.showAchievementsSheet) {
             NavigationStack {
                 AchievementsView(
