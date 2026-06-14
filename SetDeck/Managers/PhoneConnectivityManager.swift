@@ -17,8 +17,6 @@ private let logger = Logger(subsystem: "com.molargiksoftware.SetDeck", category:
 @MainActor
 @Observable
 class PhoneConnectivityManager: NSObject {
-    static let shared = PhoneConnectivityManager()
-
     // MARK: - Public State
     var isReachable: Bool = false
     var isPaired: Bool = false
@@ -31,7 +29,7 @@ class PhoneConnectivityManager: NSObject {
     private var session: WCSession?
 
     // MARK: - Init
-    private override init() {
+    override init() {
         super.init()
     }
 

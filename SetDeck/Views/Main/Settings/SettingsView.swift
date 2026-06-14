@@ -12,7 +12,7 @@ import SwiftData
 struct SettingsView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(ExerciseManager.self) private var exerciseManager: ExerciseManager
-    @Environment(AchievementManager.self) private var achievementManager: AchievementManager?
+    @Environment(AchievementManager.self) private var achievementManager: AchievementManager
 
     @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
     @AppStorage(AppStorageKeys.useDayMonthYearDates) private var useDayMonthYearDates = false
@@ -63,11 +63,9 @@ struct SettingsView: View {
 
                         Spacer()
 
-                        if let am = achievementManager {
-                            Text("\(am.unlockedAchievements.count)/\(Achievement.allCases.count)")
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                        }
+                        Text("\(achievementManager.unlockedAchievements.count)/\(Achievement.allCases.count)")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
 
                         Image(systemName: "chevron.right")
                             .font(.caption)
@@ -132,7 +130,7 @@ struct SettingsView: View {
         .sheet(isPresented: $viewModel.showAchievementsSheet) {
             NavigationStack {
                 AchievementsView(
-                    unlockedAchievements: achievementManager?.unlockedAchievements ?? []
+                    unlockedAchievements: achievementManager.unlockedAchievements
                 )
             }
         }
@@ -173,7 +171,7 @@ struct SettingsView: View {
         .alert("Reset Achievements?", isPresented: $viewModel.showResetAchievementsConfirmation) {
             Button("Reset", role: .destructive) {
                 Haptics.lightImpact()
-                achievementManager?.resetAllAchievements()
+                achievementManager.resetAllAchievements()
                 viewModel.showAchievementsResetAlert = true
             }
             Button("Cancel", role: .cancel) {
@@ -228,5 +226,6 @@ struct SettingsView: View {
     
     return SettingsView()
         .environment(exerciseManager)
+        .environment(AchievementManager(exerciseManager: exerciseManager))
         .preferredColorScheme(.dark)
 }

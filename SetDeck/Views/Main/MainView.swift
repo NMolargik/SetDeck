@@ -14,7 +14,7 @@ struct MainView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(ExerciseManager.self) private var exerciseManager: ExerciseManager
     @Environment(HealthManager.self) private var healthManager: HealthManager
-    @Environment(AchievementManager.self) private var achievementManager: AchievementManager?
+    @Environment(AchievementManager.self) private var achievementManager: AchievementManager
 
     var animateDeckEntrance: Bool = false
 
@@ -45,15 +45,15 @@ struct MainView: View {
                 }
             }
 
-            if let celebration = achievementManager?.pendingCelebration {
+            if let celebration = achievementManager.pendingCelebration {
                 AchievementCelebrationView(achievement: celebration) {
-                    achievementManager?.dismissCelebration()
+                    achievementManager.dismissCelebration()
                 }
                 .zIndex(100)
                 .transition(.opacity)
             }
         }
-        .animation(.easeInOut(duration: 0.3), value: achievementManager?.pendingCelebration != nil)
+        .animation(.easeInOut(duration: 0.3), value: achievementManager.pendingCelebration != nil)
         .onAppear {
             workoutToolbarTimer?.invalidate()
             workoutToolbarTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
@@ -285,11 +285,12 @@ struct MainView: View {
     }
     try? context.save()
     
+    let previewExerciseManager = ExerciseManager(context: context)
     return MainView(pendingDeepLink: .constant(nil))
         .preferredColorScheme(.dark)
         .modelContainer(container)
-        .environment(ExerciseManager(context: context))
+        .environment(previewExerciseManager)
         .environment(HealthManager())
-
+        .environment(AchievementManager(exerciseManager: previewExerciseManager))
 }
 
