@@ -14,6 +14,7 @@ final class SetDeckUITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
         app = XCUIApplication()
+        app.launchArguments = ["-uiTesting"]
         app.launch()
     }
 
@@ -234,6 +235,7 @@ final class SetDeckEditRoutineUITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
         app = XCUIApplication()
+        app.launchArguments = ["-uiTesting"]
         app.launch()
 
         // Navigate to Edit Routine

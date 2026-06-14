@@ -30,9 +30,12 @@ extension ContentView {
         }
         
         func prepareApp(isOnboardingComplete: Bool) async {
-            await MainActor.run {
-                appStage = isOnboardingComplete ? .syncing : .splash
+            // UI tests jump straight to the populated main interface.
+            if ProcessInfo.processInfo.arguments.contains("-uiTesting") {
+                appStage = .main
+                return
             }
+            appStage = isOnboardingComplete ? .syncing : .splash
         }
     }
 }
