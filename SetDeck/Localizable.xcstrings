@@ -1,0 +1,97 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Add at least one exercise to continue" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Añade al menos un ejercicio para continuar" } },
+        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "Ajoutez au moins un exercice pour continuer" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "続けるには、エクササイズを1つ以上追加してください" } }
+      }
+    },
+    "Build Your Routines" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Crea tus rutinas" } },
+        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "Créez vos routines" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ルーティンを作成" } }
+      }
+    },
+    "Close" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cerrar" } },
+        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "Fermer" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "閉じる" } }
+      }
+    },
+    "Continue" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Continuar" } },
+        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "Continuer" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "続ける" } }
+      }
+    },
+    "Edit Routine" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Editar rutina" } },
+        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "Modifier la routine" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ルーティンを編集" } }
+      }
+    },
+    "Enter SetDeck" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Entrar a SetDeck" } },
+        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "Entrer dans SetDeck" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "SetDeckを始める" } }
+      }
+    },
+    "Here's what you can do with SetDeck" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Esto es lo que puedes hacer con SetDeck" } },
+        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "Voici ce que vous pouvez faire avec SetDeck" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "SetDeckでできること" } }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ajustes" } },
+        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "Réglages" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "設定" } }
+      }
+    },
+    "SetDeck is designed to keep your data private and secure." : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "SetDeck está diseñado para mantener tus datos privados y seguros." } },
+        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "SetDeck est conçu pour garder vos données privées et sécurisées." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "SetDeckは、あなたのデータをプライベートかつ安全に保つよう設計されています。" } }
+      }
+    },
+    "SetDeck is Syncing with iCloud" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "SetDeck se está sincronizando con iCloud" } },
+        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "SetDeck se synchronise avec iCloud" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "SetDeckをiCloudと同期しています" } }
+      }
+    },
+    "View Achievements" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ver logros" } },
+        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "Voir les réalisations" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "実績を見る" } }
+      }
+    },
+    "You're All Set!" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "¡Todo listo!" } },
+        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "Tout est prêt!" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "準備完了！" } }
+      }
+    },
+    "Your Privacy Matters" : {
+      "localizations" : {
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tu privacidad importa" } },
+        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "Votre confidentialité compte" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "プライバシーを大切にします" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}
