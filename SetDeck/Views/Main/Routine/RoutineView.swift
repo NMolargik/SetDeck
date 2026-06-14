@@ -25,15 +25,19 @@ struct RoutineView: View {
     var body: some View {
         let _ = exerciseManager.changeStamp
 
-        VStack(spacing: 0) {
-            DayPickerView(selectedDay: $selectedDay)
+        ZStack {
+            BrandBackground()
 
-            RoutineDayDeckView(
-                routine: exerciseManager.routine(for: selectedDay),
-                animateEntrance: animateEntrance && !hasAnimatedInitialEntrance
-            )
+            VStack(spacing: 0) {
+                DayPickerView(selectedDay: $selectedDay)
+
+                RoutineDayDeckView(
+                    routine: exerciseManager.routine(for: selectedDay),
+                    animateEntrance: animateEntrance && !hasAnimatedInitialEntrance
+                )
+            }
+            .padding(.top, 12)
         }
-        .padding(.top, 12)
         .animation(.spring(response: 0.35, dampingFraction: 0.8), value: selectedDay)
         .onAppear {
             selectedDay = todayIndex

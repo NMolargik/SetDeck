@@ -43,11 +43,11 @@ struct SetRowView: View {
                 // Type badge
                 Text(typeAbbreviation)
                     .font(.caption2.bold())
-                    .foregroundStyle(.black)
-                    .padding(.vertical, 4)
+                    .foregroundStyle(Color.greenEnd)
+                    .padding(.vertical, 5)
                     .padding(.horizontal, 8)
-                    .background(Color(white: 0.9), in: Capsule())
-                    .overlay(Capsule().stroke(Color.black.opacity(0.08), lineWidth: 1))
+                    .background(Color.greenStart.opacity(0.18), in: Capsule(style: .continuous))
+                    .overlay(Capsule(style: .continuous).stroke(Color.greenStart.opacity(0.35), lineWidth: 1))
                     .frame(width: 55)
                     .accessibilityHidden(true)
 
@@ -179,12 +179,13 @@ struct SetRowView: View {
             }
         }
         .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(Color(white: 0.92))
+            RoundedRectangle(cornerRadius: Brand.Radius.chip, style: .continuous)
+                .fill(Color(white: 0.96))
                 .overlay(
-                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .stroke(Color.black.opacity(0.08), lineWidth: 1)
+                    RoundedRectangle(cornerRadius: Brand.Radius.chip, style: .continuous)
+                        .stroke(Color.black.opacity(0.06), lineWidth: 1)
                 )
+                .shadow(color: .black.opacity(0.05), radius: 3, y: 1)
         )
         .animation(.easeInOut(duration: 0.25), value: isEditing)
         .accessibilityElement(children: .combine)

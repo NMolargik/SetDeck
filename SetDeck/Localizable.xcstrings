@@ -1,97 +1,1159 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
+    "%@" : {
+
+    },
+    "%@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
+    "%@ %lld%%" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$lld%%"
+          }
+        }
+      }
+    },
+    "%@ routine" : {
+
+    },
+    "%@, %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, %2$@"
+          }
+        }
+      }
+    },
+    "%@, %@, duration %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, %2$@, duration %3$@"
+          }
+        }
+      }
+    },
+    "%@, %@%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, %2$@%3$@"
+          }
+        }
+      }
+    },
+    "%@, best weight %@ %@, estimated one rep max %@ %@, achieved on %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, best weight %2$@ %3$@, estimated one rep max %4$@ %5$@, achieved on %6$@"
+          }
+        }
+      }
+    },
+    "%@, exercise %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, exercise %2$lld"
+          }
+        }
+      }
+    },
+    "%@: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@: %2$@"
+          }
+        }
+      }
+    },
+    "%@%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@%2$@"
+          }
+        }
+      }
+    },
+    "%lld" : {
+
+    },
+    "%lld %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld %2$@"
+          }
+        }
+      }
+    },
+    "%lld of %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld of %2$lld"
+          }
+        }
+      }
+    },
+    "%lld/%lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld/%2$lld"
+          }
+        }
+      }
+    },
+    "%lld%%" : {
+
+    },
+    "+%lld more" : {
+
+    },
+    "ACHIEVEMENT UNLOCKED" : {
+
+    },
+    "Achievements" : {
+
+    },
+    "Achievements Reset" : {
+
+    },
+    "Add ${amountKcal} calories" : {
+
+    },
+    "Add ${amountML} ml of water" : {
+
+    },
     "Add at least one exercise to continue" : {
       "localizations" : {
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Añade al menos un ejercicio para continuar" } },
-        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "Ajoutez au moins un exercice pour continuer" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "続けるには、エクササイズを1つ以上追加してください" } }
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añade al menos un ejercicio para continuar"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajoutez au moins un exercice pour continuer"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "続けるには、エクササイズを1つ以上追加してください"
+          }
+        }
       }
+    },
+    "Add Bottle of Water" : {
+
+    },
+    "Add Calories" : {
+
+    },
+    "Add exercise" : {
+
+    },
+    "Add Exercise" : {
+
+    },
+    "Add Food" : {
+
+    },
+    "Add Glass of Water" : {
+
+    },
+    "Add Meal" : {
+
+    },
+    "Add Set" : {
+
+    },
+    "Add set to %@" : {
+
+    },
+    "Add Sets to Your Exercise" : {
+
+    },
+    "Add Small Meal" : {
+
+    },
+    "Add Snack" : {
+
+    },
+    "Add Water" : {
+
+    },
+    "Add Your First Exercise" : {
+
+    },
+    "All achievements have been reset. Keep working out to earn them again!" : {
+
+    },
+    "All achievements unlocked!" : {
+
+    },
+    "All historical set entries have been removed. Your routines and exercises are unchanged." : {
+
+    },
+    "All routines, exercises, sets, and history have been deleted." : {
+
+    },
+    "Am I Working Out" : {
+
+    },
+    "Amount" : {
+
+    },
+    "Amount (kcal)" : {
+
+    },
+    "Amount (ml)" : {
+
+    },
+    "Analyzing muscle groups..." : {
+
+    },
+    "Back" : {
+
+    },
+    "Balance Analysis" : {
+
+    },
+    "Balanced" : {
+
+    },
+    "Bar chart displaying workout volume over time" : {
+
+    },
+    "Begins recording a strength training workout to Apple Health" : {
+
+    },
+    "Best: %@ %@ • est. 1RM %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Best: %1$@ %2$@ • est. 1RM %3$@ %4$@"
+          }
+        }
+      }
+    },
+    "Build Your Routine" : {
+
     },
     "Build Your Routines" : {
       "localizations" : {
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Crea tus rutinas" } },
-        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "Créez vos routines" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ルーティンを作成" } }
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crea tus rutinas"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Créez vos routines"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ルーティンを作成"
+          }
+        }
       }
+    },
+    "Burn" : {
+
+    },
+    "Calories Burned" : {
+
+    },
+    "Calories Consumed" : {
+
+    },
+    "Cancel" : {
+
+    },
+    "Check if you have an active workout session" : {
+
+    },
+    "Choose between reps, as many as possible, timed, or freeform sets" : {
+
+    },
+    "Clear Set History" : {
+
+    },
+    "Clear Set History?" : {
+
     },
     "Close" : {
       "localizations" : {
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cerrar" } },
-        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "Fermer" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "閉じる" } }
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerrar"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fermer"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閉じる"
+          }
+        }
       }
+    },
+    "Complete a set in your routine and check back here." : {
+
+    },
+    "Confirms the exercise name change" : {
+
     },
     "Continue" : {
       "localizations" : {
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Continuar" } },
-        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "Continuer" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "続ける" } }
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuer"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "続ける"
+          }
+        }
       }
+    },
+    "Creates a new exercise for this day's routine" : {
+
+    },
+    "Creates a new set for this exercise" : {
+
+    },
+    "Danger Zone" : {
+
+    },
+    "Date" : {
+
+    },
+    "Day" : {
+
+    },
+    "Day of Week" : {
+
+    },
+    "Decrease %@" : {
+
+    },
+    "Decrease RPE" : {
+
+    },
+    "Decreases by %@%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Decreases by %1$@%2$@"
+          }
+        }
+      }
+    },
+    "Decreases by %lld" : {
+
+    },
+    "Delete %@" : {
+
+    },
+    "Delete All Routines" : {
+
+    },
+    "Delete All Routines?" : {
+
+    },
+    "Delete Everything" : {
+
+    },
+    "Delete History" : {
+
+    },
+    "Delete set" : {
+
+    },
+    "Developer" : {
+
+    },
+    "Display Water in Liters" : {
+
+    },
+    "Done" : {
+
+    },
+    "Done editing" : {
+
+    },
+    "Double tap to edit the exercise name" : {
+
+    },
+    "Duration (min)" : {
+
     },
     "Edit Routine" : {
       "localizations" : {
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Editar rutina" } },
-        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "Modifier la routine" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ルーティンを編集" } }
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar rutina"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modifier la routine"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ルーティンを編集"
+          }
+        }
       }
+    },
+    "Ends the current strength training workout and saves it to Apple Health" : {
+
+    },
+    "Energy" : {
+
     },
     "Enter SetDeck" : {
       "localizations" : {
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Entrar a SetDeck" } },
-        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "Entrer dans SetDeck" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "SetDeckを始める" } }
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entrar a SetDeck"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entrer dans SetDeck"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SetDeckを始める"
+          }
+        }
       }
+    },
+    "Est. 1RM" : {
+
+    },
+    "Exercise" : {
+
+    },
+    "Exercise %lld of %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Exercise %1$lld of %2$lld"
+          }
+        }
+      }
+    },
+    "Exercise Count" : {
+
+    },
+    "Exercise name" : {
+
+    },
+    "Exercise Name" : {
+
+    },
+    "Exercise navigation" : {
+
+    },
+    "Exercise Progress" : {
+
+    },
+    "Friday" : {
+
+    },
+    "Front" : {
+
+    },
+    "Get Started" : {
+
+    },
+    "Get the number of exercises in today's workout" : {
+
+    },
+    "Get your scheduled workout for a specific day" : {
+
+    },
+    "Get your scheduled workout for today" : {
+
+    },
+    "Go to first exercise" : {
+      "comment" : "A hint for the user that triggers a reset to the first exercise.",
+      "isCommentAutoGenerated" : true
     },
     "Here's what you can do with SetDeck" : {
       "localizations" : {
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Esto es lo que puedes hacer con SetDeck" } },
-        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "Voici ce que vous pouvez faire avec SetDeck" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "SetDeckでできること" } }
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esto es lo que puedes hacer con SetDeck"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voici ce que vous pouvez faire avec SetDeck"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SetDeckでできること"
+          }
+        }
       }
     },
-    "Settings" : {
+    "History Cleared" : {
+
+    },
+    "How Many Exercises Today" : {
+
+    },
+    "Hydration" : {
+
+    },
+    "Imbalanced" : {
+
+    },
+    "Increase %@" : {
+
+    },
+    "Increase RPE" : {
+
+    },
+    "Increases by %@%@" : {
       "localizations" : {
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ajustes" } },
-        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "Réglages" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "設定" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Increases by %1$@%2$@"
+          }
+        }
       }
+    },
+    "Increases by %lld" : {
+
+    },
+    "Intake" : {
+
+    },
+    "Intensity" : {
+
+    },
+    "Intensity (RPE)" : {
+
+    },
+    "Keep going!" : {
+
+    },
+    "Log" : {
+
+    },
+    "Log a bottle of water (500ml / 16oz)" : {
+
+    },
+    "Log a glass of water (250ml / 8oz)" : {
+
+    },
+    "Log a meal (500 kcal)" : {
+
+    },
+    "Log a small meal (300 kcal)" : {
+
+    },
+    "Log a small snack (100 kcal)" : {
+
+    },
+    "Log calorie intake to Health" : {
+      "comment" : "Intent description for the Add Calories intent.",
+      "isCommentAutoGenerated" : true
+    },
+    "Log RPE to see intensity trends." : {
+
+    },
+    "Log some sets to see PRs." : {
+
+    },
+    "Log water intake to Health" : {
+
+    },
+    "make gains every week" : {
+
+    },
+    "Mark this exercise as a warmup" : {
+
+    },
+    "Molargik Software LLC" : {
+
+    },
+    "Monday" : {
+
+    },
+    "Most Trained" : {
+
+    },
+    "Muscle Analysis" : {
+
+    },
+    "Muscle Distribution" : {
+
+    },
+    "Muscle Heatmap" : {
+
+    },
+    "Next exercise" : {
+
+    },
+    "Nick Molargik" : {
+
+    },
+    "No data yet" : {
+
+    },
+    "No history yet for this exercise." : {
+
+    },
+    "No muscle group data available" : {
+
+    },
+    "No routine for today.\nEdit your routines or enjoy your day off!" : {
+
+    },
+    "No routine for today. Edit your routines or enjoy your day off." : {
+
+    },
+    "No sets yet" : {
+
+    },
+    "No Workouts" : {
+
+    },
+    "No, you're not currently working out. Say 'Start my workout' to begin." : {
+
+    },
+    "of %lld" : {
+
+    },
+    "Off" : {
+
+    },
+    "OK" : {
+
+    },
+    "On" : {
+
+    },
+    "Open Settings" : {
+
+    },
+    "Personal Records" : {
+
+    },
+    "Personal Records section, %lld exercises" : {
+
+    },
+    "Previous exercise" : {
+
+    },
+    "Publisher" : {
+
+    },
+    "Range" : {
+
+    },
+    "Rate of perceived exertion, 0 to 10" : {
+
+    },
+    "Ready to begin?" : {
+
+    },
+    "Record a Workout" : {
+
+    },
+    "Record workout" : {
+      "comment" : "A button that records a workout.",
+      "isCommentAutoGenerated" : true
+    },
+    "Record Workout" : {
+
+    },
+    "Removes this exercise and all its sets" : {
+
+    },
+    "Removes this set from the exercise" : {
+
+    },
+    "Reps" : {
+
+    },
+    "Reps Attempted" : {
+
+    },
+    "Reset" : {
+
+    },
+    "Reset Achievements" : {
+
+    },
+    "Reset Achievements?" : {
+
+    },
+    "Returns to the first exercise in the routine" : {
+
+    },
+    "Routines Deleted" : {
+
+    },
+    "RPE" : {
+
+    },
+    "RPE, %lld" : {
+
+    },
+    "Saturday" : {
+
+    },
+    "Save" : {
+
+    },
+    "Set type" : {
+
+    },
+    "SetDeck" : {
+
+    },
+    "SetDeck app logo" : {
+
     },
     "SetDeck is designed to keep your data private and secure." : {
       "localizations" : {
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "SetDeck está diseñado para mantener tus datos privados y seguros." } },
-        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "SetDeck est conçu pour garder vos données privées et sécurisées." } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "SetDeckは、あなたのデータをプライベートかつ安全に保つよう設計されています。" } }
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SetDeck está diseñado para mantener tus datos privados y seguros."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SetDeck est conçu pour garder vos données privées et sécurisées."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SetDeckは、あなたのデータをプライベートかつ安全に保つよう設計されています。"
+          }
+        }
       }
     },
     "SetDeck is Syncing with iCloud" : {
       "localizations" : {
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "SetDeck se está sincronizando con iCloud" } },
-        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "SetDeck se synchronise avec iCloud" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "SetDeckをiCloudと同期しています" } }
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SetDeck se está sincronizando con iCloud"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SetDeck se synchronise avec iCloud"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SetDeckをiCloudと同期しています"
+          }
+        }
       }
+    },
+    "Sets" : {
+
+    },
+    "Settings" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustes"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réglages"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設定"
+          }
+        }
+      }
+    },
+    "Shows the next exercise in the routine" : {
+
+    },
+    "Shows the previous exercise in the routine" : {
+
+    },
+    "Shows the workout for %@" : {
+
+    },
+    "Start" : {
+
+    },
+    "Start a strength training workout" : {
+
+    },
+    "Start logging sets in your routines to unlock powerful insights about your training." : {
+
+    },
+    "Start or stop a strength training workout" : {
+
+    },
+    "Start workout" : {
+
+    },
+    "Start Workout" : {
+
+    },
+    "Stats" : {
+
+    },
+    "Stop" : {
+
+    },
+    "Stop the current workout" : {
+
+    },
+    "Stop workout" : {
+
+    },
+    "Stop Workout" : {
+
+    },
+    "Strength workout running time" : {
+
+    },
+    "Suggestions" : {
+
+    },
+    "Sunday" : {
+
+    },
+    "Switch between Month–Day–Year and Day–Month–Year formats for dates." : {
+
+    },
+    "Tap 'Add Exercise' to create an exercise for your routine." : {
+
+    },
+    "Tap 'Add Set' to define reps, weight, and other details." : {
+
+    },
+    "Tap here to add exercises and sets to your workout routine." : {
+
+    },
+    "Tap to begin using SetDeck" : {
+
+    },
+    "These actions cannot be undone." : {
+
+    },
+    "This week's training intensity by muscle group" : {
+
+    },
+    "This will permanently delete all of your historical set data. Your Stats tab will likely be pretty empty, but your current routines and exercises will remain untouched." : {
+
+    },
+    "This will permanently delete all of your routines, exercises, sets, and history. You will need to rebuild your workout routine from scratch." : {
+
+    },
+    "This will reset all of your achievement progress. You can earn them again by continuing to work out." : {
+
+    },
+    "Thursday" : {
+
+    },
+    "Time a workout to record it with Apple Health." : {
+
+    },
+    "Today's Routine" : {
+
+    },
+    "Today's Workout" : {
+
+    },
+    "Toggle Workout" : {
+
+    },
+    "Total" : {
+
+    },
+    "Training Volume" : {
+
+    },
+    "Training volume chart showing %lld data points" : {
+
+    },
+    "Tuesday" : {
+
+    },
+    "Type" : {
+
+    },
+    "Use Day–Month–Year Dates" : {
+
+    },
+    "Version" : {
+
+    },
+    "Video" : {
+
     },
     "View Achievements" : {
       "localizations" : {
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ver logros" } },
-        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "Voir les réalisations" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "実績を見る" } }
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver logros"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voir les réalisations"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "実績を見る"
+          }
+        }
+      }
+    },
+    "Volume" : {
+
+    },
+    "Warmup" : {
+      "comment" : "A label that indicates an exercise is a warmup.",
+      "isCommentAutoGenerated" : true
+    },
+    "Warmup exercise" : {
+
+    },
+    "Warmup?" : {
+
+    },
+    "Water Intake" : {
+
+    },
+    "Wednesday" : {
+
+    },
+    "Weekly volume breakdown by muscle group" : {
+
+    },
+    "Weight (%@)" : {
+
+    },
+    "What's My Workout On" : {
+
+    },
+    "What's my workout on ${day}" : {
+
+    },
+    "What's My Workout Today" : {
+
+    },
+    "Workout" : {
+
+    },
+    "Workout for Day" : {
+
+    },
+    "Workout History" : {
+
+    },
+    "Workout in progress, %@" : {
+
+    },
+    "Workout Status" : {
+
+    },
+    "Workout summary: Volume %@, %lld sets, %lld active days, best streak %lld days" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Workout summary: Volume %1$@, %2$lld sets, %3$lld active days, best streak %4$lld days"
+          }
+        }
+      }
+    },
+    "Yes, you have a workout in progress." : {
+
+    },
+    "Yes, you have a workout in progress. You started %lld minutes ago." : {
+
+    },
+    "You don't have any exercises scheduled for %@." : {
+
+    },
+    "You don't have any exercises scheduled for %@. Open SetDeck to add some exercises to your routine." : {
+
+    },
+    "You have %lld exercises today with %lld total sets." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "You have %1$lld exercises today with %2$lld total sets."
+          }
+        }
+      }
+    },
+    "You have %lld exercises today: %lld warm-up and %lld main exercises, with %lld total sets." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "You have %1$lld exercises today: %2$lld warm-up and %3$lld main exercises, with %4$lld total sets."
+          }
+        }
       }
     },
     "You're All Set!" : {
       "localizations" : {
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "¡Todo listo!" } },
-        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "Tout est prêt!" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "準備完了！" } }
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Todo listo!"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tout est prêt!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "準備完了！"
+          }
+        }
       }
+    },
+    "Your %@ workout has %lld exercises with %lld total sets: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Your %1$@ workout has %2$lld exercises with %3$lld total sets: %4$@"
+          }
+        }
+      }
+    },
+    "Your Apple Health workouts will appear here when available." : {
+
     },
     "Your Privacy Matters" : {
       "localizations" : {
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Tu privacidad importa" } },
-        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "Votre confidentialité compte" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "プライバシーを大切にします" } }
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu privacidad importa"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre confidentialité compte"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プライバシーを大切にします"
+          }
+        }
       }
+    },
+    "Your Stats Await" : {
+
+    },
+    "Your workout is paused. You've been at it for %lld minutes so far." : {
+
     }
   },
-  "version" : "1.0"
+  "version" : "1.1"
 }
