@@ -266,6 +266,14 @@ struct MainView: View {
             .tag(AppTab.settings)
         }
         .tint(viewModel.appTab.color())
+        .onChange(of: pendingDeepLink) { _, newLink in
+            handleDeepLink(newLink)
+        }
+        .onAppear {
+            if pendingDeepLink != nil {
+                handleDeepLink(pendingDeepLink)
+            }
+        }
     }
 }
 

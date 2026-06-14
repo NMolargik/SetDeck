@@ -48,13 +48,16 @@ struct SetDeckApp: App {
         let phone = PhoneConnectivityManager()
         phone.exerciseManager = exercise
 
-        // UI-test affordance: skip onboarding/sync and seed deterministic
-        // sample data so the main interface is populated immediately.
+        // UI-test affordance (DEBUG only): skip onboarding/sync and seed
+        // deterministic sample data so the main interface is populated
+        // immediately. Gated to DEBUG so it can never run in a shipping build.
+        #if DEBUG
         if ProcessInfo.processInfo.arguments.contains("-uiTesting") {
             UserDefaults.standard.set(true, forKey: AppStorageKeys.isOnboardingComplete)
             UserDefaults.standard.set(true, forKey: AppStorageKeys.hasCompletedInitialSync)
             exercise.generateSampleDataForLast30Days()
         }
+        #endif
 
         _exerciseManager = State(initialValue: exercise)
         _achievementManager = State(initialValue: AchievementManager(exerciseManager: exercise))
