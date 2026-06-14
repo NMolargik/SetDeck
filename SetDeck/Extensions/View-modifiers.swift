@@ -21,8 +21,8 @@ extension View {
 
 #if os(iOS)
 public extension View {
-    @ViewBuilder
-    func tabViewBottomAccessoryIfAvailable<Accessory: View>(@ViewBuilder _ accessory: () -> Accessory) -> some View {
+    @ContentBuilder
+    func tabViewBottomAccessoryIfAvailable<Accessory: View>(@ContentBuilder _ accessory: () -> Accessory) -> some View {
         if #available(iOS 26.0, *) {
             // Only use the new API when available at runtime
             self.tabViewBottomAccessory(content: accessory)
@@ -34,8 +34,8 @@ public extension View {
 }
 #else
 public extension View {
-    @ViewBuilder
-    func tabViewBottomAccessoryIfAvailable<Accessory: View>(@ViewBuilder _ accessory: () -> Accessory) -> some View {
+    @ContentBuilder
+    func tabViewBottomAccessoryIfAvailable<Accessory: View>(@ContentBuilder _ accessory: () -> Accessory) -> some View {
         // Non-iOS platforms: no-op to keep API usage consistent
         self
     }
@@ -64,7 +64,7 @@ struct ShimmerModifier: ViewModifier {
 }
 
 extension View {
-    @ViewBuilder
+    @ContentBuilder
     func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
         if condition { transform(self) } else { self }
     }
@@ -81,7 +81,7 @@ enum HoverEffectStyle {
 
 extension View {
     /// Applies hoverEffect on platforms that support it (iOS, visionOS), no-op elsewhere
-    @ViewBuilder
+    @ContentBuilder
     func hoverEffectIfAvailable(_ style: HoverEffectStyle = .automatic) -> some View {
         #if os(iOS) || os(visionOS)
         switch style {

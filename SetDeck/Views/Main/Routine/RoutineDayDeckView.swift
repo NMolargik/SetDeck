@@ -158,7 +158,7 @@ struct RoutineDayDeckView: View {
 
     // MARK: - Card Stack
 
-    @ViewBuilder
+    @ContentBuilder
     private func cardStack(in proxy: GeometryProxy) -> some View {
         let cardWidth = min(proxy.size.width, max(280, proxy.size.width * 0.88))
 
@@ -186,7 +186,7 @@ struct RoutineDayDeckView: View {
         return Array(start..<end)
     }
 
-    @ViewBuilder
+    @ContentBuilder
     private func cardView(
         for exercise: SetDeckExercise,
         at index: Int,

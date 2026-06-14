@@ -202,7 +202,7 @@ struct WorkoutComplicationView: View {
     }
 
     // MARK: - Corner
-    @ViewBuilder
+    @ContentBuilder
     private var cornerView: some View {
         let progress = min(Double(entry.exerciseCount) / 10.0, 1.0)
         let labelText = entry.exerciseCount > 0 ? "\(entry.exerciseCount) exercises" : "Rest day"

@@ -82,7 +82,7 @@ struct AchievementsView: View {
 
     // MARK: - Category Section
 
-    @ViewBuilder
+    @ContentBuilder
     private func categorySection(_ category: AchievementCategory) -> some View {
         let achievements = Achievement.achievementsInCategory(category)
         let unlockedInCategory = achievements.filter { unlockedAchievements.contains($0.rawValue) }.count
@@ -120,7 +120,7 @@ struct AchievementsView: View {
 
     // MARK: - Achievement Row
 
-    @ViewBuilder
+    @ContentBuilder
     private func achievementRow(_ achievement: Achievement, isUnlocked: Bool) -> some View {
         HStack(spacing: 14) {
             // Icon badge

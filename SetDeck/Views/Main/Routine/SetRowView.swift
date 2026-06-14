@@ -302,8 +302,8 @@ struct SetRowView: View {
         }
     }
 
-    @ViewBuilder
-    private func editorField<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {
+    @ContentBuilder
+    private func editorField<Content: View>(_ title: String, @ContentBuilder content: () -> Content) -> some View {
         HStack(spacing: 8) {
             Text(title)
                 .font(.body)
@@ -327,8 +327,8 @@ struct SetRowView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    @ViewBuilder
-    private func editorFieldVertical<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {
+    @ContentBuilder
+    private func editorFieldVertical<Content: View>(_ title: String, @ContentBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(title)
                 .font(.caption)

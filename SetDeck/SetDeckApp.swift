@@ -81,5 +81,27 @@ struct SetDeckApp: App {
                     phoneConnectivityManager.activate()
                 }
         }
+        .commands {
+            SetDeckCommands(pendingDeepLink: $pendingDeepLink)
+        }
+    }
+}
+
+/// Menu-bar / hardware-keyboard commands (surfaced on iPadOS and Mac).
+/// Navigation is driven through the same deep-link binding the app already
+/// uses for widgets and App Intents.
+struct SetDeckCommands: Commands {
+    @Binding var pendingDeepLink: DeepLink?
+
+    var body: some Commands {
+        CommandMenu("Workout") {
+            Button("Today's Routine") { pendingDeepLink = .routine }
+                .keyboardShortcut("1", modifiers: .command)
+            Button("Stats") { pendingDeepLink = .stats }
+                .keyboardShortcut("2", modifiers: .command)
+            Divider()
+            Button("Settings") { pendingDeepLink = .settings }
+                .keyboardShortcut(",", modifiers: .command)
+        }
     }
 }

@@ -71,7 +71,7 @@ struct MainView: View {
     }
     
     // MARK: - iPAD
-    @ViewBuilder
+    @ContentBuilder
     private func regularWidthView() -> some View {
         NavigationSplitView {
             ZStack {
@@ -181,7 +181,7 @@ struct MainView: View {
     
     // MARK: - iPHONE
     
-    @ViewBuilder
+    @ContentBuilder
     private func compactWidthView() -> some View {
         TabView(selection: $viewModel.appTab) {
             NavigationStack {

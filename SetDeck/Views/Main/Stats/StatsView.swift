@@ -189,7 +189,7 @@ struct StatsView: View {
         .padding()
     }
 
-    @ViewBuilder
+    @ContentBuilder
     private func emptyStateFeatureCard(
         icon: String,
         iconColor: Color,

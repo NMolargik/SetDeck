@@ -209,7 +209,7 @@ struct EditRoutineView: View {
         }
     }
 
-    @ViewBuilder
+    @ContentBuilder
     private func addSetFooter(for exercise: SetDeckExercise, isFirstExercise: Bool) -> some View {
         let button = Button {
             addSetTip.invalidate(reason: .actionPerformed)
@@ -249,7 +249,7 @@ struct EditRoutineView: View {
         }
     }
 
-    @ViewBuilder
+    @ContentBuilder
     private func exerciseHeader(for exercise: SetDeckExercise) -> some View {
         HStack(spacing: 12) {
             TextField("Exercise Name", text: Binding(

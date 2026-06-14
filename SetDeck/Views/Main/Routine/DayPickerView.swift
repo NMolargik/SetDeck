@@ -65,7 +65,7 @@ struct DayPickerView: View {
         }
     }
 
-    @ViewBuilder
+    @ContentBuilder
     private func background(for index: Int) -> some View {
         if selectedDay == index {
             Capsule()
