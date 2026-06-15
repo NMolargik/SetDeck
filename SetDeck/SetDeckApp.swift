@@ -21,6 +21,7 @@ struct SetDeckApp: App {
     @State private var healthManager: HealthManager
     @State private var cloudSyncManager: CloudSyncManager
     @State private var phoneConnectivityManager: PhoneConnectivityManager
+    @State private var toastManager: ToastManager
 
     init() {
         let cloudKitContainerID = "iCloud.com.molargiksoftware.SetDeck"
@@ -64,6 +65,7 @@ struct SetDeckApp: App {
         _healthManager = State(initialValue: HealthManager())
         _cloudSyncManager = State(initialValue: cloud)
         _phoneConnectivityManager = State(initialValue: phone)
+        _toastManager = State(initialValue: ToastManager())
 
         // Configure TipKit
         try? Tips.configure([
@@ -77,12 +79,14 @@ struct SetDeckApp: App {
         WindowGroup {
             ContentView(pendingDeepLink: $pendingDeepLink)
                 .colorScheme(.dark)
+                .toastContainer()
                 .modelContainer(sharedModelContainer)
                 .environment(exerciseManager)
                 .environment(achievementManager)
                 .environment(healthManager)
                 .environment(cloudSyncManager)
                 .environment(phoneConnectivityManager)
+                .environment(toastManager)
                 .onOpenURL { url in
                     if let link = DeepLink(url: url) {
                         pendingDeepLink = link

@@ -12,6 +12,8 @@ import TipKit
 struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(CloudSyncManager.self) private var cloudSyncManager
+    @Environment(ExerciseManager.self) private var exerciseManager
+    @Environment(ToastManager.self) private var toastManager
 
     @AppStorage(AppStorageKeys.isOnboardingComplete) private var isOnboardingComplete: Bool = false
 
@@ -19,6 +21,9 @@ struct ContentView: View {
 
     @State private var viewModel: ContentView.ViewModel = ViewModel()
     @State private var shouldAnimateDeckEntrance: Bool = false
+    @State private var wasReturningUser: Bool = false
+    @State private var didShowSyncToast: Bool = false
+    @State private var didConfirmSync: Bool = false
 
     var body: some View {
         ZStack {
@@ -26,9 +31,7 @@ struct ContentView: View {
             case .splash:
                 SplashView(
                     onContinue: {
-                        withAnimation(.easeInOut(duration: 0.3)) {
-                            viewModel.appStage = .onboarding
-                        }
+                        viewModel.advance(to: .onboarding)
                     }
                 )
                 .id("splash")
@@ -39,24 +42,10 @@ struct ContentView: View {
                 OnboardingView(onFinished: {
                     isOnboardingComplete = true
                     Task { await TipEvents.onboardingCompleted.donate() }
-                    withAnimation(.easeInOut(duration: 0.3)) {
-                        viewModel.appStage = .syncing
-                    }
+                    shouldAnimateDeckEntrance = true
+                    viewModel.advance(to: .main)
                 })
                 .id("onboarding")
-                .transition(viewModel.leadingTransition)
-                .zIndex(1)
-
-            case .syncing:
-                SyncingView(
-                    onSyncComplete: { foundData in
-                        shouldAnimateDeckEntrance = true
-                        withAnimation(.easeInOut(duration: 0.3)) {
-                            viewModel.appStage = .main
-                        }
-                    }
-                )
-                .id("syncing")
                 .transition(viewModel.leadingTransition)
                 .zIndex(1)
 
@@ -68,14 +57,33 @@ struct ContentView: View {
                 .id("main")
                 .transition(viewModel.leadingTransition)
                 .zIndex(0)
+                .onAppear { handleMainEntry() }
             }
         }
         .task {
-            await viewModel.prepareApp(isOnboardingComplete: isOnboardingComplete)
+            wasReturningUser = isOnboardingComplete
+            viewModel.prepareApp(isOnboardingComplete: isOnboardingComplete)
         }
-        .onAppear {
-            viewModel.configure(cloudSyncManager: cloudSyncManager)
+        // iCloud sync runs in the background. When a remote change lands,
+        // refresh the deck and (once) confirm the sync with a toast.
+        .onChange(of: cloudSyncManager.lastSyncDate) { _, newValue in
+            guard newValue != nil, viewModel.appStage == .main else { return }
+            Task { await exerciseManager.refresh() }
+            if didShowSyncToast, !didConfirmSync {
+                didConfirmSync = true
+                toastManager.showSuccess("Synced with iCloud")
+            }
         }
+    }
+
+    /// On first entry to the main app for a returning user with iCloud
+    /// available, surface a lightweight toast (instead of a blocking screen)
+    /// and nudge the local cache in case data arrived before launch finished.
+    private func handleMainEntry() {
+        guard !didShowSyncToast, wasReturningUser, cloudSyncManager.isCloudAvailable else { return }
+        didShowSyncToast = true
+        toastManager.show(message: "Syncing with iCloud…", style: .info, icon: "icloud.fill")
+        Task { await exerciseManager.refresh() }
     }
 }
     
@@ -104,4 +112,5 @@ struct ContentView: View {
         .environment(AchievementManager(exerciseManager: previewExerciseManager))
         .environment(CloudSyncManager())
         .environment(PhoneConnectivityManager())
+        .environment(ToastManager())
 }

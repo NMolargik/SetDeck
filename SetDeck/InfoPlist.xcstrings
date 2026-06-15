@@ -1,36 +1,142 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "NSHealthShareUsageDescription" : {
-      "comment" : "Permission prompt shown when requesting read access to Health data.",
+    "CFBundleDisplayName" : {
+      "comment" : "Bundle display name",
+      "extractionState" : "extracted_with_value",
       "localizations" : {
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "SetDeck necesita acceso a los datos de Salud para registrar y mostrar tus entrenamientos." } },
-        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "SetDeck a besoin d'accéder aux données de Santé pour enregistrer et afficher vos entraînements." } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "SetDeckは、ワークアウトを記録して表示するためにヘルスデータへのアクセスを必要とします。" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "SetDeck"
+          }
+        }
       }
     },
-    "NSHealthUpdateUsageDescription" : {
-      "comment" : "Permission prompt shown when requesting write access to Health data.",
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
       "localizations" : {
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "SetDeck necesita acceso a las métricas de salud indicadas para ofrecerte tendencias y herramientas, y para guardar tu consumo de agua y calorías." } },
-        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "SetDeck a besoin d'accéder aux données de santé indiquées pour vous offrir des tendances et des outils, et pour enregistrer votre consommation d'eau et de calories." } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "SetDeckは、トレンドやツールを提供し、水分とカロリーの摂取量を記録するために、表示されている健康データへのアクセスを必要とします。" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "SetDeck"
+          }
+        }
       }
     },
     "NSHealthClinicalHealthRecordsShareUsageDescription" : {
       "comment" : "Permission prompt shown when requesting access to clinical health records.",
+      "extractionState" : "stale",
       "localizations" : {
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "SetDeck necesita acceso a los datos de Salud para registrar y mostrar tus entrenamientos en curso." } },
-        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "SetDeck a besoin d'accéder aux données de Santé pour suivre et afficher vos entraînements en cours." } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "SetDeckは、進行中のワークアウトを記録して表示するためにヘルスデータへのアクセスを必要とします。" } }
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SetDeck necesita acceso a los datos de Salud para registrar y mostrar tus entrenamientos en curso."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SetDeck a besoin d'accéder aux données de Santé pour suivre et afficher vos entraînements en cours."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SetDeckは、進行中のワークアウトを記録して表示するためにヘルスデータへのアクセスを必要とします。"
+          }
+        }
+      }
+    },
+    "NSHealthShareUsageDescription" : {
+      "comment" : "Permission prompt shown when requesting read access to Health data.",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "SetDeck requires access to Health Share to track and display ongoing workouts. "
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "SetDeck necesita acceso a los datos de Salud para registrar y mostrar tus entrenamientos."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "SetDeck a besoin d'accéder aux données de Santé pour enregistrer et afficher vos entraînements."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "SetDeckは、ワークアウトを記録して表示するためにヘルスデータへのアクセスを必要とします。"
+          }
+        }
+      }
+    },
+    "NSHealthUpdateUsageDescription" : {
+      "comment" : "Permission prompt shown when requesting write access to Health data.",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "SetDeck requires access to the listed health metrics to serve trends and tools to you. Without all of these, the app will nto work."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "SetDeck necesita acceso a las métricas de salud indicadas para ofrecerte tendencias y herramientas, y para guardar tu consumo de agua y calorías."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "SetDeck a besoin d'accéder aux données de santé indiquées pour vous offrir des tendances et des outils, et pour enregistrer votre consommation d'eau et de calories."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "SetDeckは、トレンドやツールを提供し、水分とカロリーの摂取量を記録するために、表示されている健康データへのアクセスを必要とします。"
+          }
+        }
       }
     },
     "NSSiriUsageDescription" : {
       "comment" : "Permission prompt shown when requesting Siri access.",
+      "extractionState" : "extracted_with_value",
       "localizations" : {
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "SetDeck usa Siri para que puedas consultar tu plan de entrenamiento y controlar tus sesiones con la voz." } },
-        "fr-CA" : { "stringUnit" : { "state" : "translated", "value" : "SetDeck utilise Siri pour vous permettre de consulter votre programme d'entraînement et de contrôler vos séances à la voix." } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "SetDeckはSiriを使って、ワークアウトの予定を確認したり、音声でワークアウトを操作したりできます。" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "SetDeck uses Siri to let you check your workout schedule and control workout sessions with your voice."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "SetDeck usa Siri para que puedas consultar tu plan de entrenamiento y controlar tus sesiones con la voz."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "SetDeck utilise Siri pour vous permettre de consulter votre programme d'entraînement et de contrôler vos séances à la voix."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "SetDeckはSiriを使って、ワークアウトの予定を確認したり、音声でワークアウトを操作したりできます。"
+          }
+        }
       }
     }
   },

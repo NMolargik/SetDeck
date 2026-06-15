@@ -12,14 +12,6 @@ extension ContentView {
     class ViewModel {
         // MARK: - App State
         var appStage: AppStage = .splash
-        
-        // MARK: - Dependencies
-        var cloudSyncManager: CloudSyncManager?
-        
-        // MARK: - Configuration
-        func configure(cloudSyncManager: CloudSyncManager) {
-            self.cloudSyncManager = cloudSyncManager
-        }
 
         // MARK: - Transitions
         var leadingTransition: AnyTransition {
@@ -28,14 +20,23 @@ extension ContentView {
                 removal: .move(edge: .leading).combined(with: .opacity)
             )
         }
-        
-        func prepareApp(isOnboardingComplete: Bool) async {
-            // UI tests jump straight to the populated main interface.
+
+        func advance(to stage: AppStage) {
+            withAnimation(.easeInOut(duration: 0.3)) {
+                appStage = stage
+            }
+        }
+
+        /// Returning users go straight to the app; iCloud sync continues in
+        /// the background with a toast instead of a blocking screen.
+        func prepareApp(isOnboardingComplete: Bool) {
+            #if DEBUG
             if ProcessInfo.processInfo.arguments.contains("-uiTesting") {
                 appStage = .main
                 return
             }
-            appStage = isOnboardingComplete ? .syncing : .splash
+            #endif
+            appStage = isOnboardingComplete ? .main : .splash
         }
     }
 }
