@@ -320,6 +320,7 @@
 
     },
     "Close" : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {

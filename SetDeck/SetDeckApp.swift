@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 import TipKit
 import WatchConnectivity
+import AppIntents
 
 @main
 struct SetDeckApp: App {
@@ -98,7 +99,7 @@ struct SetDeckApp: App {
                 }
         }
         .commands {
-            SetDeckCommands(pendingDeepLink: $pendingDeepLink)
+            SetDeckCommands(pendingDeepLink: $pendingDeepLink, healthManager: healthManager)
         }
     }
 }
@@ -108,14 +109,55 @@ struct SetDeckApp: App {
 /// uses for widgets and App Intents.
 struct SetDeckCommands: Commands {
     @Binding var pendingDeepLink: DeepLink?
+    /// Read for live state (e.g. Start vs. Stop Workout) and to drive the
+    /// HealthKit actions, mirroring the in-app flow including Siri donation.
+    let healthManager: HealthManager
 
     var body: some Commands {
         CommandMenu("Workout") {
+            // Navigation — drives the same deep-link binding widgets/App Intents use.
             Button("Today's Routine") { pendingDeepLink = .routine }
                 .keyboardShortcut("1", modifiers: .command)
             Button("Stats") { pendingDeepLink = .stats }
                 .keyboardShortcut("2", modifiers: .command)
+            Button("Health") { pendingDeepLink = .health }
+                .keyboardShortcut("3", modifiers: .command)
+
             Divider()
+
+            Button("Edit Routine…") { pendingDeepLink = .editRoutine }
+                .keyboardShortcut("e", modifiers: .command)
+
+            // Start/Stop the strength workout, matching HealthView's behavior.
+            if healthManager.isStrengthTrainingActive {
+                Button("Stop Workout") {
+                    Task {
+                        await healthManager.stopStrengthTrainingWorkoutIfSupported()
+                        _ = try? await IntentDonationManager.shared.donate(intent: StopWorkoutIntent())
+                    }
+                }
+                .keyboardShortcut("r", modifiers: .command)
+            } else {
+                Button("Start Workout") {
+                    Task {
+                        await healthManager.startStrengthTrainingWorkoutIfSupported()
+                        _ = try? await IntentDonationManager.shared.donate(intent: StartWorkoutIntent())
+                    }
+                }
+                .keyboardShortcut("r", modifiers: .command)
+            }
+
+            Menu("Log Water") {
+                Button("250 ml") {
+                    Task { await healthManager.addWaterIntakeIfSupported(amountML: 250, date: Date()) }
+                }
+                Button("500 ml") {
+                    Task { await healthManager.addWaterIntakeIfSupported(amountML: 500, date: Date()) }
+                }
+            }
+
+            Divider()
+
             Button("Settings") { pendingDeepLink = .settings }
                 .keyboardShortcut(",", modifiers: .command)
         }

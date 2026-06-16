@@ -11,8 +11,6 @@ extension MainView {
     @Observable
     class ViewModel {
         var appTab: AppTab = .routine
-        var showingSettingsSheet: Bool = false
         var showingEditRoutineSheet: Bool = false
-        var listPath = NavigationPath()
     }
 }

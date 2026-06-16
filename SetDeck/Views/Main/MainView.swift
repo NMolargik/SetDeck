@@ -11,7 +11,6 @@ import TipKit
 
 struct MainView: View {
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(ExerciseManager.self) private var exerciseManager: ExerciseManager
     @Environment(HealthManager.self) private var healthManager: HealthManager
     @Environment(AchievementManager.self) private var achievementManager: AchievementManager
@@ -21,7 +20,6 @@ struct MainView: View {
     @Binding var pendingDeepLink: DeepLink?
 
     @State private var viewModel: ViewModel = ViewModel()
-    @State private var showingRoutineEditSheet: Bool = false
     @State private var workoutNow: Date = Date()
     @State private var workoutToolbarTimer: Timer? = nil
 
@@ -37,13 +35,7 @@ struct MainView: View {
 
     var body: some View {
         ZStack {
-            Group {
-                if isRegularWidth {
-                    regularWidthView()
-                } else {
-                    compactWidthView()
-                }
-            }
+            tabView()
 
             if let celebration = achievementManager.pendingCelebration {
                 AchievementCelebrationView(achievement: celebration) {
@@ -66,102 +58,6 @@ struct MainView: View {
         }
     }
     
-    private var isRegularWidth: Bool {
-        horizontalSizeClass == .regular
-    }
-    
-    // MARK: - iPAD
-    @ContentBuilder
-    private func regularWidthView() -> some View {
-        NavigationSplitView {
-            ZStack {
-                NavigationStack {
-                    VStack(spacing: 0) {
-                        RoutineView(animateEntrance: animateDeckEntrance)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                    }
-                    .padding(.horizontal, 16)
-                    .navigationSplitViewColumnWidth(min: 360, ideal: 420, max: 520)
-                    .toolbar {
-                        ToolbarItem(placement: .topBarLeading) {
-                            Button {
-                                editRoutineTip.invalidate(reason: .actionPerformed)
-                                showingRoutineEditSheet = true
-                            } label: {
-                                Text("Edit Routine")
-                                    .bold()
-                            }
-                            .tint(.greenStart)
-                            .popoverTip(editRoutineTip, arrowEdge: .bottom)
-                        }
-                    }
-                    .sheet(isPresented: $showingRoutineEditSheet) {
-                        NavigationStack {
-                            EditRoutineView()
-                                .navigationTitle("Edit Routine")
-                                .navigationBarTitleDisplayMode(.inline)
-                        }
-                        .preferredColorScheme(.dark)
-                    }
-                }
-            }
-        } detail: {
-            NavigationStack(path: $viewModel.listPath) {
-                ScrollView {
-                    StatsView()
-                    HealthView()
-                }
-                .navigationTitle("SetDeck")
-                .toolbar {
-                    ToolbarItemGroup(placement: .topBarTrailing) {
-                        if isStrengthWorkoutActive {
-                            Button(action: {}) {
-                                HStack(spacing: 6) {
-                                    Image(systemName: "figure.strengthtraining.traditional")
-                                    Text(workoutElapsedString)
-                                        .monospacedDigit()
-                                }
-                            }
-                            .tint(.greenStart)
-                            .accessibilityLabel("Strength workout running time")
-                            .accessibilityValue(workoutElapsedString)
-                        }
-                        Button {
-                            viewModel.showingSettingsSheet = true
-                        } label: {
-                            Image(systemName: "gearshape.fill")
-                        }
-                        .accessibilityLabel("Settings")
-                    }
-                }
-            }
-        }
-        .sheet(isPresented: $viewModel.showingSettingsSheet) {
-            NavigationStack {
-                SettingsView()
-                .interactiveDismissDisabled()
-                .presentationDetents([.large])
-                .navigationTitle("Settings")
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button("Close") {
-                            viewModel.showingSettingsSheet = false
-                        }
-                    }
-                }
-            }
-        }
-        .onChange(of: pendingDeepLink) { _, newLink in
-            handleDeepLink(newLink)
-        }
-        .onAppear {
-            // Handle any pending deep link on appear
-            if pendingDeepLink != nil {
-                handleDeepLink(pendingDeepLink)
-            }
-        }
-    }
-    
     private func handleDeepLink(_ link: DeepLink?) {
         guard let link = link else { return }
 
@@ -171,18 +67,22 @@ struct MainView: View {
         switch link {
         case .routine:
             viewModel.appTab = .routine
-        case .settings:
-            viewModel.appTab = .settings
-            viewModel.showingSettingsSheet = true
         case .stats:
             viewModel.appTab = .stats
+        case .health:
+            viewModel.appTab = .health
+        case .settings:
+            viewModel.appTab = .settings
+        case .editRoutine:
+            viewModel.appTab = .routine
+            viewModel.showingEditRoutineSheet = true
         }
     }
-    
-    // MARK: - iPHONE
-    
+
+    // MARK: - Tabs
+
     @ContentBuilder
-    private func compactWidthView() -> some View {
+    private func tabView() -> some View {
         TabView(selection: $viewModel.appTab) {
             NavigationStack {
                 RoutineView(animateEntrance: animateDeckEntrance)
@@ -265,6 +165,7 @@ struct MainView: View {
             }
             .tag(AppTab.settings)
         }
+        .tabViewStyle(.sidebarAdaptable)
         .tint(viewModel.appTab.color())
         .onChange(of: pendingDeepLink) { _, newLink in
             handleDeepLink(newLink)

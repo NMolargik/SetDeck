@@ -12,7 +12,10 @@ import Foundation
 nonisolated enum DeepLink: String, Equatable, CaseIterable {
     case routine
     case stats
+    case health
     case settings
+    /// Opens the app to the routine tab with the Edit Routine sheet presented.
+    case editRoutine
 
     /// The custom URL scheme handled by the app.
     static let scheme = "setdeck"
