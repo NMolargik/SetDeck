@@ -1,0 +1,28 @@
+//
+//  SettingsView-ViewModel.swift
+//  SetDeckFeatureSettings
+//
+//  Created by Nick Molargik on 11/19/25.
+//
+
+#if os(iOS)
+import Foundation
+
+extension SettingsView {
+    @Observable
+    class ViewModel {
+        var showDeleteConfirmation: Bool = false
+        var showHistoryClearedAlert: Bool = false
+        var showDeleteRoutinesConfirmation: Bool = false
+        var showRoutinesDeletedAlert: Bool = false
+        var showGenerateSampleDataConfirmation: Bool = false
+        var showSampleDataGeneratedAlert: Bool = false
+        var showResetAchievementsConfirmation: Bool = false
+        var showAchievementsResetAlert: Bool = false
+        var showAchievementsSheet: Bool = false
+        var appVersion: String {
+            Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "—"
+        }
+    }
+}
+#endif

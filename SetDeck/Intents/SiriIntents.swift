@@ -2,41 +2,17 @@
 //  SiriIntents.swift
 //  SetDeck
 //
-//  Created by Nick Molargik on 1/9/26.
-//
-//  Siri & Shortcuts integration for querying workout information.
+//  Siri & Shortcuts integration for querying workout information. Intents read the
+//  session via @Dependency and go through use-cases — the old version opened its own
+//  duplicate CloudKit ModelContainer per process.
 //
 
 import AppIntents
-import SwiftData
+import Foundation
 import HealthKit
-
-// MARK: - Shared Container for App Intents
-
-/// Provides access to the SwiftData model container from App Intents
-@MainActor
-enum IntentModelContainer {
-    static let shared: ModelContainer = {
-        let cloudKitContainerID = "iCloud.com.molargiksoftware.SetDeck"
-
-        do {
-            let config = ModelConfiguration(
-                cloudKitDatabase: .private(cloudKitContainerID)
-            )
-
-            return try ModelContainer(
-                for:
-                    SetDeckExercise.self,
-                    SetDeckRoutine.self,
-                    SetDeckSet.self,
-                    SetDeckSetHistory.self,
-                configurations: config
-            )
-        } catch {
-            fatalError("[SetDeck Intent] Failed to initialize ModelContainer: \(error)")
-        }
-    }()
-}
+import SetDeckComposition
+import SetDeckCore
+import SetDeckServices
 
 // MARK: - Day of Week Enum for Siri
 
@@ -91,6 +67,14 @@ enum WorkoutDay: String, AppEnum {
     }
 }
 
+// MARK: - Helpers
+
+@MainActor
+private func todayDayIndex() -> Int {
+    let weekday = Calendar.current.component(.weekday, from: Date())
+    return (weekday - 1 + 7) % 7
+}
+
 // MARK: - Get Today's Workout Intent
 
 /// "Hey Siri, what's my workout today?"
@@ -100,12 +84,14 @@ struct GetTodayWorkoutIntent: AppIntent {
 
     static let openAppWhenRun: Bool = false
 
+    @Dependency private var session: SessionController
+
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
-        let todayIndex = getTodayDayIndex()
+        let todayIndex = todayDayIndex()
         let dayName = WorkoutDay.from(dayIndex: todayIndex).rawValue
 
-        let exercises = await fetchExercises(forDay: todayIndex)
+        let exercises = (try? session.loadExercises(forDay: todayIndex)) ?? []
 
         if exercises.isEmpty {
             return .result(dialog: "You don't have any exercises scheduled for \(dayName). Open SetDeck to add some exercises to your routine.")
@@ -115,26 +101,6 @@ struct GetTodayWorkoutIntent: AppIntent {
         let setCount = exercises.reduce(0) { $0 + ($1.sets?.count ?? 0) }
 
         return .result(dialog: "Your \(dayName) workout has \(exercises.count) exercises with \(setCount) total sets: \(exerciseList)")
-    }
-
-    private func getTodayDayIndex() -> Int {
-        let weekday = Calendar.current.component(.weekday, from: Date())
-        return (weekday - 1 + 7) % 7
-    }
-
-    @MainActor
-    private func fetchExercises(forDay day: Int) async -> [SetDeckExercise] {
-        let context = IntentModelContainer.shared.mainContext
-
-        let predicate = #Predicate<SetDeckExercise> { ex in
-            ex.routine?.day == day
-        }
-        let descriptor = FetchDescriptor<SetDeckExercise>(
-            predicate: predicate,
-            sortBy: [SortDescriptor(\.orderIndex, order: .forward)]
-        )
-
-        return (try? context.fetch(descriptor)) ?? []
     }
 }
 
@@ -154,9 +120,11 @@ struct GetWorkoutForDayIntent: AppIntent {
         Summary("What's my workout on \(\.$day)")
     }
 
+    @Dependency private var session: SessionController
+
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
-        let exercises = await fetchExercises(forDay: day.dayIndex)
+        let exercises = (try? session.loadExercises(forDay: day.dayIndex)) ?? []
 
         if exercises.isEmpty {
             return .result(dialog: "You don't have any exercises scheduled for \(day.rawValue). Open SetDeck to add some exercises to your routine.")
@@ -166,21 +134,6 @@ struct GetWorkoutForDayIntent: AppIntent {
         let setCount = exercises.reduce(0) { $0 + ($1.sets?.count ?? 0) }
 
         return .result(dialog: "Your \(day.rawValue) workout has \(exercises.count) exercises with \(setCount) total sets: \(exerciseList)")
-    }
-
-    @MainActor
-    private func fetchExercises(forDay day: Int) async -> [SetDeckExercise] {
-        let context = IntentModelContainer.shared.mainContext
-
-        let predicate = #Predicate<SetDeckExercise> { ex in
-            ex.routine?.day == day
-        }
-        let descriptor = FetchDescriptor<SetDeckExercise>(
-            predicate: predicate,
-            sortBy: [SortDescriptor(\.orderIndex, order: .forward)]
-        )
-
-        return (try? context.fetch(descriptor)) ?? []
     }
 }
 
@@ -193,10 +146,13 @@ struct GetWorkoutStatusIntent: AppIntent {
 
     static let openAppWhenRun: Bool = false
 
+    @Dependency private var session: SessionController
+
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
-        let healthManager = HealthManager()
-        await healthManager.requestAuthorization()
+        // The session's HealthManager owns the live workout state (a fresh instance
+        // would always report .notStarted).
+        let healthManager = session.healthManager
 
         if healthManager.isWorkoutOngoing {
             if let startDate = healthManager.workoutStartDate {
@@ -226,12 +182,14 @@ struct GetExerciseCountIntent: AppIntent {
 
     static let openAppWhenRun: Bool = false
 
+    @Dependency private var session: SessionController
+
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog {
-        let todayIndex = getTodayDayIndex()
+        let todayIndex = todayDayIndex()
         let dayName = WorkoutDay.from(dayIndex: todayIndex).rawValue
 
-        let exercises = await fetchExercises(forDay: todayIndex)
+        let exercises = (try? session.loadExercises(forDay: todayIndex)) ?? []
 
         if exercises.isEmpty {
             return .result(dialog: "You don't have any exercises scheduled for \(dayName).")
@@ -246,26 +204,6 @@ struct GetExerciseCountIntent: AppIntent {
         } else {
             return .result(dialog: "You have \(exercises.count) exercises today with \(setCount) total sets.")
         }
-    }
-
-    private func getTodayDayIndex() -> Int {
-        let weekday = Calendar.current.component(.weekday, from: Date())
-        return (weekday - 1 + 7) % 7
-    }
-
-    @MainActor
-    private func fetchExercises(forDay day: Int) async -> [SetDeckExercise] {
-        let context = IntentModelContainer.shared.mainContext
-
-        let predicate = #Predicate<SetDeckExercise> { ex in
-            ex.routine?.day == day
-        }
-        let descriptor = FetchDescriptor<SetDeckExercise>(
-            predicate: predicate,
-            sortBy: [SortDescriptor(\.orderIndex, order: .forward)]
-        )
-
-        return (try? context.fetch(descriptor)) ?? []
     }
 }
 

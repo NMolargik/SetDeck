@@ -9,6 +9,7 @@
 
 import WidgetKit
 import SwiftUI
+import SetDeckCore
 
 // MARK: - Codable Models (must match WatchModels.swift in Watch App)
 

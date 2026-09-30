@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "2620"
+   LastUpgradeVersion = "2700"
    wasCreatedForAppExtension = "YES"
    version = "2.0">
    <BuildAction
@@ -77,7 +77,6 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EBD95F872F13408300F5149E"
             BuildableName = "SetDeck Watch WidgetExtension.appex"
-            BlueprintName = "SetDeck Watch WidgetExtension"
             ReferencedContainer = "container:SetDeck.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -120,7 +119,6 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EBD95F872F13408300F5149E"
             BuildableName = "SetDeck Watch WidgetExtension.appex"
-            BlueprintName = "SetDeck Watch WidgetExtension"
             ReferencedContainer = "container:SetDeck.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

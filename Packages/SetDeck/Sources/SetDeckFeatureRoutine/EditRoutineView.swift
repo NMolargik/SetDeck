@@ -1,0 +1,347 @@
+//
+//  EditRoutineView.swift
+//  SetDeckFeatureRoutine
+//
+//  Created by Nick Molargik on 11/23/25.
+//
+
+#if os(iOS)
+import SwiftUI
+import TipKit
+import SetDeckCore
+import SetDeckDesignSystem
+import SetDeckFeatureShared
+#if canImport(UIKit)
+import UIKit
+#endif
+
+public struct EditRoutineView: View {
+    @Environment(WorkoutDataModel.self) private var exerciseManager
+    @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.dismiss) private var dismiss
+
+    @State private var viewModel = ViewModel()
+
+    @FocusState private var focusedExerciseID: UUID?
+    @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
+
+    // TipKit
+    private let addExerciseTip = AddExerciseTip()
+    private let addSetTip = AddSetTip()
+
+    public init() {}
+
+    public var body: some View {
+        VStack(spacing: 0) {
+            DayPickerView(selectedDay: $viewModel.selectedDay)
+                .padding(.top, 12)
+
+            let currentRoutine = viewModel.currentRoutine(using: exerciseManager)
+            let exercises = viewModel.exercises(using: exerciseManager)
+                .sorted { (lhs: SetDeckExercise, rhs: SetDeckExercise) -> Bool in
+                    (lhs.orderIndex) < (rhs.orderIndex)
+                }
+
+            // Pre-compute sets for all exercises so changes trigger view updates
+            // Reading changeStamp ensures this runs when data mutates
+            let _ = exerciseManager.changeStamp
+            let setsForExercise: [UUID: [SetDeckSet]] = Dictionary(
+                uniqueKeysWithValues: exercises.map { ex in
+                    (ex.uuid, exerciseManager.sets(for: ex).sorted { $0.orderIndex < $1.orderIndex })
+                }
+            )
+
+            List {
+                if exercises.isEmpty {
+                    Section {
+                        VStack(spacing: 8) {
+                            Button {
+                                addExerciseTip.invalidate(reason: .actionPerformed)
+                                withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                                    viewModel.addExercise(named: "New Exercise", using: exerciseManager)
+                                }
+                                Task { await TipEvents.firstExerciseAdded.donate() }
+                            } label: {
+                                HStack(spacing: 8) {
+                                    Image(systemName: "plus.circle.fill")
+                                    Text("Add Exercise")
+                                        .font(.callout.weight(.semibold))
+                                }
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 8)
+                                .foregroundStyle(.white)
+                                .background(
+                                    Capsule()
+                                        .fill(Color.blueStart)
+                                )
+                                .contentShape(Capsule())
+                            }
+                            .buttonStyle(.plain)
+                            .hoverEffectIfAvailable(.highlight)
+                            .accessibilityLabel("Add exercise")
+                            .accessibilityHint("Creates a new exercise for this day's routine")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .popoverTip(addExerciseTip, arrowEdge: .top)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .listRowBackground(Color.clear)
+                        .listRowSeparator(.hidden)
+                    }
+                } else {
+                    ForEach(exercises, id: \.uuid) { exercise in
+                        let isFirstExercise = exercise.uuid == exercises.first?.uuid
+                        Section(
+                            header: exerciseHeader(for: exercise)
+                                .listRowInsets(EdgeInsets()),
+                            footer: addSetFooter(for: exercise, isFirstExercise: isFirstExercise)
+                        ) {
+                            let sets = setsForExercise[exercise.uuid] ?? []
+                            ForEach(sets, id: \.uuid) { set in
+                                EditSetRowView(set: set, setCount: sets.count)
+                                    .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                                    .listRowSeparator(.hidden)
+                                    .listRowBackground(Color.clear)
+                            }
+                            .onDelete { offsets in
+                                DispatchQueue.main.async {
+                                    withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                                        viewModel.deleteSets(at: offsets, from: sets, using: exerciseManager)
+                                    }
+                                }
+                            }
+                            .onMove { indices, destination in
+                                viewModel.moveSets(from: indices,
+                                                   to: destination,
+                                                   in: sets,
+                                                   exercise: exercise,
+                                                   using: exerciseManager)
+                            }
+                        }
+                    }
+                    .onDelete { offsets in
+                        focusedExerciseID = nil
+                        DispatchQueue.main.async {
+                            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                                viewModel.deleteExercises(at: offsets, from: exercises, using: exerciseManager)
+                                // Reindex remaining exercises so new ones appear at the bottom and indices stay contiguous
+                                let remaining = viewModel.exercises(using: exerciseManager)
+                                    .sorted { (l: SetDeckExercise, r: SetDeckExercise) -> Bool in
+                                        (l.orderIndex) < (r.orderIndex)
+                                    }
+                                for (idx, ex) in remaining.enumerated() {
+                                    exerciseManager.updateExercise(ex) { $0.orderIndex = idx }
+                                }
+                            }
+                        }
+                    }
+                    .onMove { indices, destination in
+                        viewModel.moveExercises(from: indices,
+                                                to: destination,
+                                                in: exercises,
+                                                currentRoutine: currentRoutine,
+                                                using: exerciseManager)
+                        // Persist new order indices after move
+                        let reordered = viewModel.exercises(using: exerciseManager)
+                            .sorted { (l: SetDeckExercise, r: SetDeckExercise) -> Bool in
+                                (l.orderIndex) < (r.orderIndex)
+                            }
+                        for (idx, ex) in reordered.enumerated() {
+                            exerciseManager.updateExercise(ex) { $0.orderIndex = idx }
+                        }
+                    }
+
+                    if !exercises.isEmpty {
+                        Section(footer: Button {
+                            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                                viewModel.addExercise(named: "New Exercise", using: exerciseManager)
+                            }
+                        } label: {
+                            HStack(spacing: 8) {
+                                Image(systemName: "plus.circle.fill")
+                                Text("Add Exercise")
+                                    .font(.callout.weight(.semibold))
+                            }
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+                            .foregroundStyle(.white)
+                            .background(
+                                Capsule()
+                                    .fill(Color.blueStart)
+                            )
+                            .contentShape(Capsule())
+                        }
+                        .buttonStyle(.plain)
+                        .hoverEffectIfAvailable(.highlight)
+                        .accessibilityLabel("Add exercise")
+                        .accessibilityHint("Creates a new exercise for this day's routine")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 8)
+                        .listRowInsets(EdgeInsets())) {
+                            EmptyView()
+                        }
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
+                    }
+                }
+            }
+            .scrollContentBackground(.hidden)
+            .listStyle(.plain)
+            .listRowSeparator(.hidden)
+            .listSectionSeparator(.hidden)
+        }
+        .onAppear {
+            viewModel.resetToToday()
+            Task { await TipEvents.editRoutineOpened.donate() }
+        }
+        .onChange(of: scenePhase) { oldValue, newValue in
+            if newValue == .active {
+                viewModel.resetToToday()
+            }
+        }
+        .animation(.spring(response: 0.35, dampingFraction: 0.8), value: viewModel.selectedDay)
+        .navigationTitle("Edit Routine")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Save") {
+                    focusedExerciseID = nil
+                    dismiss()
+                }
+                .bold()
+                .tint(.greenStart)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func addSetFooter(for exercise: SetDeckExercise, isFirstExercise: Bool) -> some View {
+        let button = Button {
+            addSetTip.invalidate(reason: .actionPerformed)
+            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                viewModel.addSet(to: exercise, using: exerciseManager)
+            }
+        } label: {
+            HStack(spacing: 8) {
+                Image(systemName: "plus.circle.fill")
+                Text("Add Set")
+                    .font(.callout.weight(.semibold))
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
+            .foregroundStyle(.white)
+            .background(
+                Capsule()
+                    .fill(Color.blueStart)
+            )
+            .contentShape(Capsule())
+        }
+        .buttonStyle(.plain)
+        .hoverEffectIfAvailable(.highlight)
+        .accessibilityLabel("Add set to \(exercise.name)")
+        .accessibilityHint("Creates a new set for this exercise")
+        .frame(maxWidth: .infinity, alignment: .trailing)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
+        .listRowInsets(EdgeInsets())
+        .listRowSeparator(.hidden)
+        .listRowBackground(Color.clear)
+
+        if isFirstExercise {
+            button.popoverTip(addSetTip, arrowEdge: .bottom)
+        } else {
+            button
+        }
+    }
+
+    @ViewBuilder
+    private func exerciseHeader(for exercise: SetDeckExercise) -> some View {
+        HStack(spacing: 12) {
+            TextField("Exercise Name", text: Binding(
+                get: { exercise.name },
+                set: { newValue in
+                    exerciseManager.updateExercise(exercise) { $0.name = newValue }
+                }
+            ))
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(.primary)
+            .textFieldStyle(.plain)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(.ultraThinMaterial)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color.primary.opacity(0.2), lineWidth: 1)
+            )
+            .focused($focusedExerciseID, equals: exercise.uuid)
+            .accessibilityLabel("Exercise name")
+            .accessibilityValue(exercise.name)
+            .accessibilityHint("Double tap to edit the exercise name")
+
+            // When focused, show a checkmark button to clear focus
+            if focusedExerciseID == exercise.uuid {
+                Button {
+                    focusedExerciseID = nil
+                } label: {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundStyle(.greenStart)
+                        .font(.title3)
+                }
+                .buttonStyle(.plain)
+                .hoverEffectIfAvailable(.highlight)
+                .accessibilityLabel("Done editing")
+                .accessibilityHint("Confirms the exercise name change")
+            }
+
+            Spacer()
+
+            if focusedExerciseID != exercise.uuid {
+                HStack(spacing: 8) {
+                    Text("Warmup?")
+                        .font(.caption)
+                        .foregroundStyle(.primary)
+                        .accessibilityHidden(true)
+
+                    Toggle("", isOn: Binding(
+                        get: { exercise.isWarmup },
+                        set: { newValue in
+                            exerciseManager.updateExercise(exercise) { $0.isWarmup = newValue }
+                        }
+                    ))
+                    .labelsHidden()
+                    .toggleStyle(SwitchToggleStyle(tint: .orangeStart))
+                    .accessibilityLabel("Warmup exercise")
+                    .accessibilityValue(exercise.isWarmup ? "On" : "Off")
+                    .accessibilityHint("Mark this exercise as a warmup")
+                }
+
+                Button {
+                    if focusedExerciseID == exercise.uuid {
+                        focusedExerciseID = nil
+                    }
+                    DispatchQueue.main.async {
+                        withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                            exerciseManager.deleteExercise(exercise)
+                        }
+                    }
+                } label: {
+                    Image(systemName: "trash.fill")
+                        .font(.body)
+                        .foregroundStyle(.red)
+                }
+                .buttonStyle(.plain)
+                .hoverEffectIfAvailable(.highlight)
+                .accessibilityLabel("Delete \(exercise.name)")
+                .accessibilityHint("Removes this exercise and all its sets")
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 4)
+        .contentShape(Rectangle())
+        .animation(.easeInOut(duration: 0.2), value: focusedExerciseID)
+    }
+}
+#endif

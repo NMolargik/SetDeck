@@ -10,6 +10,24 @@
             "state" : "new",
             "value" : "SetDeck"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SetDeck"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SetDeck"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SetDeck"
+          }
         }
       }
     },
@@ -20,6 +38,24 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "SetDeck"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SetDeck"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SetDeck"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "SetDeck"
           }
         }

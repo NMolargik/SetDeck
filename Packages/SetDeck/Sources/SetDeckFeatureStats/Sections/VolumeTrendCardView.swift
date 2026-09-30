@@ -1,0 +1,64 @@
+//
+//  VolumeTrendCardView.swift
+//  SetDeckFeatureStats
+//
+//  Created by Nick Molargik on 11/29/25.
+//
+
+#if os(iOS)
+import SwiftUI
+import Charts
+import SetDeckCore
+import SetDeckDesignSystem
+import SetDeckFeatureShared
+
+struct VolumeTrendCardView: View {
+    let points: [StatsView.VolumePoint]
+
+    @AppStorage(AppStorageKeys.useDayMonthYearDates) private var useDayMonthYearDates = false
+
+    private func axisDateString(_ date: Date) -> String {
+        if useDayMonthYearDates {
+            let df = DateFormatter()
+            df.locale = .current
+            df.dateFormat = "dd/MM/yyyy"
+            return df.string(from: date)
+        } else {
+            return DateFormatter.localizedString(from: date, dateStyle: .short, timeStyle: .none)
+        }
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Training Volume")
+                .font(.headline)
+            Chart(points) { point in
+                BarMark(
+                    x: .value("Date", point.date, unit: .day),
+                    y: .value("Volume", point.volume)
+                )
+                .foregroundStyle(.purpleStart)
+            }
+            .chartXAxis {
+                AxisMarks(values: .automatic(desiredCount: 6)) { value in
+                    AxisGridLine()
+                    AxisValueLabel {
+                        if let date = value.as(Date.self) {
+                            Text(axisDateString(date))
+                        }
+                    }
+                }
+            }
+            .frame(height: 180)
+        }
+        .padding(12)
+        .background(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(.thinMaterial)
+        )
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Training volume chart showing \(points.count) data points")
+        .accessibilityHint("Bar chart displaying workout volume over time")
+    }
+}
+#endif

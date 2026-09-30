@@ -2,16 +2,16 @@
 //  ExerciseEntity.swift
 //  SetDeck
 //
-//  Created by Nick Molargik on 6/14/26.
-//
-//  Exposes workout exercises to Siri, Shortcuts, and Spotlight via an
-//  IndexedEntity so they are semantically searchable on-device.
+//  Exposes workout exercises to Siri, Shortcuts, and Spotlight via an IndexedEntity so
+//  they are semantically searchable on-device. Queries read through the session's
+//  use-cases (the old version opened its own duplicate ModelContainer).
 //
 
 import AppIntents
 import CoreSpotlight
 import UniformTypeIdentifiers
-import SwiftData
+import SetDeckComposition
+import SetDeckCore
 
 // MARK: - Day naming helper
 
@@ -68,6 +68,8 @@ extension ExerciseEntity {
 // MARK: - Entity Query
 
 struct ExerciseEntityQuery: EntityQuery {
+    @Dependency private var session: SessionController
+
     @MainActor
     func entities(for identifiers: [UUID]) async throws -> [ExerciseEntity] {
         let wanted = Set(identifiers)
@@ -81,10 +83,7 @@ struct ExerciseEntityQuery: EntityQuery {
 
     @MainActor
     private func allExercises() -> [SetDeckExercise] {
-        let context = IntentModelContainer.shared.mainContext
-        let descriptor = FetchDescriptor<SetDeckExercise>(
-            sortBy: [SortDescriptor(\.orderIndex, order: .forward)]
-        )
-        return (try? context.fetch(descriptor)) ?? []
+        guard let routines = try? session.loadRoutines() else { return [] }
+        return routines.flatMap { (try? session.loadExercises(for: $0)) ?? [] }
     }
 }

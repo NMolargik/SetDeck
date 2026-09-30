@@ -7,6 +7,8 @@
 
 import Foundation
 import WidgetKit
+import SetDeckCore
+import SetDeckServices
 
 struct WaterProvider: TimelineProvider {
     typealias Entry = WaterEntry

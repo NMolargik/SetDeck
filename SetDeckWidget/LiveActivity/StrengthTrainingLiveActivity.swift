@@ -8,6 +8,7 @@
 import ActivityKit
 import SwiftUI
 import WidgetKit
+import SetDeckServices
 
 struct StrengthTrainingLiveActivity: Widget {
     var body: some WidgetConfiguration {

@@ -7,6 +7,8 @@
 
 import Foundation
 import WidgetKit
+import SetDeckCore
+import SetDeckServices
 
 struct EnergyProvider: TimelineProvider {
     typealias Entry = EnergyEntry

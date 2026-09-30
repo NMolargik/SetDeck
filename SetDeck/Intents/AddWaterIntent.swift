@@ -6,6 +6,7 @@
 //
 
 import AppIntents
+import SetDeckServices
 import WidgetKit
 
 /// App Intent to add water intake from widgets and Shortcuts

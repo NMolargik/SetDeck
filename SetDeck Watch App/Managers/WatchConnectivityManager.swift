@@ -11,6 +11,7 @@ import Foundation
 import WatchConnectivity
 import WidgetKit
 import os.log
+import SetDeckCore
 
 private let logger = Logger(subsystem: "com.molargiksoftware.SetDeck.Watch", category: "WatchConnectivity")
 

@@ -8,6 +8,7 @@
 import SwiftUI
 import WidgetKit
 import AppIntents
+import SetDeckServices
 
 // MARK: - Workout Toggle Intent for Control Center
 struct ToggleWorkoutIntent: AppIntent {

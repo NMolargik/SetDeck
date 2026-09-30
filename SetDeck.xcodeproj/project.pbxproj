@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DEC0DE000000000000000011 /* SetDeckComposition in Frameworks */ = {isa = PBXBuildFile; productRef = DEC0DE000000000000000010 /* SetDeckComposition */; };
+		DEC0DE000000000000000013 /* SetDeckCore in Frameworks */ = {isa = PBXBuildFile; productRef = DEC0DE000000000000000012 /* SetDeckCore */; };
+		DEC0DE000000000000000015 /* SetDeckServices in Frameworks */ = {isa = PBXBuildFile; productRef = DEC0DE000000000000000014 /* SetDeckServices */; };
+		DEC0DE000000000000000021 /* SetDeckCore in Frameworks */ = {isa = PBXBuildFile; productRef = DEC0DE000000000000000020 /* SetDeckCore */; };
+		DEC0DE000000000000000031 /* SetDeckCore in Frameworks */ = {isa = PBXBuildFile; productRef = DEC0DE000000000000000030 /* SetDeckCore */; };
+		DEC0DE000000000000000033 /* SetDeckServices in Frameworks */ = {isa = PBXBuildFile; productRef = DEC0DE000000000000000032 /* SetDeckServices */; };
+		DEC0DE000000000000000041 /* SetDeckCore in Frameworks */ = {isa = PBXBuildFile; productRef = DEC0DE000000000000000040 /* SetDeckCore */; };
+		DEC0DE000000000000000051 /* SetDeckCore in Frameworks */ = {isa = PBXBuildFile; productRef = DEC0DE000000000000000050 /* SetDeckCore */; };
 		EB80BD782EDF31B6005FD199 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB1388282EBE625F001011D3 /* WidgetKit.framework */; };
 		EB80BD792EDF31B6005FD199 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB13882A2EBE625F001011D3 /* SwiftUI.framework */; };
 		EB80BD842EDF31B7005FD199 /* SetDeckWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = EB80BD772EDF31B6005FD199 /* SetDeckWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -134,24 +142,6 @@
 			);
 			target = EB80BD762EDF31B6005FD199 /* SetDeckWidgetExtension */;
 		};
-		EB80BD8A2EDF31CE005FD199 /* Exceptions for "SetDeck" folder in "SetDeckWidgetExtension" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Enumerations/MuscleGroup.swift,
-				Enumerations/SetType.swift,
-				"Extensions/HKWorkoutActivityType-displayName.swift",
-				Extensions/UncheckedSendableBox.swift,
-				Managers/HealthManager.swift,
-				Models/SetDeckExercise.swift,
-				Models/SetDeckRoutine.swift,
-				Models/SetDeckSet.swift,
-				Models/SetDeckSetHistory.swift,
-				Models/StrengthTrainingActivityAttributes.swift,
-				Models/TimeSeriesSample.swift,
-				Models/WorkoutSummary.swift,
-			);
-			target = EB80BD762EDF31B6005FD199 /* SetDeckWidgetExtension */;
-		};
 		EBD95F992F13408400F5149E /* Exceptions for "SetDeck Watch Widget" folder in "SetDeck Watch WidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -166,7 +156,6 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				EB1385C12EBE567A001011D3 /* Exceptions for "SetDeck" folder in "SetDeck" target */,
-				EB80BD8A2EDF31CE005FD199 /* Exceptions for "SetDeck" folder in "SetDeckWidgetExtension" target */,
 			);
 			path = SetDeck;
 			sourceTree = "<group>";
@@ -219,6 +208,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEC0DE000000000000000011 /* SetDeckComposition in Frameworks */,
+				DEC0DE000000000000000013 /* SetDeckCore in Frameworks */,
+				DEC0DE000000000000000015 /* SetDeckServices in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,6 +218,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEC0DE000000000000000021 /* SetDeckCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,6 +233,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEC0DE000000000000000031 /* SetDeckCore in Frameworks */,
+				DEC0DE000000000000000033 /* SetDeckServices in Frameworks */,
 				EB80BD792EDF31B6005FD199 /* SwiftUI.framework in Frameworks */,
 				EB80BD782EDF31B6005FD199 /* WidgetKit.framework in Frameworks */,
 			);
@@ -249,6 +244,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEC0DE000000000000000041 /* SetDeckCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,6 +266,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEC0DE000000000000000051 /* SetDeckCore in Frameworks */,
 				EBD95F8A2F13408300F5149E /* SwiftUI.framework in Frameworks */,
 				EBD95F892F13408300F5149E /* WidgetKit.framework in Frameworks */,
 			);
@@ -344,6 +341,9 @@
 			);
 			name = SetDeck;
 			packageProductDependencies = (
+				DEC0DE000000000000000010 /* SetDeckComposition */,
+				DEC0DE000000000000000012 /* SetDeckCore */,
+				DEC0DE000000000000000014 /* SetDeckServices */,
 			);
 			productName = SetDeck;
 			productReference = EB13859E2EBE5678001011D3 /* SetDeck.app */;
@@ -367,6 +367,7 @@
 			);
 			name = SetDeckTests;
 			packageProductDependencies = (
+				DEC0DE000000000000000020 /* SetDeckCore */,
 			);
 			productName = SetDeckTests;
 			productReference = EB1385AF2EBE567A001011D3 /* SetDeckTests.xctest */;
@@ -412,6 +413,8 @@
 			);
 			name = SetDeckWidgetExtension;
 			packageProductDependencies = (
+				DEC0DE000000000000000030 /* SetDeckCore */,
+				DEC0DE000000000000000032 /* SetDeckServices */,
 			);
 			productName = SetDeckWidgetExtension;
 			productReference = EB80BD772EDF31B6005FD199 /* SetDeckWidgetExtension.appex */;
@@ -436,6 +439,7 @@
 			);
 			name = "SetDeck Watch App";
 			packageProductDependencies = (
+				DEC0DE000000000000000040 /* SetDeckCore */,
 			);
 			productName = "SetDeck Watch App";
 			productReference = EBD95F212F11EE7D00F5149E /* SetDeck Watch App.app */;
@@ -504,6 +508,7 @@
 			);
 			name = "SetDeck Watch WidgetExtension";
 			packageProductDependencies = (
+				DEC0DE000000000000000050 /* SetDeckCore */,
 			);
 			productName = "SetDeck Watch WidgetExtension";
 			productReference = EBD95F882F13408300F5149E /* SetDeck Watch WidgetExtension.appex */;
@@ -562,6 +567,7 @@
 			mainGroup = EB1385952EBE5678001011D3;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				DEC0DE000000000000000001 /* XCLocalSwiftPackageReference "Packages/SetDeck" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EB13859F2EBE5678001011D3 /* Products */;
@@ -753,6 +759,8 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "SetDeck requires access to Health Share to track and display ongoing workouts. ";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "SetDeck requires access to the listed health metrics to serve trends and tools to you. Without all of these, the app will nto work.";
+				INFOPLIST_KEY_NSSiriUsageDescription = "SetDeck uses Siri to let you check your workout schedule and control workout sessions with your voice.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -764,10 +772,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.3;
+				MARKETING_VERSION = 2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = nickmolargik.ReadySet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -797,6 +805,8 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "SetDeck requires access to Health Share to track and display ongoing workouts. ";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "SetDeck requires access to the listed health metrics to serve trends and tools to you. Without all of these, the app will nto work.";
+				INFOPLIST_KEY_NSSiriUsageDescription = "SetDeck uses Siri to let you check your workout schedule and control workout sessions with your voice.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -808,10 +818,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.3;
+				MARKETING_VERSION = 2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = nickmolargik.ReadySet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -885,7 +895,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -944,7 +954,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1071,11 +1081,11 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.3;
+				MARKETING_VERSION = 2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = nickmolargik.ReadySet.SetDeckWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -1107,11 +1117,11 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.3;
+				MARKETING_VERSION = 2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = nickmolargik.ReadySet.SetDeckWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -1145,12 +1155,12 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.3;
+				MARKETING_VERSION = 2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = nickmolargik.ReadySet.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1182,12 +1192,12 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.3;
+				MARKETING_VERSION = 2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = nickmolargik.ReadySet.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1307,12 +1317,12 @@
 					"@executable_path/../../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				MARKETING_VERSION = 2.3;
+				MARKETING_VERSION = 2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = "nickmolargik.ReadySet.watchkitapp.SetDeck-Watch-Widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
@@ -1341,12 +1351,12 @@
 					"@executable_path/../../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				MARKETING_VERSION = 2.3;
+				MARKETING_VERSION = 2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = "nickmolargik.ReadySet.watchkitapp.SetDeck-Watch-Widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
@@ -1441,6 +1451,56 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		DEC0DE000000000000000001 /* XCLocalSwiftPackageReference "Packages/SetDeck" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/SetDeck;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DEC0DE000000000000000010 /* SetDeckComposition */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DEC0DE000000000000000001 /* XCLocalSwiftPackageReference "Packages/SetDeck" */;
+			productName = SetDeckComposition;
+		};
+		DEC0DE000000000000000012 /* SetDeckCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DEC0DE000000000000000001 /* XCLocalSwiftPackageReference "Packages/SetDeck" */;
+			productName = SetDeckCore;
+		};
+		DEC0DE000000000000000014 /* SetDeckServices */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DEC0DE000000000000000001 /* XCLocalSwiftPackageReference "Packages/SetDeck" */;
+			productName = SetDeckServices;
+		};
+		DEC0DE000000000000000020 /* SetDeckCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DEC0DE000000000000000001 /* XCLocalSwiftPackageReference "Packages/SetDeck" */;
+			productName = SetDeckCore;
+		};
+		DEC0DE000000000000000030 /* SetDeckCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DEC0DE000000000000000001 /* XCLocalSwiftPackageReference "Packages/SetDeck" */;
+			productName = SetDeckCore;
+		};
+		DEC0DE000000000000000032 /* SetDeckServices */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DEC0DE000000000000000001 /* XCLocalSwiftPackageReference "Packages/SetDeck" */;
+			productName = SetDeckServices;
+		};
+		DEC0DE000000000000000040 /* SetDeckCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DEC0DE000000000000000001 /* XCLocalSwiftPackageReference "Packages/SetDeck" */;
+			productName = SetDeckCore;
+		};
+		DEC0DE000000000000000050 /* SetDeckCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DEC0DE000000000000000001 /* XCLocalSwiftPackageReference "Packages/SetDeck" */;
+			productName = SetDeckCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = EB1385962EBE5678001011D3 /* Project object */;
 }

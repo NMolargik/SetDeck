@@ -8,6 +8,7 @@
 //
 
 import SwiftUI
+import SetDeckCore
 
 struct LogSetView: View {
     let set: WatchSet

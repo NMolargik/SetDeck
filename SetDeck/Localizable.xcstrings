@@ -2,93 +2,36 @@
   "sourceLanguage" : "en",
   "strings" : {
     "" : {
-
+      "extractionState" : "manual",
+      "shouldGenerateSymbol" : false,
+      "shouldTranslate" : false
     },
     "%@" : {
-
-    },
-    "%@ %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ %2$@"
-          }
-        }
-      }
-    },
-    "%@ %lld%%" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ %2$lld%%"
-          }
-        }
-      }
+      "shouldTranslate" : false
     },
     "%@ routine" : {
-
-    },
-    "%@, %@" : {
+      "extractionState" : "manual",
       "localizations" : {
-        "en" : {
+        "es" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@, %2$@"
+            "state" : "translated",
+            "value" : "Rutina de %@"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Routine du %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@のルーティン"
           }
         }
-      }
-    },
-    "%@, %@, duration %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@, %2$@, duration %3$@"
-          }
-        }
-      }
-    },
-    "%@, %@%@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@, %2$@%3$@"
-          }
-        }
-      }
-    },
-    "%@, best weight %@ %@, estimated one rep max %@ %@, achieved on %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@, best weight %2$@ %3$@, estimated one rep max %4$@ %5$@, achieved on %6$@"
-          }
-        }
-      }
-    },
-    "%@, exercise %lld" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@, exercise %2$lld"
-          }
-        }
-      }
-    },
-    "%@: %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@: %2$@"
-          }
-        }
-      }
+      },
+      "shouldGenerateSymbol" : false
     },
     "%@%@" : {
       "localizations" : {
@@ -98,32 +41,170 @@
             "value" : "%1$@%2$@"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
-    "%lld" : {
-
-    },
-    "%lld %@" : {
+    "%@, %@" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "%1$lld %2$@"
+            "value" : "%1$@, %2$@"
           }
         }
-      }
+      },
+      "shouldGenerateSymbol" : false,
+      "shouldTranslate" : false
+    },
+    "%@, %@%@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, %2$@%3$@"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false,
+      "shouldTranslate" : false
+    },
+    "%@, %@, duration %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, %2$@, duration %3$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@, duración %3$@"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@, durée %3$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@、%2$@、時間 %3$@"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "%@, best weight %@ %@, estimated one rep max %@ %@, achieved on %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, best weight %2$@ %3$@, estimated one rep max %4$@ %5$@, achieved on %6$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, mejor peso %2$@ %3$@, una repetición máxima estimada %4$@ %5$@, logrado el %6$@"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, meilleur poids %2$@ %3$@, maximum estimé à une répétition %4$@ %5$@, atteint le %6$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@、最高重量 %2$@ %3$@、推定1RM %4$@ %5$@、達成日 %6$@"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "%@, exercise %lld" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, exercise %2$lld"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, ejercicio %2$lld"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, exercice %2$lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@、エクササイズ %2$lld"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "%@: %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@: %2$@"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false,
+      "shouldTranslate" : false
     },
     "%lld of %lld" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "%1$lld of %2$lld"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld de %2$lld"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld de %2$lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld / %2$lld"
+          }
         }
-      }
+      },
+      "shouldGenerateSymbol" : false
     },
     "%lld/%lld" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -131,30 +212,476 @@
             "value" : "%1$lld/%2$lld"
           }
         }
-      }
-    },
-    "%lld%%" : {
-
+      },
+      "shouldGenerateSymbol" : false,
+      "shouldTranslate" : false
     },
     "+%lld more" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%lld más"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%lld de plus"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "他 %lld 件"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "250 ml" : {
+      "comment" : "A button that adds 250 ml of water to the user's intake.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "250 ml"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "250 ml"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "250 ml"
+          }
+        }
+      }
+    },
+    "500 ml" : {
+      "comment" : "A button that adds 500 ml of water to the user's intake.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "500 ml"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "500 ml"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "500 ml"
+          }
+        }
+      }
     },
     "ACHIEVEMENT UNLOCKED" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LOGRO DESBLOQUEADO"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SUCCÈS DÉBLOQUÉ"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "実績を解除"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Achievements" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logros"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Succès"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "実績"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Achievements Reset" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logros restablecidos"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Succès réinitialisés"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "実績をリセットしました"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Add ${amountKcal} calories" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir ${amountKcal} calorías"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter ${amountKcal} calories"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${amountKcal} カロリーを追加"
+          }
+        }
+      }
     },
     "Add ${amountML} ml of water" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir ${amountML} ml de agua"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter ${amountML} ml d'eau"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水を ${amountML} ml 追加"
+          }
+        }
+      }
+    },
+    "Add Bottle of Water" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir botella de agua"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter une bouteille d'eau"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ボトルの水を追加"
+          }
+        }
+      }
+    },
+    "Add Calories" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir calorías"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter des calories"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カロリーを追加"
+          }
+        }
+      }
+    },
+    "Add Exercise" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir ejercicio"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter un exercice"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エクササイズを追加"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Add Food" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir comida"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter un aliment"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "食事を追加"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Add Glass of Water" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir vaso de agua"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter un verre d'eau"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "グラスの水を追加"
+          }
+        }
+      }
+    },
+    "Add Meal" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir comida completa"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter un repas"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "食事（1食）を追加"
+          }
+        }
+      }
+    },
+    "Add Set" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir serie"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter une série"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セットを追加"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Add Sets to Your Exercise" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añade series a tu ejercicio"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajoutez des séries à votre exercice"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エクササイズにセットを追加"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Add Small Meal" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir comida ligera"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter un petit repas"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "軽食を追加"
+          }
+        }
+      }
+    },
+    "Add Snack" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir tentempié"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter une collation"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スナックを追加"
+          }
+        }
+      }
+    },
+    "Add Water" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir agua"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter de l'eau"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水を追加"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Add Your First Exercise" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añade tu primer ejercicio"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajoutez votre premier exercice"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最初のエクササイズを追加"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Add at least one exercise to continue" : {
+      "extractionState" : "manual",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -174,106 +701,467 @@
             "value" : "続けるには、エクササイズを1つ以上追加してください"
           }
         }
-      }
-    },
-    "Add Bottle of Water" : {
-
-    },
-    "Add Calories" : {
-
+      },
+      "shouldGenerateSymbol" : false
     },
     "Add exercise" : {
-
-    },
-    "Add Exercise" : {
-
-    },
-    "Add Food" : {
-
-    },
-    "Add Glass of Water" : {
-
-    },
-    "Add Meal" : {
-
-    },
-    "Add Set" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir ejercicio"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter un exercice"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エクササイズを追加"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Add set to %@" : {
-
-    },
-    "Add Sets to Your Exercise" : {
-
-    },
-    "Add Small Meal" : {
-
-    },
-    "Add Snack" : {
-
-    },
-    "Add Water" : {
-
-    },
-    "Add Your First Exercise" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir serie a %@"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter une série à %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ にセットを追加"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "All achievements have been reset. Keep working out to earn them again!" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se han restablecido todos los logros. ¡Sigue entrenando para conseguirlos de nuevo!"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tous les succès ont été réinitialisés. Continuez à vous entraîner pour les obtenir de nouveau!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべての実績をリセットしました。トレーニングを続けて、もう一度獲得しましょう！"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "All achievements unlocked!" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Todos los logros desbloqueados!"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tous les succès débloqués!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべての実績を解除しました！"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "All historical set entries have been removed. Your routines and exercises are unchanged." : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se han eliminado todas las entradas del historial de series. Tus rutinas y ejercicios no han cambiado."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toutes les entrées de l'historique des séries ont été supprimées. Vos routines et exercices sont inchangés."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セット履歴のすべてのエントリを削除しました。ルーティンとエクササイズはそのままです。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "All routines, exercises, sets, and history have been deleted." : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se han eliminado todas las rutinas, ejercicios, series e historial."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toutes les routines, exercices, séries et historiques ont été supprimés."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべてのルーティン、エクササイズ、セット、履歴を削除しました。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Am I Working Out" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Estoy entrenando?"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suis-je en train de m'entraîner"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ワークアウト中ですか"
+          }
+        }
+      }
     },
     "Amount" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cantidad"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quantité"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "量"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Amount (kcal)" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cantidad (kcal)"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quantité (kcal)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "量（kcal）"
+          }
+        }
+      }
     },
     "Amount (ml)" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cantidad (ml)"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quantité (ml)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "量（ml）"
+          }
+        }
+      }
+    },
+    "An error occurred" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une erreur est survenue"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エラーが発生しました"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Analyzing muscle groups..." : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analizando grupos musculares..."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyse des groupes musculaires..."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "筋肉グループを分析中..."
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Back" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atrás"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retour"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "戻る"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Balance Analysis" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Análisis de equilibrio"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyse de l'équilibre"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "バランス分析"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Balanced" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Equilibrado"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Équilibré"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "バランス良好"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Bar chart displaying workout volume over time" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gráfico de barras que muestra el volumen de entrenamiento a lo largo del tiempo"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Graphique à barres affichant le volume d'entraînement au fil du temps"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "トレーニング量の推移を示す棒グラフ"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Begins recording a strength training workout to Apple Health" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comienza a registrar un entrenamiento de fuerza en Apple Health"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commence l'enregistrement d'un entraînement de musculation dans Apple Santé"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "筋力トレーニングのワークアウトをApple Healthに記録し始めます"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Best: %@ %@ • est. 1RM %@ %@" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Best: %1$@ %2$@ • est. 1RM %3$@ %4$@"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mejor: %1$@ %2$@ • 1RM est. %3$@ %4$@"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meilleur : %1$@ %2$@ • 1RM est. %3$@ %4$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最高: %1$@ %2$@ • 推定1RM %3$@ %4$@"
+          }
         }
-      }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Build Your Routine" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crea tu rutina"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Créez votre routine"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ルーティンを作成"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Build Your Routines" : {
+      "extractionState" : "manual",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -293,34 +1181,201 @@
             "value" : "ルーティンを作成"
           }
         }
-      }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Burn" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quemadas"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dépensées"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "消費"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Calories Burned" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calorías quemadas"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calories dépensées"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "消費カロリー"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Calories Consumed" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calorías consumidas"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calories consommées"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "摂取カロリー"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Cancel" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuler"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャンセル"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Check if you have an active workout session" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comprueba si tienes una sesión de entrenamiento activa"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vérifie si vous avez une séance d'entraînement en cours"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "進行中のワークアウトがあるか確認します"
+          }
+        }
+      }
     },
     "Choose between reps, as many as possible, timed, or freeform sets" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elige entre series de repeticiones, al máximo, cronometradas o libres"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisissez entre des séries de répétitions, au maximum, chronométrées ou libres"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "レップ、限界まで、時間制、自由形式のセットから選択"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Clear Set History" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borrar historial de series"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Effacer l'historique des séries"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セット履歴を消去"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Clear Set History?" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Borrar el historial de series?"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Effacer l'historique des séries?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セット履歴を消去しますか？"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Close" : {
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -340,15 +1395,59 @@
             "value" : "閉じる"
           }
         }
-      }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Complete a set in your routine and check back here." : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Completa una serie de tu rutina y vuelve aquí."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminez une série de votre routine et revenez ici."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ルーティンのセットを完了してから、ここに戻ってください。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Confirms the exercise name change" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirma el cambio de nombre del ejercicio"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirme le changement de nom de l'exercice"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エクササイズ名の変更を確定します"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Continue" : {
+      "extractionState" : "manual",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -368,86 +1467,665 @@
             "value" : "続ける"
           }
         }
-      }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Couldn't load your workout data. (%@)" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron cargar tus datos de entrenamiento. (%@)"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible de charger vos données d'entraînement. (%@)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ワークアウトデータを読み込めませんでした。（%@）"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Couldn't save your changes. (%@)" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudieron guardar tus cambios. (%@)"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossible d'enregistrer vos modifications. (%@)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "変更を保存できませんでした。（%@）"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Creates a new exercise for this day's routine" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crea un nuevo ejercicio para la rutina de este día"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crée un nouvel exercice pour la routine de ce jour"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この日のルーティンに新しいエクササイズを作成します"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Creates a new set for this exercise" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crea una nueva serie para este ejercicio"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crée une nouvelle série pour cet exercice"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このエクササイズに新しいセットを作成します"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Creates sample exercises and sets for all 7 days, plus 30 days of workout history." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crea ejercicios y series de ejemplo para los 7 días, más 30 días de historial de entrenamiento."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crée des exercices et des séries d'exemple pour les 7 jours, plus 30 jours d'historique d'entraînement."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "7日分のサンプルエクササイズとセット、および30日分のワークアウト履歴を作成します。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Danger Zone" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zona de peligro"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zone de danger"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "危険な操作"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Date" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fecha"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日付"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Day" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Día"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jour"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "曜日"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Day of Week" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Día de la semana"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jour de la semaine"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "曜日"
+          }
+        }
+      }
+    },
+    "Debug" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Depuración"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Débogage"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "デバッグ"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Decrease %@" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reducir %@"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diminuer %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ を減らす"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Decrease RPE" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reducir RPE"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diminuer le RPE"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RPEを下げる"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Decreases by %@%@" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Decreases by %1$@%2$@"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reduce en %1$@%2$@"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diminue de %1$@%2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@%2$@ 減らします"
+          }
         }
-      }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Decreases by %lld" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reduce en %lld"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diminue de %lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 減らします"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Delete %@" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar %@"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ を削除"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Delete All Routines" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar todas las rutinas"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer toutes les routines"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべてのルーティンを削除"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Delete All Routines?" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Eliminar todas las rutinas?"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer toutes les routines?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべてのルーティンを削除しますか？"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Delete Everything" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar todo"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tout supprimer"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべて削除"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Delete History" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar historial"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer l'historique"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "履歴を削除"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Delete set" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar serie"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer la série"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セットを削除"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Developer" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desarrollador"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Développeur"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開発者"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Dismiss" : {
       "comment" : "A button that dismisses a toast.",
-      "isCommentAutoGenerated" : true
+      "extractionState" : "manual",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Descartar"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fermer"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閉じる"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Display Water in Liters" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar agua en litros"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher l'eau en litres"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水をリットルで表示"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Done" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Listo"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完了"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Done editing" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminar edición"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminer la modification"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "編集を終了"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Double tap to edit the exercise name" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toca dos veces para editar el nombre del ejercicio"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touchez deux fois pour modifier le nom de l'exercice"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ダブルタップしてエクササイズ名を編集"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Duration (min)" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duración (min)"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Durée (min)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "時間（分）"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Edit Routine" : {
+      "extractionState" : "manual",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -467,15 +2145,83 @@
             "value" : "ルーティンを編集"
           }
         }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Edit Routine…" : {
+      "comment" : "The label of a button that opens the routine editor.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar rutina…"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modifier la routine…"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ルーティンを編集…"
+          }
+        }
       }
     },
     "Ends the current strength training workout and saves it to Apple Health" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finaliza el entrenamiento de fuerza actual y lo guarda en Apple Health"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Termine l'entraînement de musculation en cours et l'enregistre dans Apple Santé"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "現在の筋力トレーニングを終了してApple Healthに保存します"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Energy" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Energía"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Énergie"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エネルギー"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Enter SetDeck" : {
+      "extractionState" : "manual",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -495,62 +2241,469 @@
             "value" : "SetDeckを始める"
           }
         }
-      }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Est. 1RM" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1RM est."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1RM est."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "推定1RM"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Exercise" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ejercicio"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exercice"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エクササイズ"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Exercise %lld of %lld" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Exercise %1$lld of %2$lld"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ejercicio %1$lld de %2$lld"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exercice %1$lld de %2$lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エクササイズ %1$lld / %2$lld"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Exercise Count" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Número de ejercicios"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre d'exercices"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エクササイズ数"
+          }
         }
       }
     },
-    "Exercise Count" : {
-
-    },
-    "Exercise name" : {
-
-    },
     "Exercise Name" : {
-
-    },
-    "Exercise navigation" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre del ejercicio"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nom de l'exercice"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エクササイズ名"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Exercise Progress" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Progreso del ejercicio"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Progression de l'exercice"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エクササイズの進捗"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Exercise name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre del ejercicio"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nom de l'exercice"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エクササイズ名"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Exercise navigation" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navegación de ejercicios"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navigation des exercices"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エクササイズの切り替え"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Friday" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viernes"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vendredi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "金曜日"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Front" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frontal"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avant"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "前面"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Generate" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generar"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Générer"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "生成"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Generate Sample Data?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Generar datos de ejemplo?"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Générer des données d'exemple ?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サンプルデータを生成しますか？"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Generate Sample Routines" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generar rutinas de ejemplo"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Générer des routines d'exemple"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サンプルルーティンを生成"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Get Started" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empezar"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commencer"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "はじめる"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Get the number of exercises in today's workout" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obtén el número de ejercicios del entrenamiento de hoy"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obtenez le nombre d'exercices de l'entraînement d'aujourd'hui"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日のワークアウトのエクササイズ数を取得します"
+          }
+        }
+      }
     },
     "Get your scheduled workout for a specific day" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obtén tu entrenamiento programado para un día concreto"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obtenez votre entraînement prévu pour un jour précis"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "指定した曜日の予定ワークアウトを取得します"
+          }
+        }
+      }
     },
     "Get your scheduled workout for today" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obtén tu entrenamiento programado para hoy"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obtenez votre entraînement prévu pour aujourd'hui"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日の予定ワークアウトを取得します"
+          }
+        }
+      }
     },
     "Go to first exercise" : {
       "comment" : "A hint for the user that triggers a reset to the first exercise.",
-      "isCommentAutoGenerated" : true
+      "extractionState" : "manual",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ir al primer ejercicio"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aller au premier exercice"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最初のエクササイズへ"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Health" : {
+      "comment" : "A menu item that opens the Health app.",
+      "extractionState" : "manual",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salud"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Santé"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ヘルス"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Here's what you can do with SetDeck" : {
+      "extractionState" : "manual",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -570,251 +2723,1671 @@
             "value" : "SetDeckでできること"
           }
         }
-      }
+      },
+      "shouldGenerateSymbol" : false
     },
     "History Cleared" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Historial borrado"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Historique effacé"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "履歴を消去しました"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "How Many Exercises Today" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Cuántos ejercicios hoy?"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Combien d'exercices aujourd'hui"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日のエクササイズはいくつ"
+          }
+        }
+      }
     },
     "Hydration" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hidratación"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hydratation"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水分補給"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Imbalanced" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desequilibrado"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déséquilibré"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "バランス不良"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Increase %@" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aumentar %@"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Augmenter %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ を増やす"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Increase RPE" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aumentar RPE"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Augmenter le RPE"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RPEを上げる"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Increases by %@%@" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Increases by %1$@%2$@"
           }
-        }
-      }
-    },
-    "Increases by %lld" : {
-
-    },
-    "Intake" : {
-
-    },
-    "Intensity" : {
-
-    },
-    "Intensity (RPE)" : {
-
-    },
-    "Keep going!" : {
-
-    },
-    "Log" : {
-
-    },
-    "Log a bottle of water (500ml / 16oz)" : {
-
-    },
-    "Log a glass of water (250ml / 8oz)" : {
-
-    },
-    "Log a meal (500 kcal)" : {
-
-    },
-    "Log a small meal (300 kcal)" : {
-
-    },
-    "Log a small snack (100 kcal)" : {
-
-    },
-    "Log calorie intake to Health" : {
-      "comment" : "Intent description for the Add Calories intent.",
-      "isCommentAutoGenerated" : true
-    },
-    "Log RPE to see intensity trends." : {
-
-    },
-    "Log some sets to see PRs." : {
-
-    },
-    "Log water intake to Health" : {
-
-    },
-    "make gains every week" : {
-
-    },
-    "Mark this exercise as a warmup" : {
-
-    },
-    "Molargik Software LLC" : {
-
-    },
-    "Monday" : {
-
-    },
-    "Most Trained" : {
-
-    },
-    "Muscle Analysis" : {
-
-    },
-    "Muscle Distribution" : {
-
-    },
-    "Muscle Heatmap" : {
-
-    },
-    "Next exercise" : {
-
-    },
-    "Nick Molargik" : {
-
-    },
-    "No data yet" : {
-
-    },
-    "No history yet for this exercise." : {
-
-    },
-    "No muscle group data available" : {
-
-    },
-    "No routine for today.\nEdit your routines or enjoy your day off!" : {
-
-    },
-    "No routine for today. Edit your routines or enjoy your day off." : {
-
-    },
-    "No sets yet" : {
-
-    },
-    "No Workouts" : {
-
-    },
-    "No, you're not currently working out. Say 'Start my workout' to begin." : {
-
-    },
-    "of %lld" : {
-
-    },
-    "Off" : {
-
-    },
-    "OK" : {
-
-    },
-    "On" : {
-
-    },
-    "Open Settings" : {
-
-    },
-    "Personal Records" : {
-
-    },
-    "Personal Records section, %lld exercises" : {
-
-    },
-    "Previous exercise" : {
-
-    },
-    "Publisher" : {
-
-    },
-    "Range" : {
-
-    },
-    "Rate of perceived exertion, 0 to 10" : {
-
-    },
-    "Ready to begin?" : {
-
-    },
-    "Record a Workout" : {
-
-    },
-    "Record workout" : {
-      "comment" : "A button that records a workout.",
-      "isCommentAutoGenerated" : true
-    },
-    "Record Workout" : {
-
-    },
-    "Removes this exercise and all its sets" : {
-
-    },
-    "Removes this set from the exercise" : {
-
-    },
-    "Reps" : {
-
-    },
-    "Reps Attempted" : {
-
-    },
-    "Reset" : {
-
-    },
-    "Reset Achievements" : {
-
-    },
-    "Reset Achievements?" : {
-
-    },
-    "Returns to the first exercise in the routine" : {
-
-    },
-    "Routines Deleted" : {
-
-    },
-    "RPE" : {
-
-    },
-    "RPE, %lld" : {
-
-    },
-    "Saturday" : {
-
-    },
-    "Save" : {
-
-    },
-    "Set type" : {
-
-    },
-    "SetDeck" : {
-
-    },
-    "SetDeck app logo" : {
-
-    },
-    "SetDeck is designed to keep your data private and secure." : {
-      "localizations" : {
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "SetDeck está diseñado para mantener tus datos privados y seguros."
+            "value" : "Aumenta en %1$@%2$@"
           }
         },
         "fr-CA" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "SetDeck est conçu pour garder vos données privées et sécurisées."
+            "value" : "Augmente de %1$@%2$@"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "SetDeckは、あなたのデータをプライベートかつ安全に保つよう設計されています。"
+            "value" : "%1$@%2$@ 増やします"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Increases by %lld" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aumenta en %lld"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Augmente de %lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 増やします"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Intake" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consumidas"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consommées"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "摂取"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Intensity" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intensidad"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intensité"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "強度"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Intensity (RPE)" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intensidad (RPE)"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intensité (RPE)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "強度（RPE）"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Keep going!" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Sigue así!"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuez!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この調子で！"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Log" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registrar"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistrer"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "記録"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Log RPE to see intensity trends." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registra el RPE para ver las tendencias de intensidad."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistrez le RPE pour voir les tendances d'intensité."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RPEを記録すると強度の傾向が表示されます。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Log Water" : {
+      "comment" : "A menu that logs water intake.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registrar agua"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistrer de l'eau"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水を記録"
           }
         }
       }
+    },
+    "Log a bottle of water (500ml / 16oz)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registra una botella de agua (500 ml / 16 oz)"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistre une bouteille d'eau (500 ml / 16 oz)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ボトル1本分の水を記録（500 ml / 16 oz）"
+          }
+        }
+      }
+    },
+    "Log a glass of water (250ml / 8oz)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registra un vaso de agua (250 ml / 8 oz)"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistre un verre d'eau (250 ml / 8 oz)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "グラス1杯分の水を記録（250 ml / 8 oz）"
+          }
+        }
+      }
+    },
+    "Log a meal (500 kcal)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registra una comida completa (500 kcal)"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistre un repas (500 kcal)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "食事を記録（500 kcal）"
+          }
+        }
+      }
+    },
+    "Log a small meal (300 kcal)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registra una comida ligera (300 kcal)"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistre un petit repas (300 kcal)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "軽食を記録（300 kcal）"
+          }
+        }
+      }
+    },
+    "Log a small snack (100 kcal)" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registra un tentempié pequeño (100 kcal)"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistre une petite collation (100 kcal)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "軽いスナックを記録（100 kcal）"
+          }
+        }
+      }
+    },
+    "Log calorie intake to Health" : {
+      "comment" : "Intent description for the Add Calories intent.",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registra la ingesta de calorías en Salud"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistre l'apport en calories dans Santé"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "摂取カロリーをヘルスケアに記録します"
+          }
+        }
+      }
+    },
+    "Log some sets to see PRs." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registra algunas series para ver tus récords."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistrez quelques séries pour voir vos records."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セットを記録すると自己ベストが表示されます。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Log water intake to Health" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registra el consumo de agua en Salud"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistre la consommation d'eau dans Santé"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水分摂取をヘルスケアに記録します"
+          }
+        }
+      }
+    },
+    "Mark this exercise as a warmup" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Marcar este ejercicio como calentamiento"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Marquer cet exercice comme échauffement"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このエクササイズをウォームアップにする"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Molargik Software LLC" : {
+      "extractionState" : "manual",
+      "shouldGenerateSymbol" : false,
+      "shouldTranslate" : false
+    },
+    "Monday" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lunes"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lundi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "月曜日"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Most Trained" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Más entrenado"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le plus entraîné"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最も鍛えた部位"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Muscle Analysis" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Análisis muscular"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Analyse musculaire"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "筋肉分析"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Muscle Distribution" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Distribución muscular"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Répartition musculaire"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "筋肉の分布"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Muscle Heatmap" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mapa de calor muscular"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carte thermique musculaire"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "筋肉ヒートマップ"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Next exercise" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siguiente ejercicio"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exercice suivant"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次のエクササイズ"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Nick Molargik" : {
+      "extractionState" : "manual",
+      "shouldGenerateSymbol" : false,
+      "shouldTranslate" : false
+    },
+    "No Workouts" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin entrenamientos"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun entraînement"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ワークアウトなし"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "No data yet" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aún no hay datos"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune donnée pour l'instant"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まだデータがありません"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "No history yet for this exercise." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aún no hay historial para este ejercicio."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun historique pour cet exercice pour l'instant."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このエクササイズの履歴はまだありません。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "No muscle group data available" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay datos de grupos musculares"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune donnée de groupe musculaire"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "筋肉グループのデータがありません"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "No routine for today.\nEdit your routines or enjoy your day off!" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay rutina para hoy.\n¡Edita tus rutinas o disfruta de tu día de descanso!"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune routine aujourd'hui.\nModifiez vos routines ou profitez de votre journée de repos!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日のルーティンはありません。\nルーティンを編集するか、休息日を楽しみましょう！"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "No routine for today. Edit your routines or enjoy your day off." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay rutina para hoy. Edita tus rutinas o disfruta de tu día de descanso."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune routine aujourd'hui. Modifiez vos routines ou profitez de votre journée de repos."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日のルーティンはありません。ルーティンを編集するか、休息日を楽しみましょう。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "No sets yet" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aún no hay series"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune série pour l'instant"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まだセットがありません"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "No, you're not currently working out. Say 'Start my workout' to begin." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No, ahora mismo no estás entrenando. Di «Iniciar mi entrenamiento» para empezar."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non, vous n'êtes pas en train de vous entraîner. Dites « Commencer mon entraînement » pour débuter."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "いいえ、現在ワークアウト中ではありません。「ワークアウトを開始」と言って始めましょう。"
+          }
+        }
+      }
+    },
+    "OK" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceptar"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Off" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desactivado"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Désactivé"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "オフ"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "On" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activado"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activé"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "オン"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Open Settings" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir Ajustes"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvrir les réglages"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設定を開く"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Personal Records" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Récords personales"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Records personnels"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自己ベスト"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Personal Records section, %lld exercises" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sección de récords personales, %lld ejercicios"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Section des records personnels, %lld exercices"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自己ベストセクション、%lld 件のエクササイズ"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Previous exercise" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ejercicio anterior"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exercice précédent"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "前のエクササイズ"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Publisher" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editor"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Éditeur"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "発行元"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "RPE" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RPE"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RPE"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RPE"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "RPE, %lld" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RPE, %lld"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RPE, %lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RPE、%lld"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Range" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rango"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Période"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "期間"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Rate of perceived exertion, 0 to 10" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esfuerzo percibido, de 0 a 10"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Effort perçu, de 0 à 10"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "主観的運動強度、0〜10"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Ready to begin?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Listo para empezar?"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prêt à commencer?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "準備はいいですか？"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Record Workout" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registrar entrenamiento"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistrer un entraînement"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ワークアウトを記録"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Record a Workout" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registra un entrenamiento"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistrez un entraînement"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ワークアウトを記録する"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Record workout" : {
+      "comment" : "A button that records a workout.",
+      "extractionState" : "manual",
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registrar entrenamiento"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistrer un entraînement"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ワークアウトを記録"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Removes this exercise and all its sets" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina este ejercicio y todas sus series"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprime cet exercice et toutes ses séries"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このエクササイズとそのすべてのセットを削除します"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Removes this set from the exercise" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina esta serie del ejercicio"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprime cette série de l'exercice"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このセットをエクササイズから削除します"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Reps" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repeticiones"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Répétitions"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "レップ"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Reps Attempted" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Repeticiones intentadas"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Répétitions tentées"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "実施レップ数"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Reset" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restablecer"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réinitialiser"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リセット"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Reset Achievements" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restablecer logros"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réinitialiser les succès"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "実績をリセット"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Reset Achievements?" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Restablecer los logros?"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réinitialiser les succès?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "実績をリセットしますか？"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Returns to the first exercise in the routine" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vuelve al primer ejercicio de la rutina"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revient au premier exercice de la routine"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ルーティンの最初のエクササイズに戻ります"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Routines Deleted" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rutinas eliminadas"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Routines supprimées"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ルーティンを削除しました"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Sample Data Generated" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datos de ejemplo generados"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Données d'exemple générées"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サンプルデータを生成しました"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Sample routines and 30 days of history have been created." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se han creado rutinas de ejemplo y 30 días de historial."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Des routines d'exemple et 30 jours d'historique ont été créés."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サンプルルーティンと30日分の履歴を作成しました。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Saturday" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sábado"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Samedi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "土曜日"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Save" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Guardar"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistrer"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Set type" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tipo de serie"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type de série"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セットの種類"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "SetDeck" : {
+      "extractionState" : "manual",
+      "shouldGenerateSymbol" : false,
+      "shouldTranslate" : false
+    },
+    "SetDeck app logo" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logotipo de la app SetDeck"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logo de l'app SetDeck"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SetDeckアプリのロゴ"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "SetDeck is Syncing with iCloud" : {
       "extractionState" : "stale",
@@ -839,10 +4412,56 @@
         }
       }
     },
+    "SetDeck is designed to keep your data private and secure." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SetDeck está diseñado para mantener tus datos privados y seguros."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SetDeck est conçu pour garder vos données privées et sécurisées."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SetDeckは、あなたのデータをプライベートかつ安全に保つよう設計されています。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
     "Sets" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Series"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Séries"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セット"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Settings" : {
+      "extractionState" : "manual",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -862,126 +4481,955 @@
             "value" : "設定"
           }
         }
-      }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Shows the next exercise in the routine" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muestra el siguiente ejercicio de la rutina"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Affiche l'exercice suivant de la routine"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ルーティンの次のエクササイズを表示します"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Shows the previous exercise in the routine" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muestra el ejercicio anterior de la rutina"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Affiche l'exercice précédent de la routine"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ルーティンの前のエクササイズを表示します"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Shows the workout for %@" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muestra el entrenamiento del %@"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Affiche l'entraînement du %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ のワークアウトを表示します"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Start" : {
-
-    },
-    "Start a strength training workout" : {
-
-    },
-    "Start logging sets in your routines to unlock powerful insights about your training." : {
-
-    },
-    "Start or stop a strength training workout" : {
-
-    },
-    "Start workout" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commencer"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開始"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Start Workout" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar entrenamiento"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commencer l'entraînement"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ワークアウトを開始"
+          }
+        }
+      }
+    },
+    "Start a strength training workout" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inicia un entrenamiento de fuerza"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commence un entraînement de musculation"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "筋力トレーニングのワークアウトを開始します"
+          }
+        }
+      }
+    },
+    "Start logging sets in your routines to unlock powerful insights about your training." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empieza a registrar series en tus rutinas para obtener información valiosa sobre tu entrenamiento."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commencez à enregistrer des séries dans vos routines pour obtenir des analyses détaillées de votre entraînement."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ルーティンでセットを記録し始めると、トレーニングに関する詳しい分析が見られます。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Start or stop a strength training workout" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inicia o detén un entrenamiento de fuerza"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commence ou arrête un entraînement de musculation"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "筋力トレーニングのワークアウトを開始または停止します"
+          }
+        }
+      }
+    },
+    "Start workout" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar entrenamiento"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commencer l'entraînement"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ワークアウトを開始"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Stats" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estadísticas"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Statistiques"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "統計"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Stop" : {
-
-    },
-    "Stop the current workout" : {
-
-    },
-    "Stop workout" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detener"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrêter"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "停止"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Stop Workout" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detener entrenamiento"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrêter l'entraînement"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ワークアウトを停止"
+          }
+        }
+      }
+    },
+    "Stop the current workout" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detén el entrenamiento actual"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrête l'entraînement en cours"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "現在のワークアウトを停止します"
+          }
+        }
+      }
+    },
+    "Stop workout" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detener entrenamiento"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrêter l'entraînement"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ワークアウトを停止"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Strength workout running time" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiempo transcurrido del entrenamiento de fuerza"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Durée écoulée de l'entraînement de musculation"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "筋力トレーニングの経過時間"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Suggestions" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sugerencias"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggestions"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "候補"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Sunday" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domingo"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dimanche"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日曜日"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Switch between Month–Day–Year and Day–Month–Year formats for dates." : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambia entre los formatos de fecha mes–día–año y día–mes–año."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Basculez entre les formats de date mois–jour–année et jour–mois–année."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日付の表示形式を「月–日–年」と「日–月–年」で切り替えます。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Tap 'Add Exercise' to create an exercise for your routine." : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toca «Añadir ejercicio» para crear un ejercicio en tu rutina."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touchez « Ajouter un exercice » pour créer un exercice dans votre routine."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「エクササイズを追加」をタップして、ルーティンにエクササイズを作成しましょう。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Tap 'Add Set' to define reps, weight, and other details." : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toca «Añadir serie» para definir repeticiones, peso y otros detalles."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touchez « Ajouter une série » pour définir les répétitions, le poids et d'autres détails."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「セットを追加」をタップして、レップ数や重量などを設定しましょう。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Tap here to add exercises and sets to your workout routine." : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toca aquí para añadir ejercicios y series a tu rutina de entrenamiento."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touchez ici pour ajouter des exercices et des séries à votre routine d'entraînement."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ここをタップして、ルーティンにエクササイズとセットを追加しましょう。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Tap to begin using SetDeck" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toca para empezar a usar SetDeck"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touchez pour commencer à utiliser SetDeck"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タップしてSetDeckを使い始める"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "These actions cannot be undone." : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estas acciones no se pueden deshacer."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ces actions sont irréversibles."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "これらの操作は取り消せません。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "This week's training intensity by muscle group" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intensidad de entrenamiento de esta semana por grupo muscular"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intensité d'entraînement de cette semaine par groupe musculaire"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今週の筋肉グループ別トレーニング強度"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "This will create sample exercises for all 7 days and generate 30 days of workout history. Existing routines will be preserved." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esto creará ejercicios de ejemplo para los 7 días y generará 30 días de historial de entrenamiento. Las rutinas existentes se conservarán."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cela créera des exercices d'exemple pour les 7 jours et générera 30 jours d'historique d'entraînement. Les routines existantes seront conservées."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "7日分のサンプルエクササイズを作成し、30日分のワークアウト履歴を生成します。既存のルーティンは保持されます。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "This will permanently delete all of your historical set data. Your Stats tab will likely be pretty empty, but your current routines and exercises will remain untouched." : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esto eliminará permanentemente todo tu historial de series. Tu pestaña Estadísticas quedará bastante vacía, pero tus rutinas y ejercicios actuales no se verán afectados."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cela supprimera définitivement tout votre historique de séries. Votre onglet Statistiques sera probablement assez vide, mais vos routines et exercices actuels resteront intacts."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セット履歴のデータがすべて完全に削除されます。統計タブはほぼ空になりますが、現在のルーティンとエクササイズはそのまま残ります。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "This will permanently delete all of your routines, exercises, sets, and history. You will need to rebuild your workout routine from scratch." : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esto eliminará permanentemente todas tus rutinas, ejercicios, series e historial. Tendrás que crear tu rutina de entrenamiento desde cero."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cela supprimera définitivement toutes vos routines, exercices, séries et historiques. Vous devrez recréer votre routine d'entraînement à partir de zéro."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべてのルーティン、エクササイズ、セット、履歴が完全に削除されます。ルーティンを最初から作り直す必要があります。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "This will reset all of your achievement progress. You can earn them again by continuing to work out." : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esto restablecerá todo tu progreso de logros. Puedes volver a conseguirlos si sigues entrenando."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cela réinitialisera toute votre progression des succès. Vous pourrez les obtenir de nouveau en continuant à vous entraîner."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "実績の進捗がすべてリセットされます。トレーニングを続ければ、もう一度獲得できます。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Thursday" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jueves"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jeudi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "木曜日"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Time a workout to record it with Apple Health." : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cronometra un entrenamiento para registrarlo en Apple Health."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chronométrez un entraînement pour l'enregistrer dans Apple Santé."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ワークアウトを計測してApple Healthに記録しましょう。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Today's Routine" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rutina de hoy"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Routine d'aujourd'hui"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日のルーティン"
+          }
+        }
+      }
     },
     "Today's Workout" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entrenamiento de hoy"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entraînement d'aujourd'hui"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日のワークアウト"
+          }
+        }
+      }
     },
     "Toggle Workout" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alternar entrenamiento"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Basculer l'entraînement"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ワークアウトを切り替え"
+          }
+        }
+      }
     },
     "Total" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "合計"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Training Volume" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volumen de entrenamiento"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volume d'entraînement"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "トレーニング量"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Training volume chart showing %lld data points" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gráfico de volumen de entrenamiento con %lld puntos de datos"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Graphique du volume d'entraînement montrant %lld points de données"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 個のデータポイントを示すトレーニング量グラフ"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Tuesday" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Martes"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mardi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "火曜日"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Type" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tipo"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "種類"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Use Day–Month–Year Dates" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usar fechas día–mes–año"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utiliser les dates jour–mois–année"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日–月–年の日付形式を使う"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Version" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versión"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "バージョン"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "View Achievements" : {
+      "extractionState" : "manual",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1001,74 +5449,476 @@
             "value" : "実績を見る"
           }
         }
-      }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Volume" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volumen"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volume"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "トレーニング量"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Warmup exercise" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ejercicio de calentamiento"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exercice d'échauffement"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウォームアップのエクササイズ"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Warmup?" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Calentamiento?"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Échauffement?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウォームアップ？"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Water Intake" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consumo de agua"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consommation d'eau"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水分摂取量"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Wednesday" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Miércoles"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mercredi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "水曜日"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Weekly volume breakdown by muscle group" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desglose semanal del volumen por grupo muscular"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Répartition hebdomadaire du volume par groupe musculaire"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "筋肉グループ別の週間トレーニング量の内訳"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Weight (%@)" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peso (%@)"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poids (%@)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重量（%@）"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "What's My Workout On" : {
-
-    },
-    "What's my workout on ${day}" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Cuál es mi entrenamiento el…?"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quel est mon entraînement le"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "指定日のワークアウトは"
+          }
+        }
+      }
     },
     "What's My Workout Today" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Cuál es mi entrenamiento de hoy?"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quel est mon entraînement aujourd'hui"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日のワークアウトは"
+          }
+        }
+      }
+    },
+    "What's my workout on ${day}" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Cuál es mi entrenamiento el ${day}?"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quel est mon entraînement le ${day}"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${day} のワークアウトは"
+          }
+        }
+      }
     },
     "Workout" : {
-
-    },
-    "Workout for Day" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entrenamiento"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entraînement"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ワークアウト"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Workout History" : {
-
-    },
-    "Workout in progress, %@" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Historial de entrenamientos"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Historique des entraînements"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ワークアウト履歴"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Workout Status" : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estado del entrenamiento"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "État de l'entraînement"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ワークアウトの状態"
+          }
+        }
+      }
+    },
+    "Workout for Day" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entrenamiento del día"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entraînement du jour"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "指定日のワークアウト"
+          }
+        }
+      }
+    },
+    "Workout in progress, %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entrenamiento en curso, %@"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entraînement en cours, %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ワークアウト進行中、%@"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Workout summary: Volume %@, %lld sets, %lld active days, best streak %lld days" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Workout summary: Volume %1$@, %2$lld sets, %3$lld active days, best streak %4$lld days"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resumen del entrenamiento: volumen %1$@, %2$lld series, %3$lld días activos, mejor racha %4$lld días"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Résumé de l'entraînement : volume %1$@, %2$lld séries, %3$lld jours actifs, meilleure série %4$lld jours"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ワークアウトの概要: トレーニング量 %1$@、%2$lld セット、活動日 %3$lld 日、最長連続 %4$lld 日"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Yes, you have a workout in progress." : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sí, tienes un entrenamiento en curso."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oui, vous avez un entraînement en cours."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "はい、ワークアウトが進行中です。"
+          }
         }
       }
     },
-    "Yes, you have a workout in progress." : {
-
-    },
     "Yes, you have a workout in progress. You started %lld minutes ago." : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sí, tienes un entrenamiento en curso. Empezaste hace %lld minutos."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oui, vous avez un entraînement en cours. Vous avez commencé il y a %lld minutes."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "はい、ワークアウトが進行中です。%lld 分前に開始しました。"
+          }
+        }
+      }
     },
     "You don't have any exercises scheduled for %@." : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No tienes ejercicios programados para el %@."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous n'avez aucun exercice prévu pour %@."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ に予定されているエクササイズはありません。"
+          }
+        }
+      }
     },
     "You don't have any exercises scheduled for %@. Open SetDeck to add some exercises to your routine." : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No tienes ejercicios programados para el %@. Abre SetDeck para añadir ejercicios a tu rutina."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous n'avez aucun exercice prévu pour %@. Ouvrez SetDeck pour ajouter des exercices à votre routine."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ に予定されているエクササイズはありません。SetDeckを開いてルーティンにエクササイズを追加しましょう。"
+          }
+        }
+      }
     },
     "You have %lld exercises today with %lld total sets." : {
       "localizations" : {
@@ -1076,6 +5926,24 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "You have %1$lld exercises today with %2$lld total sets."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoy tienes %1$lld ejercicios con %2$lld series en total."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous avez %1$lld exercices aujourd'hui avec %2$lld séries au total."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日は %1$lld 件のエクササイズ、合計 %2$lld セットです。"
           }
         }
       }
@@ -1087,10 +5955,29 @@
             "state" : "new",
             "value" : "You have %1$lld exercises today: %2$lld warm-up and %3$lld main exercises, with %4$lld total sets."
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoy tienes %1$lld ejercicios: %2$lld de calentamiento y %3$lld principales, con %4$lld series en total."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous avez %1$lld exercices aujourd'hui : %2$lld d'échauffement et %3$lld principaux, avec %4$lld séries au total."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日は %1$lld 件のエクササイズ（ウォームアップ %2$lld 件、メイン %3$lld 件）、合計 %4$lld セットです。"
+          }
         }
       }
     },
     "You're All Set!" : {
+      "extractionState" : "manual",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1110,7 +5997,8 @@
             "value" : "準備完了！"
           }
         }
-      }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Your %@ workout has %lld exercises with %lld total sets: %@" : {
       "localizations" : {
@@ -1119,13 +6007,53 @@
             "state" : "new",
             "value" : "Your %1$@ workout has %2$lld exercises with %3$lld total sets: %4$@"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu entrenamiento del %1$@ tiene %2$lld ejercicios con %3$lld series en total: %4$@"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre entraînement du %1$@ comprend %2$lld exercices avec %3$lld séries au total : %4$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ のワークアウトはエクササイズ %2$lld 件、合計 %3$lld セットです: %4$@"
+          }
         }
       }
     },
     "Your Apple Health workouts will appear here when available." : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tus entrenamientos de Apple Health aparecerán aquí cuando estén disponibles."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vos entraînements Apple Santé apparaîtront ici lorsqu'ils seront disponibles."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Healthのワークアウトが利用可能になると、ここに表示されます。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Your Privacy Matters" : {
+      "extractionState" : "manual",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -1145,13 +6073,102 @@
             "value" : "プライバシーを大切にします"
           }
         }
-      }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Your Stats Await" : {
-
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tus estadísticas te esperan"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vos statistiques vous attendent"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "統計はもうすぐ"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Your workout is paused. You've been at it for %lld minutes so far." : {
-
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu entrenamiento está en pausa. Llevas %lld minutos hasta ahora."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre entraînement est en pause. Vous y êtes depuis %lld minutes jusqu'à présent."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ワークアウトは一時停止中です。ここまで %lld 分経過しています。"
+          }
+        }
+      }
+    },
+    "make gains every week" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "progresa cada semana"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "progressez chaque semaine"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "毎週、成長を積み重ねよう"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "of %lld" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "de %lld"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "de %lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "/ %lld"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     }
   },
   "version" : "1.1"

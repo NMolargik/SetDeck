@@ -8,6 +8,7 @@
 //
 
 import SwiftUI
+import SetDeckCore
 
 struct ExerciseDetailView: View {
     let exercise: WatchExercise

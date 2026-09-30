@@ -13,10 +13,6 @@
 			</array>
 		</dict>
 	</array>
-	<key>NSSiriUsageDescription</key>
-	<string>SetDeck uses Siri to let you check your workout schedule and control workout sessions with your voice.</string>
-	<key>NSSupportsLiveActivities</key>
-	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

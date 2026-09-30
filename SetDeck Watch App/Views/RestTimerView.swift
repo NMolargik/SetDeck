@@ -149,7 +149,8 @@ struct RestTimerView: View {
         WatchHaptics.buttonTapped()
 
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            tick()
+            // The timer is scheduled on the main run loop, so the callback is already on the main thread.
+            MainActor.assumeIsolated { tick() }
         }
     }
 

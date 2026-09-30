@@ -8,6 +8,7 @@
 //
 
 import SwiftUI
+import SetDeckCore
 
 struct TodayRoutineView: View {
     @Environment(WatchConnectivityManager.self) private var connectivityManager

@@ -6,6 +6,7 @@
 //
 
 import AppIntents
+import SetDeckServices
 import WidgetKit
 
 /// App Intent to add calorie intake from widgets and Shortcuts

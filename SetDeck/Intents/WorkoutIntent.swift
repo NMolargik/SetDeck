@@ -6,6 +6,7 @@
 //
 
 import AppIntents
+import SetDeckServices
 
 /// App Intent to toggle workout session
 struct ToggleWorkoutIntent: AppIntent {
