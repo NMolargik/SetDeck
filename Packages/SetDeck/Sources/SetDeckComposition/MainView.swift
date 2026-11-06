@@ -52,6 +52,7 @@ struct MainView: View {
             }
         }
         .animation(.easeInOut(duration: 0.3), value: achievementManager.pendingCelebration != nil)
+        .workoutCompletionHandling()
         .onAppear {
             workoutToolbarTimer?.invalidate()
             workoutToolbarTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in

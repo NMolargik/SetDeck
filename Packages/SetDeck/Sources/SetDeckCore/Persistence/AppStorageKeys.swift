@@ -11,4 +11,6 @@ nonisolated public enum AppStorageKeys {
     public static let useMetricUnits = "useMetricUnits"
     public static let useDayMonthYearDates = "useDayMonthYearDates"
     public static let celebratedAchievements = "celebratedAchievements"
+    public static let completedWorkoutCount = "completedWorkoutCount"
+    public static let lastReviewPromptVersion = "lastReviewPromptVersion"
 }

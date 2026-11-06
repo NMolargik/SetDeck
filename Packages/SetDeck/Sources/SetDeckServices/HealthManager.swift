@@ -53,6 +53,11 @@ open class HealthManager: NSObject {
     // MARK: - Workout history
     public var workoutHistory: [WorkoutSummary] = []
 
+    /// Snapshot of the most recent workout session finished in this process. Set exactly once
+    /// per completed session (after the Live Activity ends and the HealthKit workout is
+    /// finished), so views can react to completion with a summary card / review prompt.
+    public private(set) var lastCompletedWorkout: WorkoutSummary?
+
     // MARK: - Workout session state
     @ObservationIgnored
     private var workoutSession: HKWorkoutSession?
@@ -355,6 +360,8 @@ open class HealthManager: NSObject {
     public func endWorkout() async {
         guard workoutState == .running || workoutState == .paused || workoutStartDate != nil else { return }
 
+        let start = workoutStartDate ?? Date()
+
         // End Live Activity before resetting state
         endLiveActivity()
 
@@ -364,16 +371,30 @@ open class HealthManager: NSObject {
                 session.end()
 
                 if let builder = workoutBuilder as? HKLiveWorkoutBuilder {
-                    await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
-                        builder.endCollection(withEnd: Date()) { _, _ in
-                            builder.finishWorkout { _, _ in
-                                Task { @MainActor in
-                                    self.resetWorkoutState()
+                    let summary: WorkoutSummary = await withCheckedContinuation { (continuation: CheckedContinuation<WorkoutSummary, Never>) in
+                        let end = Date()
+                        builder.endCollection(withEnd: end) { _, _ in
+                            builder.finishWorkout { workout, _ in
+                                // Extract Sendable values before hopping back to the main actor.
+                                var kcal: Double?
+                                if let workout,
+                                   let activeType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned),
+                                   let sum = workout.statistics(for: activeType)?.sumQuantity() {
+                                    kcal = sum.doubleValue(for: .kilocalorie())
                                 }
-                                continuation.resume()
+                                let summary = WorkoutSummary(
+                                    id: workout?.uuid ?? UUID(),
+                                    startDate: workout?.startDate ?? start,
+                                    endDate: workout?.endDate ?? end,
+                                    activityType: .traditionalStrengthTraining,
+                                    totalEnergyBurnedKCal: kcal
+                                )
+                                continuation.resume(returning: summary)
                             }
                         }
                     }
+                    resetWorkoutState()
+                    lastCompletedWorkout = summary
                     return
                 }
             }
@@ -381,6 +402,13 @@ open class HealthManager: NSObject {
 
         // Fallback for iOS 18-25 or if session wasn't available
         resetWorkoutState()
+        lastCompletedWorkout = WorkoutSummary(
+            id: UUID(),
+            startDate: start,
+            endDate: Date(),
+            activityType: .traditionalStrengthTraining,
+            totalEnergyBurnedKCal: nil
+        )
     }
 
     // Convenience wrappers used by HealthView (safe attempts)
