@@ -8,6 +8,18 @@ A modern strength training and fitness tracking app for iOS and Apple Watch.
 
 SetDeck helps you plan and track your weightlifting workouts with flexible weekly routines, detailed exercise configuration, and comprehensive set logging. Built with SwiftUI and SwiftData, it features seamless iCloud sync, HealthKit integration, Live Activities, and a full Apple Watch companion app.
 
+## What's New in 2.5
+
+Polish and maintenance release: fixed Health permission text, Apple Watch version alignment, smarter review prompt after your first completed workout, share your workout summary.
+
+### App Store "What's New" text
+
+> Polish and maintenance release: fixed Health permission text, Apple Watch version alignment, smarter review prompt after your first completed workout, share your workout summary.
+
+### Promotional text
+
+> Build your weekly routine, log every set, and keep your Apple Health hydration, energy, and workouts in one place — now with shareable workout summaries. Free, no subscriptions.
+
 ## Features
 
 ### Workout Management

@@ -20,3 +20,6 @@ build/
 
 # Affinity lock files
 *~lock~
+
+# Test results
+*.xcresult
