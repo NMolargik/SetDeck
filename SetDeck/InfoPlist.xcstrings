@@ -61,30 +61,6 @@
         }
       }
     },
-    "NSHealthClinicalHealthRecordsShareUsageDescription" : {
-      "comment" : "Permission prompt shown when requesting access to clinical health records.",
-      "extractionState" : "stale",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SetDeck necesita acceso a los datos de Salud para registrar y mostrar tus entrenamientos en curso."
-          }
-        },
-        "fr-CA" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SetDeck a besoin d'accéder aux données de Santé pour suivre et afficher vos entraînements en cours."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SetDeckは、進行中のワークアウトを記録して表示するためにヘルスデータへのアクセスを必要とします。"
-          }
-        }
-      }
-    },
     "NSHealthShareUsageDescription" : {
       "comment" : "Permission prompt shown when requesting read access to Health data.",
       "extractionState" : "extracted_with_value",
@@ -92,25 +68,25 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "SetDeck requires access to Health Share to track and display ongoing workouts. "
+            "value" : "SetDeck reads your workouts, water intake, dietary energy, and active energy from Apple Health to show hydration and energy trends and your workout history."
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "SetDeck necesita acceso a los datos de Salud para registrar y mostrar tus entrenamientos."
+            "state" : "translated",
+            "value" : "SetDeck lee tus entrenamientos, consumo de agua, energía dietética y energía activa de Apple Health para mostrar tendencias de hidratación y energía y tu historial de entrenamientos."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "SetDeck a besoin d'accéder aux données de Santé pour enregistrer et afficher vos entraînements."
+            "state" : "translated",
+            "value" : "SetDeck lit vos entraînements, votre consommation d'eau, votre énergie alimentaire et votre énergie active dans Apple Santé pour afficher vos tendances d'hydratation et d'énergie ainsi que votre historique d'entraînements."
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "SetDeckは、ワークアウトを記録して表示するためにヘルスデータへのアクセスを必要とします。"
+            "state" : "translated",
+            "value" : "SetDeckは、水分と活動エネルギーの傾向やワークアウト履歴を表示するために、Appleヘルスケアからワークアウト、水分摂取量、食事エネルギー、活動エネルギーを読み取ります。"
           }
         }
       }
@@ -122,25 +98,25 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "SetDeck requires access to the listed health metrics to serve trends and tools to you. Without all of these, the app will nto work."
+            "value" : "SetDeck saves the water and calories you log, and the strength-training workouts you record, to Apple Health."
           }
         },
         "es" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "SetDeck necesita acceso a las métricas de salud indicadas para ofrecerte tendencias y herramientas, y para guardar tu consumo de agua y calorías."
+            "state" : "translated",
+            "value" : "SetDeck guarda en Apple Health el agua y las calorías que registras y los entrenamientos de fuerza que grabas."
           }
         },
         "fr-CA" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "SetDeck a besoin d'accéder aux données de santé indiquées pour vous offrir des tendances et des outils, et pour enregistrer votre consommation d'eau et de calories."
+            "state" : "translated",
+            "value" : "SetDeck enregistre dans Apple Santé l'eau et les calories que vous consignez ainsi que les entraînements de musculation que vous enregistrez."
           }
         },
         "ja" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "SetDeckは、トレンドやツールを提供し、水分とカロリーの摂取量を記録するために、表示されている健康データへのアクセスを必要とします。"
+            "state" : "translated",
+            "value" : "SetDeckは、記録した水分とカロリー、および筋力トレーニングのワークアウトをAppleヘルスケアに保存します。"
           }
         }
       }

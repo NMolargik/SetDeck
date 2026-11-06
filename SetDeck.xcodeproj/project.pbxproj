@@ -750,15 +750,15 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SetDeck/SetDeck.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = R8Q8DM58C6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SetDeck/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SetDeck;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "SetDeck requires access to Health Share to track and display ongoing workouts. ";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "SetDeck requires access to the listed health metrics to serve trends and tools to you. Without all of these, the app will nto work.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "SetDeck reads your workouts, water intake, dietary energy, and active energy from Apple Health to show hydration and energy trends and your workout history.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "SetDeck saves the water and calories you log, and the strength-training workouts you record, to Apple Health.";
 				INFOPLIST_KEY_NSSiriUsageDescription = "SetDeck uses Siri to let you check your workout schedule and control workout sessions with your voice.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -772,7 +772,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.4;
+				MARKETING_VERSION = 2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nickmolargik.ReadySet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
@@ -796,15 +796,15 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SetDeck/SetDeck.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = R8Q8DM58C6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SetDeck/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SetDeck;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "SetDeck requires access to Health Share to track and display ongoing workouts. ";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "SetDeck requires access to the listed health metrics to serve trends and tools to you. Without all of these, the app will nto work.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "SetDeck reads your workouts, water intake, dietary energy, and active energy from Apple Health to show hydration and energy trends and your workout history.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "SetDeck saves the water and calories you log, and the strength-training workouts you record, to Apple Health.";
 				INFOPLIST_KEY_NSSiriUsageDescription = "SetDeck uses Siri to let you check your workout schedule and control workout sessions with your voice.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -818,7 +818,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.4;
+				MARKETING_VERSION = 2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nickmolargik.ReadySet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
@@ -1069,7 +1069,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = SetDeckWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = R8Q8DM58C6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SetDeckWidget/Info.plist;
@@ -1081,7 +1081,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.4;
+				MARKETING_VERSION = 2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nickmolargik.ReadySet.SetDeckWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1105,7 +1105,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = SetDeckWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = R8Q8DM58C6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SetDeckWidget/Info.plist;
@@ -1117,7 +1117,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.4;
+				MARKETING_VERSION = 2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nickmolargik.ReadySet.SetDeckWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1141,21 +1141,20 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "SetDeck Watch App/SetDeck Watch App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = R8Q8DM58C6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = SetDeck;
-				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "SetDeck requires access to Health Share to track and display ongoing workouts. ";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "SetDeck requires access to the listed health metrics to serve trends and tools to you. Without all of these, the app will not work.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "SetDeck can write to your workout data to store water and caloric intake.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "SetDeck reads your workouts, heart rate, and active energy from Apple Health to show live stats during a workout.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "SetDeck saves the strength-training workouts you record on Apple Watch to Apple Health.";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = nickmolargik.ReadySet;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.4;
+				MARKETING_VERSION = 2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nickmolargik.ReadySet.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -1178,21 +1177,20 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "SetDeck Watch App/SetDeck Watch App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = R8Q8DM58C6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = SetDeck;
-				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "SetDeck requires access to Health Share to track and display ongoing workouts. ";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "SetDeck requires access to the listed health metrics to serve trends and tools to you. Without all of these, the app will not work.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "SetDeck can write to your workout data to store water and caloric intake.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "SetDeck reads your workouts, heart rate, and active energy from Apple Health to show live stats during a workout.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "SetDeck saves the strength-training workouts you record on Apple Watch to Apple Health.";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = nickmolargik.ReadySet;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.4;
+				MARKETING_VERSION = 2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = nickmolargik.ReadySet.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -1305,7 +1303,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = "SetDeck Watch WidgetExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = R8Q8DM58C6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "SetDeck Watch Widget/Info.plist";
@@ -1317,7 +1315,7 @@
 					"@executable_path/../../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				MARKETING_VERSION = 2.4;
+				MARKETING_VERSION = 2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "nickmolargik.ReadySet.watchkitapp.SetDeck-Watch-Widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -1339,7 +1337,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = "SetDeck Watch WidgetExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = R8Q8DM58C6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "SetDeck Watch Widget/Info.plist";
@@ -1351,7 +1349,7 @@
 					"@executable_path/../../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				MARKETING_VERSION = 2.4;
+				MARKETING_VERSION = 2.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "nickmolargik.ReadySet.watchkitapp.SetDeck-Watch-Widget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
