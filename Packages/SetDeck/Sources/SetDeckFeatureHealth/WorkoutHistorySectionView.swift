@@ -30,6 +30,9 @@ struct WorkoutHistorySectionView: View {
                                 systemImageName: systemIconForWorkout(title: workout.title, subtitle: workout.subtitle)
                             )
                             .animation(.spring(response: 0.35, dampingFraction: 0.8), value: workout.id)
+                            .contextMenu {
+                                WorkoutSummaryShareLink(summary: workout)
+                            }
                         }
                     } else {
                         ContentUnavailableView("No Workouts", systemImage: "figure.run", description: Text("Your Apple Health workouts will appear here when available."))

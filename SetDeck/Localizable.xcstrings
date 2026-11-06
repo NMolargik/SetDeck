@@ -1208,6 +1208,30 @@
       },
       "shouldGenerateSymbol" : false
     },
+    "Calories" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calorías"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calories"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カロリー"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
     "Calories Burned" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2095,6 +2119,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ダブルタップしてエクササイズ名を編集"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Duration" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duración"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Durée"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "時間"
           }
         }
       },
@@ -3443,6 +3491,30 @@
       },
       "shouldGenerateSymbol" : false
     },
+    "Nice work!" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Buen trabajo!"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beau travail!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "お疲れさまでした！"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
     "Nick Molargik" : {
       "extractionState" : "manual",
       "shouldGenerateSymbol" : false,
@@ -4484,6 +4556,30 @@
       },
       "shouldGenerateSymbol" : false
     },
+    "Share Summary" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartir resumen"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partager le résumé"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "概要を共有"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
     "Shows the next exercise in the routine" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4805,6 +4901,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ワークアウトを停止"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Strength Training" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entrenamiento de fuerza"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Musculation"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "筋力トレーニング"
           }
         }
       },
@@ -5710,6 +5830,30 @@
       },
       "shouldGenerateSymbol" : false
     },
+    "Workout Complete" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entrenamiento completado"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entraînement terminé"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ワークアウト完了"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
     "Workout History" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -5755,6 +5899,30 @@
           }
         }
       }
+    },
+    "Workout Summary" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resumen del entrenamiento"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Résumé de l'entraînement"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ワークアウトの概要"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
     },
     "Workout for Day" : {
       "localizations" : {
