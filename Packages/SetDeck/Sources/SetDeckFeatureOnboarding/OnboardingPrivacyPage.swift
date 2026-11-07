@@ -37,7 +37,7 @@ struct OnboardingPrivacyPage: View {
                         icon: "iphone",
                         iconColor: .blueStart,
                         title: "On-Device Storage",
-                        description: "Your routines stays on your device and in your personal iCloud."
+                        description: "Your routines stay on your device and in your personal iCloud."
                     )
 
                     Divider().padding(.leading, 56)
@@ -45,8 +45,8 @@ struct OnboardingPrivacyPage: View {
                     PrivacyRow(
                         icon: "person.fill.questionmark",
                         iconColor: .orangeStart,
-                        title: "No Patient Data",
-                        description: "Only your personal delivery stats are tracked."
+                        title: "Only What You Log",
+                        description: "SetDeck only tracks the workouts, water, and calories you log."
                     )
 
                     Divider().padding(.leading, 56)

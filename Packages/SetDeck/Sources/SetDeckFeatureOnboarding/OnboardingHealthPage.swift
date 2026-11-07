@@ -27,14 +27,14 @@ struct OnboardingHealthPage: View {
                 "heart.slash.fill",
                 .orange,
                 "Access Denied",
-                "Enable Health access in Settings to see your steps."
+                "Enable Health access in Settings to log water, calories, and workouts."
             )
         } else {
             return (
                 "heart.fill",
                 .pink,
                 "Connect Health",
-                "Allow access to show your daily step count."
+                "Allow access to log water, calories, and workouts."
             )
         }
     }
