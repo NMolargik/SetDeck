@@ -652,24 +652,30 @@ open class HealthManager: NSObject {
 }
 
 // MARK: - HKWorkoutSessionDelegate
+// HealthKit calls these on its own queue. Under MainActor default isolation a plain method
+// is @MainActor and traps at runtime (libdispatch main-queue assertion), so the callbacks
+// are `nonisolated` and hop to the main actor with Sendable values.
 extension HealthManager: HKWorkoutSessionDelegate {
-    public func workoutSession(_ workoutSession: HKWorkoutSession, didChangeTo toState: HKWorkoutSessionState, from fromState: HKWorkoutSessionState, date: Date) {
-        // Update observable state on main thread
-        self.workoutState = toState
+    nonisolated public func workoutSession(_ workoutSession: HKWorkoutSession, didChangeTo toState: HKWorkoutSessionState, from fromState: HKWorkoutSessionState, date: Date) {
+        Task { @MainActor in
+            self.workoutState = toState
+        }
     }
 
-    public func workoutSession(_ workoutSession: HKWorkoutSession, didFailWithError error: Error) {
-        self.lastError = error
-        self.resetWorkoutState()
+    nonisolated public func workoutSession(_ workoutSession: HKWorkoutSession, didFailWithError error: Error) {
+        Task { @MainActor in
+            self.lastError = error
+            self.resetWorkoutState()
+        }
     }
 }
 
 // MARK: - HKLiveWorkoutBuilderDelegate (iOS 26+)
 @available(iOS 26.0, *)
 extension HealthManager: HKLiveWorkoutBuilderDelegate {
-    public func workoutBuilderDidCollectEvent(_ workoutBuilder: HKLiveWorkoutBuilder) { }
+    nonisolated public func workoutBuilderDidCollectEvent(_ workoutBuilder: HKLiveWorkoutBuilder) { }
 
-    public func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) { }
+    nonisolated public func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) { }
 }
 
 
