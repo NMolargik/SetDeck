@@ -101,6 +101,8 @@ struct LockScreenView: View {
                 Text("Strength Training")
                     .font(.headline)
                     .foregroundStyle(.primary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
 
                 HStack(spacing: 8) {
                     if let rest = context.state.restEndDate, rest > Date() {
@@ -140,17 +142,24 @@ struct RestCountdownRow: View {
     let nextSetLabel: String?
 
     var body: some View {
-        HStack(spacing: 6) {
-            Image(systemName: "timer")
-                .foregroundStyle(.orange)
-            Text(timerInterval: Date()...endDate, countsDown: true)
-                .font(.subheadline.monospacedDigit().weight(.semibold))
-                .foregroundStyle(.orange)
+        // Text(timerInterval:) greedily takes all available width, so in the old single HStack it
+        // was squeezed by the "Next:" label ("1:––" / "Next: B…"). Give it a fixed-width slot on
+        // its own line, with the label underneath.
+        VStack(alignment: .leading, spacing: 2) {
+            HStack(spacing: 6) {
+                Image(systemName: "timer")
+                    .foregroundStyle(.orange)
+                Text(timerInterval: Date()...endDate, countsDown: true)
+                    .font(.subheadline.monospacedDigit().weight(.semibold))
+                    .foregroundStyle(.orange)
+                    .frame(width: 64, alignment: .leading)
+            }
             if let nextSetLabel {
                 Text("Next: \(nextSetLabel)")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
+                    .minimumScaleFactor(0.8)
             }
         }
     }
