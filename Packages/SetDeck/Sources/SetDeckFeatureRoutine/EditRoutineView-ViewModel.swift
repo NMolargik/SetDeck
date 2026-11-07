@@ -70,7 +70,9 @@ extension EditRoutineView {
 
         func addSet(to exercise: SetDeckExercise,
                     using manager: WorkoutDataModel) {
-            _ = manager.addSet(to: exercise)
+            // The editor row shows 10 reps for a rep-based set with no target; store it so
+            // the card, Watch and history see the same value (otherwise "0 × --" / "Reps").
+            _ = manager.addSet(to: exercise, targetReps: 10)
         }
 
         func deleteSets(at offsets: IndexSet,
