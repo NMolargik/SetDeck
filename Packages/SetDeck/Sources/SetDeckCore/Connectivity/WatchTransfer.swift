@@ -19,6 +19,10 @@ nonisolated public enum WatchMessageKey {
     public static let setCompletion = "setCompletion"
     public static let workoutStarted = "workoutStarted"
     public static let workoutEnded = "workoutEnded"
+    /// A JSON-encoded `[SetCompletionMessage]` (standalone watch logs, queued via transferUserInfo).
+    public static let completionBatch = "completionBatch"
+    /// A JSON-encoded `WatchRestSnapshot` (rest started) — absent endDate means rest cleared.
+    public static let restTimer = "restTimer"
 }
 
 // MARK: - Routine payload
@@ -168,7 +172,11 @@ nonisolated public enum WatchSetType: String, Codable, Sendable {
 
 // MARK: - Watch → phone completion
 
-nonisolated public struct SetCompletionMessage: Codable, Sendable {
+nonisolated public struct SetCompletionMessage: Codable, Sendable, Equatable {
+    /// Stable identity of this *log*, minted on the watch when the set is first logged and
+    /// kept across edits. It becomes the history entry's uuid on the phone, which makes
+    /// delivery idempotent (see `WatchCompletionMerge`).
+    public let completionId: UUID
     public let setId: UUID
     public let exerciseId: UUID
     public let completedDate: Date
@@ -176,12 +184,25 @@ nonisolated public struct SetCompletionMessage: Codable, Sendable {
     public let actualWeight: Double?
     public let actualRpe: Int?
 
-    public init(setId: UUID, exerciseId: UUID, completedDate: Date, actualReps: Int?, actualWeight: Double?, actualRpe: Int?) {
+    public init(completionId: UUID = UUID(), setId: UUID, exerciseId: UUID, completedDate: Date, actualReps: Int?, actualWeight: Double?, actualRpe: Int?) {
+        self.completionId = completionId
         self.setId = setId
         self.exerciseId = exerciseId
         self.completedDate = completedDate
         self.actualReps = actualReps
         self.actualWeight = actualWeight
         self.actualRpe = actualRpe
+    }
+
+    /// Tolerant of payloads from before `completionId` existed.
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        completionId = try c.decodeIfPresent(UUID.self, forKey: .completionId) ?? UUID()
+        setId = try c.decode(UUID.self, forKey: .setId)
+        exerciseId = try c.decode(UUID.self, forKey: .exerciseId)
+        completedDate = try c.decode(Date.self, forKey: .completedDate)
+        actualReps = try c.decodeIfPresent(Int.self, forKey: .actualReps)
+        actualWeight = try c.decodeIfPresent(Double.self, forKey: .actualWeight)
+        actualRpe = try c.decodeIfPresent(Int.self, forKey: .actualRpe)
     }
 }

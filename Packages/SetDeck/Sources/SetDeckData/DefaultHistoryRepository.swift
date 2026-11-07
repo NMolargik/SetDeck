@@ -48,6 +48,7 @@ public final class DefaultHistoryRepository: HistoryRepository {
     @discardableResult
     public func recordHistory(
         for set: SetDeckSet,
+        id: UUID,
         completedDate: Date,
         actualReps: Int?,
         actualWeight: Double?,
@@ -58,6 +59,7 @@ public final class DefaultHistoryRepository: HistoryRepository {
         note: String?
     ) throws(PersistenceError) -> SetDeckSetHistory {
         let history = SetDeckSetHistory(
+            uuid: id,
             completedDate: completedDate,
             actualReps: actualReps,
             actualWeight: actualWeight,
@@ -74,6 +76,32 @@ public final class DefaultHistoryRepository: HistoryRepository {
         set.exercise?.routine?.lastUpdated = Date()
         try save(operation: "record history")
         return history
+    }
+
+    public func history(withID uuid: UUID) throws(PersistenceError) -> SetDeckSetHistory? {
+        var descriptor = FetchDescriptor<SetDeckSetHistory>(predicate: #Predicate { $0.uuid == uuid })
+        descriptor.fetchLimit = 1
+        do {
+            return try context.fetch(descriptor).first
+        } catch {
+            Log.workouts.error("History lookup failed: \(error.localizedDescription)")
+            throw .fetchFailed(error.localizedDescription)
+        }
+    }
+
+    public func updateHistory(
+        _ history: SetDeckSetHistory,
+        completedDate: Date,
+        actualReps: Int?,
+        actualWeight: Double?,
+        actualRpe: Int?
+    ) throws(PersistenceError) {
+        history.completedDate = completedDate
+        history.actualReps = actualReps
+        history.actualWeight = actualWeight
+        history.actualRpe = actualRpe
+        history.set?.exercise?.routine?.lastUpdated = Date()
+        try save(operation: "update history")
     }
 
     public func set(withID uuid: UUID) throws(PersistenceError) -> SetDeckSet? {
