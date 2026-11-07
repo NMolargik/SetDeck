@@ -183,9 +183,12 @@ public final class SessionController {
             loadRoutine: loadRoutine,
             loadExercises: loadExercises,
             loadSets: loadSets,
-            findSet: findSet,
-            recordSetCompletion: recordSetCompletion
+            mergeWatchCompletion: MergeWatchCompletionUseCase(repository: historyRepository)
         )
+        #if canImport(HealthKit) && !os(macOS)
+        let health = healthManager
+        phone.onWatchRestChanged = { snapshot in health.applyWatchRest(snapshot) }
+        #endif
         phoneConnectivity = phone
         #endif
 

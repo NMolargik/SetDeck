@@ -17,8 +17,14 @@ nonisolated public struct StrengthTrainingActivityAttributes: ActivityAttributes
         public var lastPauseDate: Date?
         // Convenience flag for UI
         public var isPaused: Bool
+        // Mirrors the watch's rest timer: when rest ends (nil = not resting) and what's next
+        public var restEndDate: Date?
+        public var nextSetLabel: String?
 
-        public init(startDate: Date, accumulatedPause: TimeInterval, lastPauseDate: Date?, isPaused: Bool) {
+        public init(startDate: Date, accumulatedPause: TimeInterval, lastPauseDate: Date?, isPaused: Bool,
+                    restEndDate: Date? = nil, nextSetLabel: String? = nil) {
+            self.restEndDate = restEndDate
+            self.nextSetLabel = nextSetLabel
             self.startDate = startDate
             self.accumulatedPause = accumulatedPause
             self.lastPauseDate = lastPauseDate

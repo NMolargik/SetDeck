@@ -35,7 +35,9 @@ struct StrengthTrainingLiveActivity: Widget {
                 }
                 DynamicIslandExpandedRegion(.bottom) {
                     HStack(spacing: 20) {
-                        if context.state.isPaused {
+                        if let rest = context.state.restEndDate, rest > Date() {
+                            RestCountdownRow(endDate: rest, nextSetLabel: context.state.nextSetLabel)
+                        } else if context.state.isPaused {
                             Label("Paused", systemImage: "pause.fill")
                                 .font(.subheadline)
                                 .foregroundStyle(.orange)
@@ -51,10 +53,18 @@ struct StrengthTrainingLiveActivity: Widget {
                 Image(systemName: "figure.strengthtraining.traditional")
                     .foregroundStyle(.purpleStart)
             } compactTrailing: {
+                if let rest = context.state.restEndDate, rest > Date() {
+                    Text(timerInterval: Date()...rest, countsDown: true)
+                        .font(.caption.monospacedDigit())
+                        .fontWeight(.medium)
+                        .foregroundStyle(.orange)
+                        .frame(maxWidth: 44)
+                } else {
                 WorkoutTimerText(state: context.state)
                     .font(.caption.monospacedDigit())
                     .fontWeight(.medium)
                     .foregroundStyle(context.state.isPaused ? .orange : .blueStart)
+                }
             } minimal: {
                 Image(systemName: "figure.strengthtraining.traditional")
                     .foregroundStyle(.purpleStart)
@@ -93,7 +103,9 @@ struct LockScreenView: View {
                     .foregroundStyle(.primary)
 
                 HStack(spacing: 8) {
-                    if context.state.isPaused {
+                    if let rest = context.state.restEndDate, rest > Date() {
+                        RestCountdownRow(endDate: rest, nextSetLabel: context.state.nextSetLabel)
+                    } else if context.state.isPaused {
                         Image(systemName: "pause.fill")
                             .foregroundStyle(.orange)
                         Text("Paused")
@@ -119,6 +131,28 @@ struct LockScreenView: View {
         }
         .padding()
         .activityBackgroundTint(.black.opacity(0.8))
+    }
+}
+
+// MARK: - Rest countdown (mirrors the Apple Watch rest timer)
+struct RestCountdownRow: View {
+    let endDate: Date
+    let nextSetLabel: String?
+
+    var body: some View {
+        HStack(spacing: 6) {
+            Image(systemName: "timer")
+                .foregroundStyle(.orange)
+            Text(timerInterval: Date()...endDate, countsDown: true)
+                .font(.subheadline.monospacedDigit().weight(.semibold))
+                .foregroundStyle(.orange)
+            if let nextSetLabel {
+                Text("Next: \(nextSetLabel)")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+            }
+        }
     }
 }
 
@@ -176,5 +210,13 @@ struct WorkoutTimerText: View {
         accumulatedPause: 60,
         lastPauseDate: Date(),
         isPaused: true
+    )
+    StrengthTrainingActivityAttributes.ContentState(
+        startDate: Date().addingTimeInterval(-900),
+        accumulatedPause: 0,
+        lastPauseDate: nil,
+        isPaused: false,
+        restEndDate: Date().addingTimeInterval(75),
+        nextSetLabel: "Bench Press · 3/4"
     )
 }
