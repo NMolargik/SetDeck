@@ -98,7 +98,7 @@ public final class PhoneConnectivityManager: NSObject {
 
             // Also send immediately if reachable for faster sync
             if session.isReachable {
-                session.sendMessage([WatchMessageKey.routineData: data], replyHandler: nil) { error in
+                session.sendMessage([WatchMessageKey.routineData: data], replyHandler: nil) { @Sendable error in
                     logger.error("Failed to send routine via message: \(error.localizedDescription)")
                 }
             }

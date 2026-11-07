@@ -72,16 +72,22 @@ class WatchConnectivityManager: NSObject {
 
         let message: [String: Any] = [WatchMessageKey.routineRequest: true]
 
-        session.sendMessage(message, replyHandler: { [weak self] reply in
-            Task { @MainActor in
-                if let routineData = reply[WatchMessageKey.routineData] as? Data {
+        // WCSession invokes these handlers on a background queue. Under MainActor default
+        // isolation an un-annotated closure is inferred @MainActor and traps at runtime
+        // (libdispatch main-queue assertion), so they are explicitly @Sendable and only
+        // hop to the main actor with Sendable values.
+        session.sendMessage(message, replyHandler: { @Sendable reply in
+            let routineData = reply[WatchMessageKey.routineData] as? Data
+            Task { @MainActor [weak self] in
+                if let routineData {
                     self?.decodeAndSetRoutine(from: routineData)
                 }
             }
-        }, errorHandler: { [weak self] error in
-            logger.error("Failed to request routine: \(error.localizedDescription)")
-            // Try application context on error
-            Task { @MainActor in
+        }, errorHandler: { @Sendable error in
+            let description = error.localizedDescription
+            Task { @MainActor [weak self] in
+                logger.error("Failed to request routine: \(description)")
+                // Try application context on error
                 if self?.todayRoutine == nil,
                    let context = self?.session?.receivedApplicationContext,
                    let routineData = context[WatchMessageKey.routineData] as? Data {
