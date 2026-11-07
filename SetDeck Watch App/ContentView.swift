@@ -10,17 +10,21 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         TabView {
+            // Standalone workout: start, log, rest
+            ActiveWorkoutView()
+                .tag(0)
+
             // Today's Routine
             TodayRoutineView()
-                .tag(0)
+                .tag(1)
 
             // Workout Control
             WorkoutControlView()
-                .tag(1)
+                .tag(2)
 
             // Rest Timer
             RestTimerView()
-                .tag(2)
+                .tag(3)
         }
         .tabViewStyle(.verticalPage)
     }

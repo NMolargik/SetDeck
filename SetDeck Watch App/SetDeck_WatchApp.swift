@@ -10,21 +10,23 @@ import SwiftUI
 @main
 struct SetDeckWatchApp: App {
     @Environment(\.scenePhase) private var scenePhase
-    @State private var healthManager = WatchHealthManager()
+    @State private var session = WatchWorkoutSession.shared
 
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(healthManager)
+                .environment(session)
+                .environment(session.health)
                 .environment(WatchConnectivityManager.shared)
                 .onAppear {
                     // Activate WatchConnectivity (synchronous, safe)
                     WatchConnectivityManager.shared.activate()
+                    RestAlertScheduler.shared.configure()
                 }
                 .task {
                     // Delay HealthKit authorization slightly
                     try? await Task.sleep(for: .milliseconds(500))
-                    await healthManager.requestAuthorization()
+                    await session.health.requestAuthorization()
                 }
                 .onChange(of: scenePhase) { _, newPhase in
                     if newPhase == .active {

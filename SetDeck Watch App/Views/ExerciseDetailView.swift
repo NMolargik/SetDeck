@@ -13,7 +13,7 @@ import SetDeckCore
 struct ExerciseDetailView: View {
     let exercise: WatchExercise
 
-    @Environment(WatchConnectivityManager.self) private var connectivityManager
+    @Environment(WatchWorkoutSession.self) private var session
     @State private var selectedSet: WatchSet?
 
     var body: some View {
@@ -44,7 +44,7 @@ struct ExerciseDetailView: View {
                         selectedSet = set
                         WatchHaptics.buttonTapped()
                     } label: {
-                        SetRowView(set: set, setNumber: index + 1)
+                        SetRowView(set: set, setNumber: index + 1, isDone: session.isLogged(set.id))
                     }
                     .buttonStyle(.plain)
                 }
@@ -59,7 +59,7 @@ struct ExerciseDetailView: View {
                 exerciseId: exercise.id,
                 exerciseName: exercise.name
             )
-            .environment(connectivityManager)
+            .environment(session)
         }
     }
 }
@@ -68,6 +68,9 @@ struct ExerciseDetailView: View {
 struct SetRowView: View {
     let set: WatchSet
     let setNumber: Int
+    var isDone: Bool = false
+
+    private var completed: Bool { isDone || set.isCompleted }
 
     var body: some View {
         HStack {
@@ -76,7 +79,7 @@ struct SetRowView: View {
                 .font(.caption.bold())
                 .foregroundStyle(.white)
                 .frame(width: 20, height: 20)
-                .background(set.isCompleted ? Color.green : Color.blue)
+                .background(completed ? Color.green : Color.blue)
                 .clipShape(Circle())
 
             VStack(alignment: .leading, spacing: 2) {
@@ -92,7 +95,7 @@ struct SetRowView: View {
 
             Spacer()
 
-            if set.isCompleted {
+            if completed {
                 Image(systemName: "checkmark.circle.fill")
                     .foregroundStyle(.green)
             }

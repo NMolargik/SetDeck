@@ -12,7 +12,7 @@ import HealthKit
 
 struct WorkoutControlView: View {
     @Environment(WatchHealthManager.self) private var healthManager
-    @Environment(WatchConnectivityManager.self) private var connectivityManager
+    @Environment(WatchWorkoutSession.self) private var session
 
     @State private var showingEndConfirmation = false
 
@@ -103,15 +103,7 @@ struct WorkoutControlView: View {
 
     // MARK: - Actions
     private func startWorkout() {
-        Task {
-            do {
-                try await healthManager.startWorkout()
-                connectivityManager.notifyWorkoutStarted()
-                WatchHaptics.workoutStarted()
-            } catch {
-                WatchHaptics.error()
-            }
-        }
+        Task { await session.startRoutine() }
     }
 
     private func togglePause() {
@@ -125,16 +117,12 @@ struct WorkoutControlView: View {
     }
 
     private func endWorkout() {
-        Task {
-            await healthManager.endWorkout()
-            connectivityManager.notifyWorkoutEnded()
-            WatchHaptics.workoutEnded()
-        }
+        Task { await session.finish() }
     }
 }
 
 #Preview {
     WorkoutControlView()
-        .environment(WatchHealthManager())
-        .environment(WatchConnectivityManager.shared)
+        .environment(WatchWorkoutSession.shared.health)
+        .environment(WatchWorkoutSession.shared)
 }

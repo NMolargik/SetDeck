@@ -168,6 +168,6 @@ struct ExerciseRowView: View {
 }
 
 #Preview {
-    TodayRoutineView()
+    TodayRoutineView().environment(WatchWorkoutSession.shared)
         .environment(WatchConnectivityManager.shared)
 }
