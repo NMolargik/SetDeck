@@ -33,9 +33,11 @@ public final class PhoneConnectivityManager: NSObject {
     @ObservationIgnored
     private var loadSets: (any LoadSets)?
     @ObservationIgnored
-    private var findSet: (any FindSet)?
+    private var mergeWatchCompletion: (any MergeWatchCompletion)?
+
+    /// Called when the watch starts/clears its rest timer, so the Live Activity can mirror it.
     @ObservationIgnored
-    private var recordSetCompletion: (any RecordSetCompletion)?
+    public var onWatchRestChanged: ((WatchRestSnapshot) -> Void)?
 
     // MARK: - Private
     private var session: WCSession?
@@ -49,14 +51,12 @@ public final class PhoneConnectivityManager: NSObject {
         loadRoutine: any LoadRoutine,
         loadExercises: any LoadExercises,
         loadSets: any LoadSets,
-        findSet: any FindSet,
-        recordSetCompletion: any RecordSetCompletion
+        mergeWatchCompletion: any MergeWatchCompletion
     ) {
         self.loadRoutine = loadRoutine
         self.loadExercises = loadExercises
         self.loadSets = loadSets
-        self.findSet = findSet
-        self.recordSetCompletion = recordSetCompletion
+        self.mergeWatchCompletion = mergeWatchCompletion
     }
 
     // MARK: - Activation
@@ -107,35 +107,38 @@ public final class PhoneConnectivityManager: NSObject {
         }
     }
 
-    // MARK: - Handle Set Completion from Watch
-    private func handleSetCompletion(from data: Data) {
-        guard let findSet, let recordSetCompletion else {
+    // MARK: - Handle Set Completions from Watch
+    /// Accepts either a single `SetCompletionMessage` or a `[SetCompletionMessage]` batch.
+    /// Merging is idempotent and last-write-wins (see `WatchCompletionMerge`), so redelivery,
+    /// replays after reconnect, and the same payload arriving over two channels are safe.
+    private func handleSetCompletions(from data: Data) {
+        guard let mergeWatchCompletion else {
             logger.warning("Cannot handle set completion: use-cases not configured")
             return
         }
-
-        do {
-            let completion = try JSONDecoder().decode(SetCompletionMessage.self, from: data)
-
-            guard let set = try findSet(withID: completion.setId) else {
-                logger.warning("Could not find set with ID: \(completion.setId)")
-                return
-            }
-            _ = try recordSetCompletion(
-                for: set,
-                completedDate: completion.completedDate,
-                actualReps: completion.actualReps,
-                actualWeight: completion.actualWeight,
-                actualWeightUnit: nil,
-                actualDuration: nil,
-                actualDescription: nil,
-                actualRpe: completion.actualRpe,
-                note: "Logged from Apple Watch"
-            )
-            logger.info("Recorded set completion from Watch")
-        } catch {
-            logger.error("Failed to record set completion: \(error.localizedDescription)")
+        let decoder = JSONDecoder()
+        let completions: [SetCompletionMessage]
+        if let batch = try? decoder.decode([SetCompletionMessage].self, from: data) {
+            completions = batch
+        } else if let single = try? decoder.decode(SetCompletionMessage.self, from: data) {
+            completions = [single]
+        } else {
+            logger.error("Could not decode set completion payload")
+            return
         }
+        for completion in completions {
+            do {
+                let decision = try mergeWatchCompletion(completion)
+                logger.info("Watch completion merged: \(String(describing: decision))")
+            } catch {
+                logger.error("Failed to merge set completion: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    private func handleRest(from data: Data) {
+        guard let snapshot = try? JSONDecoder().decode(WatchRestSnapshot.self, from: data) else { return }
+        onWatchRestChanged?(snapshot)
     }
 
     // MARK: - Private Helpers
@@ -243,7 +246,8 @@ extension PhoneConnectivityManager: WCSessionDelegate {
     nonisolated public func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
         // Extract Sendable values from the non-Sendable message before hopping.
         let hasRoutineRequest = message[WatchMessageKey.routineRequest] != nil
-        let setCompletionData = message[WatchMessageKey.setCompletion] as? Data
+        let setCompletionData = (message[WatchMessageKey.completionBatch] ?? message[WatchMessageKey.setCompletion]) as? Data
+        let restData = message[WatchMessageKey.restTimer] as? Data
         let hasWorkoutStarted = message[WatchMessageKey.workoutStarted] != nil
         let hasWorkoutEnded = message[WatchMessageKey.workoutEnded] != nil
         Task { @MainActor in
@@ -251,7 +255,10 @@ extension PhoneConnectivityManager: WCSessionDelegate {
                 self.sendTodayRoutineToWatch()
             }
             if let setCompletionData {
-                self.handleSetCompletion(from: setCompletionData)
+                self.handleSetCompletions(from: setCompletionData)
+            }
+            if let restData {
+                self.handleRest(from: restData)
             }
             if hasWorkoutStarted {
                 logger.info("Watch started a workout")
@@ -284,7 +291,21 @@ extension PhoneConnectivityManager: WCSessionDelegate {
         let setCompletionData = applicationContext[WatchMessageKey.setCompletion] as? Data
         Task { @MainActor in
             if let setCompletionData {
-                self.handleSetCompletion(from: setCompletionData)
+                self.handleSetCompletions(from: setCompletionData)
+            }
+        }
+    }
+
+    // Guaranteed, queued delivery from a watch that logged sets while out of reach.
+    nonisolated public func session(_ session: WCSession, didReceiveUserInfo userInfo: [String: Any] = [:]) {
+        let setCompletionData = userInfo[WatchMessageKey.completionBatch] as? Data
+        let restData = userInfo[WatchMessageKey.restTimer] as? Data
+        Task { @MainActor in
+            if let setCompletionData {
+                self.handleSetCompletions(from: setCompletionData)
+            }
+            if let restData {
+                self.handleRest(from: restData)
             }
         }
     }

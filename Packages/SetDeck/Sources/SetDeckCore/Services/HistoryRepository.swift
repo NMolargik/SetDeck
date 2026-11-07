@@ -16,10 +16,12 @@ public protocol HistoryRepository: AnyObject {
     /// History entries for all sets of one exercise, sorted by completion date.
     func history(for exercise: SetDeckExercise) throws(PersistenceError) -> [SetDeckSetHistory]
 
-    /// Records a completed set.
+    /// Records a completed set under an explicit history id (watch merges use the
+    /// watch-minted completion id so redelivery is idempotent).
     @discardableResult
     func recordHistory(
         for set: SetDeckSet,
+        id: UUID,
         completedDate: Date,
         actualReps: Int?,
         actualWeight: Double?,
@@ -30,6 +32,18 @@ public protocol HistoryRepository: AnyObject {
         note: String?
     ) throws(PersistenceError) -> SetDeckSetHistory
 
+    /// The history entry with `uuid`, if any.
+    func history(withID uuid: UUID) throws(PersistenceError) -> SetDeckSetHistory?
+
+    /// Edits an existing entry's performed values (last-write-wins watch merges).
+    func updateHistory(
+        _ history: SetDeckSetHistory,
+        completedDate: Date,
+        actualReps: Int?,
+        actualWeight: Double?,
+        actualRpe: Int?
+    ) throws(PersistenceError)
+
     /// The set with `uuid`, if it still exists (watch relay, intents).
     func set(withID uuid: UUID) throws(PersistenceError) -> SetDeckSet?
 
@@ -38,6 +52,29 @@ public protocol HistoryRepository: AnyObject {
 
     /// A pure snapshot of the workout data used by achievements and stats.
     func workoutStats() throws(PersistenceError) -> WorkoutStats
+}
+
+extension HistoryRepository {
+    /// Records a completed set under a fresh id.
+    @discardableResult
+    public func recordHistory(
+        for set: SetDeckSet,
+        completedDate: Date,
+        actualReps: Int?,
+        actualWeight: Double?,
+        actualWeightUnit: String?,
+        actualDuration: TimeInterval?,
+        actualDescription: String?,
+        actualRpe: Int?,
+        note: String?
+    ) throws(PersistenceError) -> SetDeckSetHistory {
+        try recordHistory(
+            for: set, id: UUID(), completedDate: completedDate, actualReps: actualReps,
+            actualWeight: actualWeight, actualWeightUnit: actualWeightUnit,
+            actualDuration: actualDuration, actualDescription: actualDescription,
+            actualRpe: actualRpe, note: note
+        )
+    }
 }
 
 // MARK: - Use cases

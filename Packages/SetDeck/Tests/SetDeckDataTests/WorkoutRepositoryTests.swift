@@ -293,3 +293,61 @@ struct WorkoutRepositoryTests {
         #expect(try h.history.allHistory().count == count)
     }
 }
+
+// MARK: - Watch merge (end to end over a real store)
+
+@Suite("Watch completion merge", .serialized)
+@MainActor
+struct WatchMergeTests {
+    private func makeHistory() throws -> (DefaultHistoryRepository, DefaultRoutineRepository, ModelContainer) {
+        let storeURL = URL.temporaryDirectory.appending(path: "setdeck-merge-\(UUID().uuidString).store")
+        let container = try ModelContainer(
+            for: SetDeckRoutine.self, SetDeckExercise.self, SetDeckSet.self, SetDeckSetHistory.self,
+            configurations: ModelConfiguration(url: storeURL, cloudKitDatabase: .none)
+        )
+        return (DefaultHistoryRepository(container: container), DefaultRoutineRepository(container: container), container)
+    }
+
+    private func firstSet(_ routines: DefaultRoutineRepository) throws -> SetDeckSet {
+        let exercise = try routines.addExercise(named: "Bench", toDay: 1, isWarmup: false, note: nil)
+        return try routines.addSet(to: exercise, setType: .reps, targetReps: 10, weight: 100,
+                                   targetDuration: nil, setDescription: nil, rpe: nil)
+    }
+
+    @Test("redelivery is idempotent; newer edit wins; older edit is ignored")
+    func idempotentLastWriteWins() throws {
+        let (history, routines, container) = try makeHistory()
+        _ = container
+        let set = try firstSet(routines)
+        let merge = MergeWatchCompletionUseCase(repository: history)
+        let t = Date()
+        let first = SetCompletionMessage(setId: set.uuid, exerciseId: UUID(), completedDate: t,
+                                         actualReps: 8, actualWeight: 100, actualRpe: nil)
+
+        #expect(try merge(first) == .insert)
+        #expect(try merge(first) == .ignore)          // duplicate delivery
+        #expect(try history.allHistory().count == 1)
+
+        let newer = SetCompletionMessage(completionId: first.completionId, setId: set.uuid, exerciseId: first.exerciseId,
+                                         completedDate: t.addingTimeInterval(30), actualReps: 9, actualWeight: 105, actualRpe: nil)
+        #expect(try merge(newer) == .update)
+        let stale = SetCompletionMessage(completionId: first.completionId, setId: set.uuid, exerciseId: first.exerciseId,
+                                         completedDate: t.addingTimeInterval(10), actualReps: 1, actualWeight: 1, actualRpe: nil)
+        #expect(try merge(stale) == .ignore)
+
+        let entries = try history.allHistory()
+        #expect(entries.count == 1)
+        #expect(entries[0].actualReps == 9)
+        #expect(entries[0].actualWeight == 105)
+    }
+
+    @Test("completion for a deleted set is dropped without error")
+    func missingSet() throws {
+        let (history, _, container) = try makeHistory()
+        _ = container
+        let merge = MergeWatchCompletionUseCase(repository: history)
+        let m = SetCompletionMessage(setId: UUID(), exerciseId: UUID(), completedDate: Date(), actualReps: 1, actualWeight: 1, actualRpe: nil)
+        _ = try merge(m)
+        #expect(try history.allHistory().isEmpty)
+    }
+}

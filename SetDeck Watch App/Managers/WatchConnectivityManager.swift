@@ -30,8 +30,15 @@ class WatchConnectivityManager: NSObject {
     private var session: WCSession?
 
     // MARK: - Init
+    private static let cachedRoutineKey = "cachedTodayRoutine"
+
     private override init() {
         super.init()
+        // Standalone use: the last routine the phone sent survives relaunches.
+        if let data = UserDefaults.standard.data(forKey: Self.cachedRoutineKey),
+           let routine = try? JSONDecoder().decode(WatchRoutine.self, from: data) {
+            todayRoutine = routine
+        }
     }
 
     // MARK: - Activation
@@ -86,31 +93,26 @@ class WatchConnectivityManager: NSObject {
         logger.debug("Requested today's routine from iPhone")
     }
 
-    // MARK: - Send Set Completion to iPhone
-    func sendSetCompletion(_ completion: SetCompletionMessage) {
-        guard let session = session else {
-            logger.warning("Cannot send completion: no session")
-            return
-        }
-
+    // MARK: - Send Set Completions to iPhone
+    /// Queued with `transferUserInfo`: delivered in order, survives the phone being out of
+    /// reach and app relaunches. (The old applicationContext path kept only the *latest*
+    /// payload, silently dropping earlier sets.) The phone merge is idempotent, so
+    /// re-queueing is always safe.
+    func sendCompletions(_ completions: [SetCompletionMessage]) {
+        guard let session, !completions.isEmpty else { return }
         do {
-            let data = try JSONEncoder().encode(completion)
-
-            if session.isReachable {
-                // Send immediately if reachable
-                let message: [String: Any] = [WatchMessageKey.setCompletion: data]
-                session.sendMessage(message, replyHandler: nil) { error in
-                    logger.error("Failed to send set completion: \(error.localizedDescription)")
-                }
-                logger.debug("Sent set completion via message")
-            } else {
-                // Queue for later delivery
-                try session.updateApplicationContext([WatchMessageKey.setCompletion: data])
-                logger.debug("Queued set completion via application context")
-            }
+            let data = try JSONEncoder().encode(completions)
+            session.transferUserInfo([WatchMessageKey.completionBatch: data])
+            logger.debug("Queued \(completions.count) set completion(s) for the iPhone")
         } catch {
-            logger.error("Failed to encode set completion: \(error.localizedDescription)")
+            logger.error("Failed to encode set completions: \(error.localizedDescription)")
         }
+    }
+
+    /// Live-only (a stale rest countdown is worse than none), so no queued transfer.
+    func sendRest(_ snapshot: WatchRestSnapshot) {
+        guard let session, session.isReachable, let data = try? JSONEncoder().encode(snapshot) else { return }
+        session.sendMessage([WatchMessageKey.restTimer: data], replyHandler: nil, errorHandler: nil)
     }
 
     // MARK: - Notify Workout State
@@ -136,6 +138,7 @@ class WatchConnectivityManager: NSObject {
             let routine = try JSONDecoder().decode(WatchRoutine.self, from: data)
             self.todayRoutine = routine
             self.lastSyncDate = Date()
+            UserDefaults.standard.set(data, forKey: Self.cachedRoutineKey)
 
             // Save to shared storage for complications
             saveRoutineForComplications(data)
@@ -196,6 +199,9 @@ extension WatchConnectivityManager: WCSessionDelegate {
                 self.isConnected = activated
                 self.isReachable = isReachable
 
+                // Re-queue any logs the phone hasn't acknowledged (idempotent there).
+                WatchWorkoutSession.shared.flushPending()
+
                 // Request routine on activation
                 if self.isReachable {
                     self.requestTodayRoutine()
@@ -214,6 +220,16 @@ extension WatchConnectivityManager: WCSessionDelegate {
             if isReachable && self.todayRoutine == nil {
                 self.requestTodayRoutine()
             }
+        }
+    }
+
+    nonisolated func session(_ session: WCSession, didFinish userInfoTransfer: WCSessionUserInfoTransfer, error: Error?) {
+        guard error == nil,
+              let data = userInfoTransfer.userInfo[WatchMessageKey.completionBatch] as? Data,
+              let delivered = try? JSONDecoder().decode([SetCompletionMessage].self, from: data)
+        else { return }
+        Task { @MainActor in
+            WatchWorkoutSession.shared.markDelivered(delivered)
         }
     }
 

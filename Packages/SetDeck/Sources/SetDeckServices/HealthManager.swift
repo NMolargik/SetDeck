@@ -509,6 +509,25 @@ open class HealthManager: NSObject {
         }
     }
 
+    /// Mirrors the watch's rest countdown into the running Live Activity / Dynamic Island.
+    /// No-op when no activity is running (iOS can't start one from a background wake).
+    public func applyWatchRest(_ snapshot: WatchRestSnapshot) {
+        guard let activity = currentActivity, let start = workoutStartDate else { return }
+        let resting = snapshot.isResting()
+        let state = StrengthTrainingActivityAttributes.ContentState(
+            startDate: start,
+            accumulatedPause: accumulatedPauseTime,
+            lastPauseDate: lastPauseDate,
+            isPaused: lastPauseDate != nil,
+            restEndDate: resting ? snapshot.endDate : nil,
+            nextSetLabel: resting ? snapshot.nextSetLabel : nil
+        )
+        let activityBox = UncheckedSendableBox(value: activity)
+        Task {
+            await activityBox.value.update(.init(state: state, staleDate: resting ? snapshot.endDate : nil))
+        }
+    }
+
     private func endLiveActivity() {
         guard let activity = currentActivity, let start = workoutStartDate else { return }
 
@@ -533,6 +552,7 @@ open class HealthManager: NSObject {
 
     #else
     private func startLiveActivity(startDate: Date) {}
+    public func applyWatchRest(_ snapshot: WatchRestSnapshot) {}
     private func updateLiveActivityForPause() {}
     private func updateLiveActivityForResume() {}
     private func endLiveActivity() {}

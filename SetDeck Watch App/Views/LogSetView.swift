@@ -16,7 +16,7 @@ struct LogSetView: View {
     let exerciseName: String
 
     @Environment(\.dismiss) private var dismiss
-    @Environment(WatchConnectivityManager.self) private var connectivityManager
+    @Environment(WatchWorkoutSession.self) private var session
 
     @State private var reps: Int
     @State private var weight: Int
@@ -140,17 +140,7 @@ struct LogSetView: View {
     }
 
     private func saveSet() {
-        let completion = SetCompletionMessage(
-            setId: set.id,
-            exerciseId: exerciseId,
-            completedDate: Date(),
-            actualReps: reps,
-            actualWeight: Double(weight),
-            actualRpe: set.rpe
-        )
-
-        connectivityManager.sendSetCompletion(completion)
-        WatchHaptics.setCompleted()
+        session.log(set: set, exerciseId: exerciseId, reps: reps, weight: Double(weight))
         dismiss()
     }
 }
@@ -161,5 +151,5 @@ struct LogSetView: View {
         exerciseId: UUID(),
         exerciseName: "Bench Press"
     )
-    .environment(WatchConnectivityManager.shared)
+    .environment(WatchWorkoutSession.shared)
 }
