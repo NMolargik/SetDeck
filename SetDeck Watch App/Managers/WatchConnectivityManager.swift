@@ -109,6 +109,11 @@ class WatchConnectivityManager: NSObject {
         do {
             let data = try JSONEncoder().encode(completions)
             session.transferUserInfo([WatchMessageKey.completionBatch: data])
+            // Also deliver immediately while the phone is reachable (live merge, no waiting on
+            // the transfer queue). Same payload, same completion ids: the phone merge is idempotent.
+            if session.isReachable {
+                session.sendMessage([WatchMessageKey.completionBatch: data], replyHandler: nil, errorHandler: nil)
+            }
             logger.debug("Queued \(completions.count) set completion(s) for the iPhone")
         } catch {
             logger.error("Failed to encode set completions: \(error.localizedDescription)")
@@ -225,6 +230,11 @@ extension WatchConnectivityManager: WCSessionDelegate {
             // Request routine when iPhone becomes reachable
             if isReachable && self.todayRoutine == nil {
                 self.requestTodayRoutine()
+            }
+
+            // Hand over logs recorded while the phone was away (idempotent on the phone).
+            if isReachable {
+                WatchWorkoutSession.shared.flushPending()
             }
         }
     }

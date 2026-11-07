@@ -301,6 +301,7 @@ extension PhoneConnectivityManager: WCSessionDelegate {
         let setCompletionData = userInfo[WatchMessageKey.completionBatch] as? Data
         let restData = userInfo[WatchMessageKey.restTimer] as? Data
         Task { @MainActor in
+            logger.info("Received queued userInfo (completions: \(setCompletionData != nil), rest: \(restData != nil))")
             if let setCompletionData {
                 self.handleSetCompletions(from: setCompletionData)
             }
