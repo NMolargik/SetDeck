@@ -54,6 +54,16 @@ struct WorkoutComplicationEntry: TimelineEntry {
     let exerciseCount: Int
     let setCount: Int
     let isWorkoutActive: Bool
+    /// Rest countdown target (nil = not resting) and the set to do next, from the watch app.
+    var restEndDate: Date? = nil
+    var nextSetLabel: String? = nil
+
+    var isResting: Bool { restEndDate.map { $0 > date } ?? false }
+
+    /// Smart Stack surfaces the widget while a rest is counting down.
+    var relevance: TimelineEntryRelevance? {
+        isResting ? TimelineEntryRelevance(score: 100, duration: restEndDate!.timeIntervalSince(date)) : nil
+    }
 
     static var placeholder: WorkoutComplicationEntry {
         WorkoutComplicationEntry(
@@ -96,6 +106,17 @@ struct WorkoutComplicationProvider: TimelineProvider {
     func getTimeline(in context: Context, completion: @escaping (Timeline<WorkoutComplicationEntry>) -> Void) {
         let entry = getComplicationEntry()
 
+        // While resting: show the countdown now, then flip to "next set" when it ends.
+        if let end = entry.restEndDate, end > Date() {
+            var after = entry
+            after = WorkoutComplicationEntry(
+                date: end, dayName: entry.dayName, exerciseCount: entry.exerciseCount,
+                setCount: entry.setCount, isWorkoutActive: true, restEndDate: nil, nextSetLabel: entry.nextSetLabel
+            )
+            completion(Timeline(entries: [entry, after], policy: .atEnd))
+            return
+        }
+
         // Update at midnight for new day, or every hour
         let nextUpdate = Calendar.current.nextDate(
             after: Date(),
@@ -111,14 +132,22 @@ struct WorkoutComplicationProvider: TimelineProvider {
         // Get data from WatchConnectivity shared state
         // Since we can't access @Observable from widget, use shared container or UserDefaults
         let routine = loadRoutineFromSharedStorage()
+        let rest = loadRestSnapshot()
 
         return WorkoutComplicationEntry(
             date: Date(),
             dayName: routine?.dayName ?? todayName,
             exerciseCount: routine?.exerciseCount ?? 0,
             setCount: routine?.totalSetCount ?? 0,
-            isWorkoutActive: false // Would need shared state for this
+            isWorkoutActive: rest?.nextSetLabel != nil,
+            restEndDate: rest?.endDate,
+            nextSetLabel: rest?.nextSetLabel
         )
+    }
+
+    private func loadRestSnapshot() -> WatchRestSnapshot? {
+        guard let data = UserDefaults(suiteName: "group.nickmolargik.ReadySet")?.data(forKey: WatchRestSnapshot.sharedDefaultsKey) else { return nil }
+        return try? JSONDecoder().decode(WatchRestSnapshot.self, from: data)
     }
 
     private func loadRoutineFromSharedStorage() -> WatchRoutine? {
@@ -186,6 +215,15 @@ struct WorkoutComplicationView: View {
         ZStack {
             AccessoryWidgetBackground()
 
+            if let end = entry.restEndDate, entry.isResting {
+                VStack(spacing: 0) {
+                    Image(systemName: "timer").font(.system(size: 12))
+                    Text(timerInterval: Date()...end, countsDown: true)
+                        .font(.system(size: 14, weight: .semibold).monospacedDigit())
+                        .minimumScaleFactor(0.6)
+                }
+            } else {
+
             VStack(spacing: 0) {
                 Image(systemName: "figure.strengthtraining.traditional")
                     .font(.system(size: 18))
@@ -198,6 +236,7 @@ struct WorkoutComplicationView: View {
                         .font(.system(size: 12))
                         .foregroundStyle(.secondary)
                 }
+            }
             }
         }
     }
@@ -220,6 +259,36 @@ struct WorkoutComplicationView: View {
 
     // MARK: - Rectangular
     private var rectangularView: some View {
+        if let end = entry.restEndDate, entry.isResting {
+            return AnyView(HStack(spacing: 8) {
+                Image(systemName: "timer").font(.title2).widgetAccentable()
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(timerInterval: Date()...end, countsDown: true)
+                        .font(.headline.monospacedDigit())
+                    if let next = entry.nextSetLabel {
+                        Text("Next: \(next)")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                    }
+                }
+                Spacer()
+            })
+        }
+        if let next = entry.nextSetLabel {
+            return AnyView(HStack(spacing: 8) {
+                Image(systemName: "figure.strengthtraining.traditional").font(.title2).widgetAccentable()
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Next set").font(.headline)
+                    Text(next).font(.caption).foregroundStyle(.secondary).lineLimit(1)
+                }
+                Spacer()
+            })
+        }
+        return AnyView(defaultRectangularView)
+    }
+
+    private var defaultRectangularView: some View {
         HStack(spacing: 8) {
             Image(systemName: "figure.strengthtraining.traditional")
                 .font(.title2)
@@ -246,8 +315,15 @@ struct WorkoutComplicationView: View {
     }
 
     // MARK: - Inline
+    @ViewBuilder
     private var inlineView: some View {
-        if entry.exerciseCount > 0 {
+        if let end = entry.restEndDate, entry.isResting {
+            Label {
+                Text(timerInterval: Date()...end, countsDown: true)
+            } icon: {
+                Image(systemName: "timer")
+            }
+        } else if entry.exerciseCount > 0 {
             Label("\(shortDayName) - \(entry.exerciseCount) exercises", systemImage: "figure.strengthtraining.traditional")
         } else {
             Label("\(shortDayName) - Rest", systemImage: "moon.zzz")
