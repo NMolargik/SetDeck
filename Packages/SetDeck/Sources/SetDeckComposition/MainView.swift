@@ -100,7 +100,8 @@ struct MainView: View {
                                 editRoutineTip.invalidate(reason: .actionPerformed)
                                 viewModel.showingEditRoutineSheet = true
                             } label: {
-                                Text("Edit Routine")
+                                Label("Edit Routine", systemImage: "square.and.pencil")
+                                    .labelStyle(.titleAndIcon)
                                     .bold()
                             }
                             .tint(.greenStart)
@@ -113,12 +114,12 @@ struct MainView: View {
                                         viewModel.appTab = .health
                                     }
                                 } label: {
-                                    HStack(spacing: 6) {
-                                        Image(systemName: "figure.strengthtraining.traditional")
-                                            .font(.body)
+                                    Label {
                                         Text(workoutElapsedString)
                                             .monospacedDigit()
                                             .bold()
+                                    } icon: {
+                                        Image(systemName: "figure.strengthtraining.traditional")
                                     }
                                 }
                                 .tint(.white)

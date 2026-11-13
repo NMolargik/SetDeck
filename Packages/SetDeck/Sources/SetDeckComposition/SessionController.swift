@@ -201,6 +201,18 @@ public final class SessionController {
             defaults.set(true, forKey: AppStorageKeys.hasCompletedInitialSync)
             workoutData.generateSampleDataForLast30Days()
         }
+        // Screenshot affordance (DEBUG only): start a running strength workout so the
+        // live-workout UI is on screen without touch input.
+        // `-duoLink setdeck://stats` stages a deep link (opens a tab or sheet).
+        let launchArgs = ProcessInfo.processInfo.arguments
+        if let i = launchArgs.firstIndex(of: "-duoLink"), i + 1 < launchArgs.count,
+           let url = URL(string: launchArgs[i + 1]) {
+            pendingDeepLink = DeepLink(url: url)
+        }
+        if ProcessInfo.processInfo.arguments.contains("-duoStartWorkout") {
+            let health = healthManager
+            Task { try? await health.startStrengthTraining() }
+        }
         #endif
 
         startIndexObservation()

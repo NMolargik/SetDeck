@@ -115,6 +115,14 @@ public struct OnboardingView: View {
         .background(Color(uiColor: .systemGroupedBackground))
         .task {
             viewModel.currentStep = .privacy
+            #if DEBUG
+            // Screenshot affordance: `-duoOnboardingStep 0...3` opens a specific page.
+            let args = ProcessInfo.processInfo.arguments
+            if let i = args.firstIndex(of: "-duoOnboardingStep"), i + 1 < args.count,
+               let n = Int(args[i + 1]), steps.indices.contains(n) {
+                viewModel.currentStep = steps[n]
+            }
+            #endif
         }
         .environment(viewModel)
     }

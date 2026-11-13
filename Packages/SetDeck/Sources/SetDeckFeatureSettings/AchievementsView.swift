@@ -36,8 +36,10 @@ public struct AchievementsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Done") {
+                Button {
                     dismiss()
+                } label: {
+                    Label("Done", systemImage: "checkmark")
                 }
                 .bold()
                 .tint(.greenStart)

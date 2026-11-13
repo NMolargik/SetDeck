@@ -17,12 +17,31 @@ struct SummaryRowView: View {
     let activeDays: Int
     let bestStreak: Int
 
+    private var volumeCard: some View { SummaryCardView(title: "Volume", value: formattedVolume) }
+    private var setsCard: some View { SummaryCardView(title: "Sets", value: "\(totalSets)") }
+    private var daysCard: some View { SummaryCardView(title: "Active Days", value: "\(activeDays)") }
+    private var streakCard: some View { SummaryCardView(title: "Best Streak", value: "\(bestStreak)d") }
+
     var body: some View {
-        HStack(spacing: 12) {
-            SummaryCardView(title: "Volume", value: formattedVolume)
-            SummaryCardView(title: "Sets", value: "\(totalSets)")
-            SummaryCardView(title: "Active Days", value: "\(activeDays)")
-            SummaryCardView(title: "Best Streak", value: "\(bestStreak)d")
+        // One row when the four tiles fit at their natural width; otherwise 2 x 2 so a
+        // value such as "485.7k" never wraps (the Duo's outer display is narrow).
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 12) {
+                volumeCard
+                setsCard
+                daysCard
+                streakCard
+            }
+            VStack(spacing: 12) {
+                HStack(spacing: 12) {
+                    volumeCard.frame(maxWidth: .infinity, alignment: .leading)
+                    setsCard.frame(maxWidth: .infinity, alignment: .leading)
+                }
+                HStack(spacing: 12) {
+                    daysCard.frame(maxWidth: .infinity, alignment: .leading)
+                    streakCard.frame(maxWidth: .infinity, alignment: .leading)
+                }
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)

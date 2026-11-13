@@ -204,9 +204,11 @@ public struct EditRoutineView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Save") {
+                Button {
                     focusedExerciseID = nil
                     dismiss()
+                } label: {
+                    Label("Save", systemImage: "checkmark")
                 }
                 .bold()
                 .tint(.greenStart)
