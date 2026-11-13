@@ -210,8 +210,10 @@ public final class SessionController {
             pendingDeepLink = DeepLink(url: url)
         }
         if ProcessInfo.processInfo.arguments.contains("-duoStartWorkout") {
+            #if canImport(HealthKit) && !os(macOS)
             let health = healthManager
             Task { try? await health.startStrengthTraining() }
+            #endif
         }
         #endif
 
