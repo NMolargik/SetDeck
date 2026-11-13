@@ -114,12 +114,14 @@ struct MainView: View {
                                         viewModel.appTab = .health
                                     }
                                 } label: {
-                                    Label {
+                                    // Kept as an HStack (not a Label) so the elapsed time
+                                    // stays visible; a Label collapses to icon-only in a toolbar.
+                                    HStack(spacing: 6) {
+                                        Image(systemName: "figure.strengthtraining.traditional")
+                                            .font(.body)
                                         Text(workoutElapsedString)
                                             .monospacedDigit()
                                             .bold()
-                                    } icon: {
-                                        Image(systemName: "figure.strengthtraining.traditional")
                                     }
                                 }
                                 .tint(.white)
