@@ -110,11 +110,17 @@ public struct WorkoutSummaryShareLink: View {
         .onAppear(perform: render)
     }
 
-    private var shareMessage: String {
+    private var shareMessage: String { Self.message(for: summary) }
+
+    /// The share text: one summary line, then the tracked link back to SetDeck.
+    static func message(for summary: WorkoutSummary) -> String {
+        let line: String
         if let kcal = summary.totalEnergyBurnedKCal {
-            return "\(summary.title) · \(summary.durationString) · \(Int(kcal)) cal"
+            line = "\(summary.title) · \(summary.durationString) · \(Int(kcal)) cal"
+        } else {
+            line = "\(summary.title) · \(summary.durationString)"
         }
-        return "\(summary.title) · \(summary.durationString)"
+        return "\(line)\n\(AppLinks.shareSummary.absoluteString)"
     }
 
     private func render() {

@@ -55,6 +55,18 @@ public struct SettingsView: View {
                     Link("Molargik Software LLC", destination: URL(string: "https://www.molargiksoftware.com")!)
                         .foregroundStyle(.blueStart)
                 }
+
+                Link(destination: AppLinks.writeReview) {
+                    Label("Rate SetDeck", systemImage: "star.fill")
+                }
+                .accessibilityHint("Opens the App Store to write a review.")
+                .hoverEffectIfAvailable(.highlight)
+
+                ShareLink(item: AppLinks.shareApp) {
+                    Label("Share SetDeck", systemImage: "square.and.arrow.up")
+                }
+                .accessibilityHint("Shares a link to SetDeck.")
+                .hoverEffectIfAvailable(.highlight)
             }
 
             // MARK: - Achievements
