@@ -94,19 +94,34 @@ struct RestTimerView: View {
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
             }
-            HStack(spacing: 16) {
+            HStack(spacing: 6) {
                 Button { session.skipRest() } label: {
-                    Image(systemName: "xmark").frame(width: 44, height: 44)
+                    restButtonLabel("Skip", systemImage: "forward.end.fill")
                 }
                 .buttonStyle(.bordered)
-                .tint(.red)
+                .accessibilityLabel("Skip rest")
 
                 Button { session.extendRest() } label: {
-                    Image(systemName: "plus.circle").frame(width: 44, height: 44)
+                    restButtonLabel("+30s", systemImage: "timer")
                 }
                 .buttonStyle(.bordered)
+                .accessibilityLabel("Add 30 seconds")
             }
         }
+    }
+
+    /// Icon + text when it fits; text alone on the smallest cases. The label is at least 32 pt
+    /// tall; the bordered style adds its padding around it.
+    private func restButtonLabel(_ title: LocalizedStringKey, systemImage: String) -> some View {
+        ViewThatFits(in: .horizontal) {
+            Label(title, systemImage: systemImage)
+                .lineLimit(1)
+            Text(title)
+                .lineLimit(1)
+        }
+        .font(.footnote.weight(.semibold))
+        .minimumScaleFactor(0.7)
+        .frame(maxWidth: .infinity, minHeight: 32)
     }
 
     // MARK: - Formatting
