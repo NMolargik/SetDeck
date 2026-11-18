@@ -19,6 +19,7 @@ public struct StatsView: View {
     @AppStorage(AppStorageKeys.useDayMonthYearDates) private var useDayMonthYearDates = false
 
     @Environment(MuscleGroupInferenceService.self) private var muscleGroupInference
+    @Environment(AchievementModel.self) private var achievementManager
 
     @State private var viewModel: ViewModel = ViewModel()
     @State private var range: TimeRange = .last30Days
@@ -30,65 +31,46 @@ public struct StatsView: View {
 
     public var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
-                    if filteredHistory.isEmpty {
-                        emptyStateView
-                    } else {
-                        SummaryRowView(
-                            totalVolume: totalVolume,
-                            totalSets: filteredHistory.count,
-                            activeDays: activeDayCount,
-                            bestStreak: bestStreak
-                        )
-
-                        VolumeTrendCardView(points: dailyVolumePoints)
-
-                        ExercisePRCardView(
-                            exerciseNames: exerciseNames,
-                            prs: exercisePRs
-                        )
-
-                        let selected = selectedExerciseName ?? exerciseNames.first
-                        let selectedPoints = selected.flatMap { exercise1RMPoints[$0] } ?? []
-
-                        ExerciseDetailCardView(
-                            exerciseNames: exerciseNames,
-                            selectedExerciseName: $selectedExerciseName,
-                            points: selectedPoints
-                        )
-
-                        IntensityDistributionCard(history: filteredHistory)
-
-                        // MARK: - Muscle Analysis Section (iOS 26+ with Foundation Models)
-                        if viewModel.isMuscleAnalysisAvailable {
-                            if isLoadingMuscleAnalysis {
-                                VStack(spacing: 12) {
-                                    ProgressView()
-                                        .controlSize(.regular)
-                                    Text("Analyzing muscle groups...")
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
-                                }
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 40)
-                            } else if !weeklyMuscleVolumes.isEmpty {
-                                Text("Muscle Analysis")
-                                    .font(.title3)
-                                    .fontWeight(.semibold)
-                                    .padding(.top, 8)
-
-                                MuscleHeatmapCardView(muscleVolumes: weeklyMuscleVolumes)
-
-                                MuscleDistributionCardView(muscleVolumes: weeklyMuscleVolumes)
-
-                                BalanceAnalysisCardView(muscleVolumes: weeklyMuscleVolumes)
+            // Folded / any phone: one scrolling column. Unfolded Duo or iPad: a two-column
+            // dashboard split at the hinge (trends and records | muscles and achievements).
+            FoldSplit(
+                compact: {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 16) {
+                            if filteredHistory.isEmpty {
+                                emptyStateView
+                            } else {
+                                trendsColumn
+                                muscleAnalysisSection
                             }
                         }
+                        .padding()
+                    }
+                },
+                leading: {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 16) {
+                            if filteredHistory.isEmpty {
+                                emptyStateView
+                            } else {
+                                trendsColumn
+                            }
+                        }
+                        .padding()
+                    }
+                },
+                trailing: {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 16) {
+                            if !filteredHistory.isEmpty {
+                                muscleAnalysisSection
+                            }
+                            AchievementsCardView(unlockedAchievements: achievementManager.unlockedAchievements)
+                        }
+                        .padding()
                     }
                 }
-                .padding()
-            }
+            )
             .scrollContentBackground(.hidden)
             .background(BrandBackground(tint: .blueStart))
             .toolbar {
@@ -128,6 +110,65 @@ public struct StatsView: View {
             }
         }
         .tint(.purpleStart)
+    }
+
+    // MARK: - Dashboard columns
+
+    @ViewBuilder
+    private var trendsColumn: some View {
+        SummaryRowView(
+            totalVolume: totalVolume,
+            totalSets: filteredHistory.count,
+            activeDays: activeDayCount,
+            bestStreak: bestStreak
+        )
+
+        VolumeTrendCardView(points: dailyVolumePoints)
+
+        ExercisePRCardView(
+            exerciseNames: exerciseNames,
+            prs: exercisePRs
+        )
+
+        let selected = selectedExerciseName ?? exerciseNames.first
+        let selectedPoints = selected.flatMap { exercise1RMPoints[$0] } ?? []
+
+        ExerciseDetailCardView(
+            exerciseNames: exerciseNames,
+            selectedExerciseName: $selectedExerciseName,
+            points: selectedPoints
+        )
+
+        IntensityDistributionCard(history: filteredHistory)
+    }
+
+    // MARK: - Muscle Analysis Section (iOS 26+ with Foundation Models)
+    @ViewBuilder
+    private var muscleAnalysisSection: some View {
+        if viewModel.isMuscleAnalysisAvailable {
+            if isLoadingMuscleAnalysis {
+                VStack(spacing: 12) {
+                    ProgressView()
+                        .controlSize(.regular)
+                    Text("Analyzing muscle groups...")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 40)
+            } else if !weeklyMuscleVolumes.isEmpty {
+                Text("Muscle Analysis")
+                    .font(.title3)
+                    .fontWeight(.semibold)
+                    .padding(.top, 8)
+
+                MuscleHeatmapCardView(muscleVolumes: weeklyMuscleVolumes)
+
+                MuscleDistributionCardView(muscleVolumes: weeklyMuscleVolumes)
+
+                BalanceAnalysisCardView(muscleVolumes: weeklyMuscleVolumes)
+            }
+        }
     }
 
     // MARK: - Empty State View
