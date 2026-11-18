@@ -57,7 +57,7 @@ let package = Package(
         ),
         .target(
             name: "SetDeckFeatureRoutine",
-            dependencies: ["SetDeckCore", "SetDeckDesignSystem", "SetDeckFeatureShared"],
+            dependencies: ["SetDeckCore", "SetDeckDesignSystem", "SetDeckServices", "SetDeckFeatureShared"],
             swiftSettings: isolation
         ),
         .target(
