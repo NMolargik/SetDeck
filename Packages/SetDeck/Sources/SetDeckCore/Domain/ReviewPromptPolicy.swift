@@ -3,8 +3,8 @@
 //  SetDeckCore
 //
 //  Decides when to ask for an App Store review. SetDeck asks at two value moments —
-//  right after the first completed workout session and again after the twentieth — and
-//  never more than once per app version. Counters live behind `KeyValueStoring` so the
+//  after the third completed workout session and again after the tenth, once the workout
+//  summary sheet has been dismissed — and never more than once per app version. Counters live behind `KeyValueStoring` so the
 //  policy is host-testable with a fake store.
 //
 
@@ -14,7 +14,7 @@ import Foundation
 public struct ReviewPromptPolicy {
 
     /// Completed-workout counts at which a prompt is eligible.
-    public static let milestones: Set<Int> = [1, 20]
+    public static let milestones: Set<Int> = [3, 10]
 
     private let defaults: any KeyValueStoring
 
@@ -37,16 +37,18 @@ public struct ReviewPromptPolicy {
         milestones.contains(count) && lastPromptedVersion != appVersion
     }
 
-    /// Records a completed workout session. Returns `true` when the caller should request
-    /// a review now; the version is marked as prompted so it never fires twice per version.
+    /// Records a completed workout session. Returns `true` when this workout is a review
+    /// moment for `appVersion`; the caller asks once the summary sheet is gone and then
+    /// calls `markPrompted(appVersion:)`.
     @discardableResult
     public func recordCompletedWorkout(appVersion: String) -> Bool {
         let count = completedWorkoutCount + 1
         defaults.set(count, forKey: AppStorageKeys.completedWorkoutCount)
-        guard Self.shouldPrompt(completedWorkoutCount: count, lastPromptedVersion: lastPromptedVersion, appVersion: appVersion) else {
-            return false
-        }
+        return Self.shouldPrompt(completedWorkoutCount: count, lastPromptedVersion: lastPromptedVersion, appVersion: appVersion)
+    }
+
+    /// Marks `appVersion` as prompted so it never fires twice per version.
+    public func markPrompted(appVersion: String) {
         defaults.set(appVersion, forKey: AppStorageKeys.lastReviewPromptVersion)
-        return true
     }
 }

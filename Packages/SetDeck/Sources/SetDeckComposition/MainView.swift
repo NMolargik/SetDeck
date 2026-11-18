@@ -100,7 +100,8 @@ struct MainView: View {
                                 editRoutineTip.invalidate(reason: .actionPerformed)
                                 viewModel.showingEditRoutineSheet = true
                             } label: {
-                                Text("Edit Routine")
+                                Label("Edit Routine", systemImage: "square.and.pencil")
+                                    .labelStyle(.titleAndIcon)
                                     .bold()
                             }
                             .tint(.greenStart)
@@ -113,6 +114,8 @@ struct MainView: View {
                                         viewModel.appTab = .health
                                     }
                                 } label: {
+                                    // Kept as an HStack (not a Label) so the elapsed time
+                                    // stays visible; a Label collapses to icon-only in a toolbar.
                                     HStack(spacing: 6) {
                                         Image(systemName: "figure.strengthtraining.traditional")
                                             .font(.body)

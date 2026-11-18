@@ -24,16 +24,24 @@ struct SummaryCardView: View {
                     Text(title)
                         .font(.caption)
                         .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                        .fixedSize(horizontal: true, vertical: false)
                     Text(value)
                         .font(.headline)
+                        .lineLimit(1)
+                        .fixedSize(horizontal: true, vertical: false)
                 }
             } else {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
                         .font(.caption)
                         .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                        .fixedSize(horizontal: true, vertical: false)
                     Text(value)
                         .font(.headline)
+                        .lineLimit(1)
+                        .fixedSize(horizontal: true, vertical: false)
                 }
             }
         }

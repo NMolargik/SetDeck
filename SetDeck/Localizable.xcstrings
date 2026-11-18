@@ -3806,6 +3806,30 @@
       },
       "shouldGenerateSymbol" : false
     },
+    "Opens the App Store to write a review." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre el App Store para escribir una reseña."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvre l'App Store pour rédiger un avis."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Storeでレビューを書きます。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
     "Personal Records" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3969,6 +3993,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "期間"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Rate SetDeck" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valorar SetDeck"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Évaluer SetDeck"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SetDeckを評価"
           }
         }
       },
@@ -4556,6 +4604,30 @@
       },
       "shouldGenerateSymbol" : false
     },
+    "Share SetDeck" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartir SetDeck"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partager SetDeck"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SetDeckを共有"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
     "Share Summary" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4575,6 +4647,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "概要を共有"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Shares a link to SetDeck." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comparte un enlace a SetDeck."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partage un lien vers SetDeck."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SetDeckへのリンクを共有します。"
           }
         }
       },
