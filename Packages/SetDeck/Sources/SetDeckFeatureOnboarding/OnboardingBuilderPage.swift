@@ -2,45 +2,28 @@
 //  OnboardingBuilderPage.swift
 //  SetDeckFeatureOnboarding
 //
-//  Created by Nick Molargik on 11/29/25.
+//  The routine-builder step. Embeds `EditRoutineView` unchanged under a compact header; it
+//  gets the full window width so the editor can use its own two-pane layout on iPad and the
+//  unfolded iPhone Duo.
 //
 
 #if os(iOS)
 import SwiftUI
-import SwiftData
-import SetDeckFeatureShared
+import SetDeckDesignSystem
 import SetDeckFeatureRoutine
 
 struct OnboardingBuilderPage: View {
-    @Environment(WorkoutDataModel.self) private var exerciseManager
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-
-    private var maxContentWidth: CGFloat? {
-        horizontalSizeClass == .regular ? 600 : nil
-    }
-
     var body: some View {
-        VStack(spacing: 5) {
-            Spacer(minLength: 12)
-
-            VStack(spacing: 8) {
-                Text("Build Your Routines")
-                    .font(.largeTitle).bold()
-                    .foregroundStyle(.white)
-                    .shadow(radius: 5, x: 1, y: -1)
-
-                Text("Add at least one exercise to continue")
-                    .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.7))
-            }
+        VStack(spacing: Brand.Space.sm) {
+            OnboardingHero(content: OnboardingContent.hero(for: .builder), showsTile: false)
+                .padding(.horizontal, Brand.Space.xl)
+                .frame(maxWidth: OnboardingMetrics.columnWidth)
 
             EditRoutineView()
-                .padding(.horizontal)
-                .frame(maxWidth: maxContentWidth)
-                .environment(exerciseManager)
-
-            Spacer(minLength: 12)
+                .padding(.horizontal, Brand.Space.lg)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .padding(.top, Brand.Space.sm)
     }
 }
 #endif
