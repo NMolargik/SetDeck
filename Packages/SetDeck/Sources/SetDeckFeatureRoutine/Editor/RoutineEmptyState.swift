@@ -18,6 +18,12 @@ struct RoutineEmptyState: View {
     let onAddBlank: () -> Void
     let onAddStarter: (String) -> Void
 
+    init(day: Int, onAddBlank: @escaping () -> Void, onAddStarter: @escaping (String) -> Void) {
+        self.day = day
+        self.onAddBlank = onAddBlank
+        self.onAddStarter = onAddStarter
+    }
+
     private let addExerciseTip = AddExerciseTip()
     private let starters = ["Bench Press", "Squat", "Deadlift", "Overhead Press", "Pull-Up", "Barbell Row"]
 
@@ -38,11 +44,11 @@ struct RoutineEmptyState: View {
             }
 
             VStack(alignment: .leading, spacing: Brand.Space.md) {
-                StepRow(number: 1, icon: "dumbbell.fill", tint: .blueStart,
+                StepRow(icon: "dumbbell.fill", tint: .blueStart,
                         title: "Add an exercise", detail: "Name it. Muscle groups are filled in for you when possible.")
-                StepRow(number: 2, icon: "repeat", tint: .greenStart,
+                StepRow(icon: "repeat", tint: .greenStart,
                         title: "Add sets", detail: "Pick reps, as many as possible, timed or freeform, then set the targets.")
-                StepRow(number: 3, icon: "arrow.up.arrow.down", tint: .purpleStart,
+                StepRow(icon: "arrow.up.arrow.down", tint: .purpleStart,
                         title: "Order it", detail: "Use the ••• menu on a card to move or delete it.")
             }
 
@@ -92,7 +98,6 @@ struct RoutineEmptyState: View {
 }
 
 private struct StepRow: View {
-    let number: Int
     let icon: String
     let tint: Color
     let title: LocalizedStringKey

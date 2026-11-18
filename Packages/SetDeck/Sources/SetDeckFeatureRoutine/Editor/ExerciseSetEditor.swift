@@ -28,6 +28,27 @@ struct ExerciseSetEditor: View {
 
     private let addSetTip = AddSetTip()
 
+    // Explicit: private stored properties would otherwise make the memberwise init private.
+    init(exercise: SetDeckExercise,
+         sets: [SetDeckSet],
+         canSuggestMuscles: Bool = false,
+         isSuggestingMuscles: Bool = false,
+         showsAddSetTip: Bool = false,
+         focus: FocusState<UUID?>.Binding,
+         onSuggestMuscles: @escaping () -> Void,
+         onAddSet: @escaping () -> Void,
+         onMoveSet: @escaping (Int, Int) -> Void) {
+        self.exercise = exercise
+        self.sets = sets
+        self.canSuggestMuscles = canSuggestMuscles
+        self.isSuggestingMuscles = isSuggestingMuscles
+        self.showsAddSetTip = showsAddSetTip
+        self.focus = focus
+        self.onSuggestMuscles = onSuggestMuscles
+        self.onAddSet = onAddSet
+        self.onMoveSet = onMoveSet
+    }
+
     private var nameBinding: Binding<String> {
         Binding(
             get: { exercise.name },
