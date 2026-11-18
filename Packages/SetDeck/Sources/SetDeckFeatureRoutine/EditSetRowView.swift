@@ -19,14 +19,20 @@ struct EditSetRowView: View {
     let setCount: Int
     /// 1-based position within the exercise; nil hides the badge.
     var number: Int?
+    /// Reorder handlers; nil hides the arrow (first/last row).
+    var onMoveUp: (() -> Void)?
+    var onMoveDown: (() -> Void)?
 
     @Environment(WorkoutDataModel.self) private var exerciseManager
     @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
 
-    init(set: SetDeckSet, setCount: Int, number: Int? = nil) {
+    init(set: SetDeckSet, setCount: Int, number: Int? = nil,
+         onMoveUp: (() -> Void)? = nil, onMoveDown: (() -> Void)? = nil) {
         self.set = set
         self.setCount = setCount
         self.number = number
+        self.onMoveUp = onMoveUp
+        self.onMoveDown = onMoveDown
     }
 
     private func lbsToKg(_ lbs: Double) -> Double { lbs / EditorFormat.poundsPerKilogram }
@@ -125,6 +131,12 @@ struct EditSetRowView: View {
                 .font(.subheadline.weight(.semibold).monospacedDigit())
                 .foregroundStyle(.primary)
             Spacer(minLength: 0)
+            if let onMoveUp {
+                reorderButton("chevron.up", label: "Move set up", action: onMoveUp)
+            }
+            if let onMoveDown {
+                reorderButton("chevron.down", label: "Move set down", action: onMoveDown)
+            }
             if setCount > 1 {
                 Button {
                     DispatchQueue.main.async {
@@ -145,6 +157,22 @@ struct EditSetRowView: View {
                 .accessibilityHint("Removes this set from the exercise")
             }
         }
+    }
+
+    private func reorderButton(_ systemName: String, label: LocalizedStringKey, action: @escaping () -> Void) -> some View {
+        Button {
+            Haptics.lightImpact()
+            withAnimation(.spring(response: 0.35, dampingFraction: 0.8), action)
+        } label: {
+            Image(systemName: systemName)
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.secondary)
+                .frame(width: 32, height: 32)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .hoverEffectIfAvailable(.highlight)
+        .accessibilityLabel(label)
     }
 
     private var typePicker: some View {
