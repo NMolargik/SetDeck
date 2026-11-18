@@ -269,7 +269,7 @@ struct WorkoutRepositoryTests {
         _ = try h.routines.addExercise(named: "Squat", toDay: 0, isWarmup: false, note: nil)
 
         // At least one change event lands (routine creation + exercise + default set).
-        let event: Void? = await iterator.next()
+        let event: WorkoutChange? = await iterator.next()
         #expect(event != nil)
     }
 

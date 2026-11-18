@@ -166,7 +166,7 @@ public final class CloudSyncManager {
         hasReceivedRemoteChange = true
         updateSyncStatus()
         // Screens observe one multicast stream; CloudKit imports flow into it too.
-        changeCenter?.notify()
+        changeCenter?.notify(.remoteImport)
     }
 
     private func handleStoreChange() {
