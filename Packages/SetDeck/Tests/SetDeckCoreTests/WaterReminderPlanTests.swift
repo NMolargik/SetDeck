@@ -3,6 +3,7 @@
 //  SetDeckCoreTests
 //
 
+import Foundation
 import Testing
 import SetDeckCore
 
@@ -61,5 +62,39 @@ struct WaterReminderPlanTests {
         #expect(hm.hour == 9 && hm.minute == 30)
         #expect(WaterReminderPlan.glassML(useMetric: true) == 250)
         #expect(abs(WaterReminderPlan.glassML(useMetric: false) - 236.588) < 0.001)
+    }
+}
+
+@Suite("WaterReminderSettings Tests")
+struct WaterReminderSettingsTests {
+
+    final class FakeDefaults: KeyValueStoring {
+        var values: [String: Any] = [:]
+        func data(forKey k: String) -> Data? { values[k] as? Data }
+        func string(forKey k: String) -> String? { values[k] as? String }
+        func array(forKey k: String) -> [Any]? { values[k] as? [Any] }
+        func bool(forKey k: String) -> Bool { values[k] as? Bool ?? false }
+        func integer(forKey k: String) -> Int { values[k] as? Int ?? 0 }
+        func set(_ v: Any?, forKey k: String) { values[k] = v }
+        func removeObject(forKey k: String) { values[k] = nil }
+    }
+
+    @Test("Unset store is off with the default plan")
+    func unset() {
+        let s = WaterReminderSettings.load(from: FakeDefaults())
+        #expect(!s.isEnabled)
+        #expect(s.plan == WaterReminderPlan())
+    }
+
+    @Test("Stored values are read back")
+    func stored() {
+        let d = FakeDefaults()
+        d.set(true, forKey: WaterReminderKeys.enabled)
+        d.set(0, forKey: WaterReminderKeys.startMinute)
+        d.set(600, forKey: WaterReminderKeys.endMinute)
+        d.set(90, forKey: WaterReminderKeys.intervalMinutes)
+        let s = WaterReminderSettings.load(from: d)
+        #expect(s.isEnabled)
+        #expect(s.plan == WaterReminderPlan(startMinute: 0, endMinute: 600, intervalMinutes: 90))
     }
 }

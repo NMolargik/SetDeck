@@ -88,3 +88,32 @@ nonisolated public struct WaterReminderPlan: Equatable, Sendable {
         useMetric ? 250 : 8 * 29.5735
     }
 }
+
+// MARK: - Persisted settings
+
+nonisolated public struct WaterReminderSettings: Equatable, Sendable {
+    public var isEnabled: Bool
+    public var plan: WaterReminderPlan
+
+    public init(isEnabled: Bool = false, plan: WaterReminderPlan = WaterReminderPlan()) {
+        self.isEnabled = isEnabled
+        self.plan = plan
+    }
+
+    /// Reads settings from a key-value store. An interval of 0 means the window was
+    /// never written (the integer default), so the whole plan falls back to defaults.
+    public static func load(from defaults: any KeyValueStoring) -> WaterReminderSettings {
+        let interval = defaults.integer(forKey: WaterReminderKeys.intervalMinutes)
+        guard interval > 0 else {
+            return WaterReminderSettings(isEnabled: defaults.bool(forKey: WaterReminderKeys.enabled))
+        }
+        return WaterReminderSettings(
+            isEnabled: defaults.bool(forKey: WaterReminderKeys.enabled),
+            plan: WaterReminderPlan(
+                startMinute: defaults.integer(forKey: WaterReminderKeys.startMinute),
+                endMinute: defaults.integer(forKey: WaterReminderKeys.endMinute),
+                intervalMinutes: interval
+            )
+        )
+    }
+}

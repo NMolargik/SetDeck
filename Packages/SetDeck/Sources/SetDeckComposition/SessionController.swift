@@ -13,6 +13,9 @@
 import Foundation
 import Observation
 import SwiftData
+#if canImport(UserNotifications)
+import UserNotifications
+#endif
 import SetDeckCore
 import SetDeckData
 import SetDeckDesignSystem
@@ -38,6 +41,11 @@ public final class SessionController {
     #endif
     #if canImport(WatchConnectivity)
     public let phoneConnectivity: PhoneConnectivityManager
+    #endif
+
+    #if canImport(UserNotifications) && canImport(HealthKit) && !os(macOS)
+    public let waterReminders: WaterReminderScheduler
+    private let waterReminderHandler: WaterReminderNotificationHandler
     #endif
 
     private let indexer: (any ExerciseIndexing)?
@@ -177,6 +185,18 @@ public final class SessionController {
         healthManager = HealthManager()
         #endif
 
+        // Water reminders: scheduler + notification delegate (installed now so a
+        // "Log a Glass" action on a cold launch is delivered).
+        #if canImport(UserNotifications) && canImport(HealthKit) && !os(macOS)
+        let waterHealth = healthManager
+        waterReminders = WaterReminderScheduler(defaults: defaults)
+        waterReminderHandler = WaterReminderNotificationHandler(defaults: defaults) { ml in
+            await waterHealth.requestAuthorization()
+            await waterHealth.addWaterIntakeIfSupported(amountML: ml, date: Date())
+        }
+        UNUserNotificationCenter.current().delegate = waterReminderHandler
+        #endif
+
         #if canImport(WatchConnectivity)
         let phone = PhoneConnectivityManager()
         phone.configure(
@@ -232,6 +252,10 @@ public final class SessionController {
     public func start() {
         #if canImport(WatchConnectivity)
         phoneConnectivity.activate()
+        #endif
+        #if canImport(UserNotifications) && canImport(HealthKit) && !os(macOS)
+        let reminders = waterReminders
+        Task { await reminders.reschedule() }
         #endif
         reindexExercises()
     }

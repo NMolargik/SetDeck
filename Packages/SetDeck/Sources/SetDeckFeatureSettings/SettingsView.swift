@@ -39,6 +39,11 @@ public struct SettingsView: View {
                     .onChange(of: useDayMonthYearDates) { _, _ in Haptics.lightImpact() }
             }
 
+            // MARK: - Water Reminders
+            #if canImport(UserNotifications)
+            WaterReminderSettingsView()
+            #endif
+
             // MARK: - App Info
             Section("SetDeck") {
                 LabeledContent("Version") {
