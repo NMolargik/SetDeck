@@ -4,98 +4,53 @@
 //
 //  Created by Nick Molargik on 11/29/25.
 //
+//  One set's inline editor: a numbered, type-coloured card with a type selector and
+//  steppers for the targets that type uses. Writes go through `WorkoutDataModel.updateSet`.
+//
 
 #if os(iOS)
 import SwiftUI
 import SetDeckCore
 import SetDeckDesignSystem
 import SetDeckFeatureShared
-import UIKit
 
 struct EditSetRowView: View {
     let set: SetDeckSet
     let setCount: Int
+    /// 1-based position within the exercise; nil hides the badge.
+    var number: Int?
 
     @Environment(WorkoutDataModel.self) private var exerciseManager
     @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
 
-    private func lbsToKg(_ lbs: Double) -> Double { lbs * 0.45359237 }
-    private func kgToLbs(_ kg: Double) -> Double { kg / 0.45359237 }
-    private func trimTrailingZeros(_ value: Double) -> String {
-        if value.rounded() == value {
-            return String(format: "%.0f", value)
-        } else {
-            return String(format: "%.1f", value)
-        }
+    init(set: SetDeckSet, setCount: Int, number: Int? = nil) {
+        self.set = set
+        self.setCount = setCount
+        self.number = number
     }
 
-    private var repsBinding: Binding<Int?> {
-        Binding(
-            get: { set.targetReps },
-            set: { newValue in
-                set.targetReps = newValue
-                exerciseManager.updateSet(set) { _ in }
-            }
-        )
+    private func lbsToKg(_ lbs: Double) -> Double { lbs / EditorFormat.poundsPerKilogram }
+    private func kgToLbs(_ kg: Double) -> Double { kg * EditorFormat.poundsPerKilogram }
+
+    // MARK: Bindings
+
+    private func commit(_ change: (SetDeckSet) -> Void) {
+        exerciseManager.updateSet(set) { change($0) }
     }
 
-    private var weightBinding: Binding<Double?> {
-        Binding(
-            get: { set.weight },
-            set: { newValue in
-                set.weight = newValue
-                exerciseManager.updateSet(set) { _ in }
-            }
-        )
+    private var repsBinding: Binding<Int> {
+        Binding(get: { set.targetReps ?? 10 }, set: { v in commit { $0.targetReps = v } })
     }
 
-    private var durationBinding: Binding<TimeInterval?> {
-        Binding(
-            get: { set.targetDuration },
-            set: { newValue in
-                set.targetDuration = newValue
-                exerciseManager.updateSet(set) { _ in }
-            }
-        )
-    }
-
-    private var rpeBinding: Binding<Int?> {
-        Binding(
-            get: { set.rpe },
-            set: { newValue in
-                set.rpe = newValue
-                exerciseManager.updateSet(set) { _ in }
-            }
-        )
-    }
-
-    private var rpeNonOptionalBinding: Binding<Int> {
-        Binding(
-            get: { rpeBinding.wrappedValue ?? 6 },
-            set: { newValue in rpeBinding.wrappedValue = newValue }
-        )
-    }
-
-    private var repsNonOptionalBinding: Binding<Int> {
-        Binding(
-            get: { set.targetReps ?? 10 },
-            set: { newValue in
-                set.targetReps = newValue
-                exerciseManager.updateSet(set) { _ in }
-            }
-        )
-    }
-
-    private var weightNonOptionalBinding: Binding<Double> {
+    private var weightBinding: Binding<Double> {
         Binding(
             get: {
-                let storedLbs = set.weight ?? 0
-                return useMetricUnits ? lbsToKg(storedLbs) : storedLbs
+                let stored = set.weight ?? 0
+                return useMetricUnits ? lbsToKg(stored) : stored
             },
-            set: { newValue in
-                let valueToStoreLbs = useMetricUnits ? kgToLbs(newValue) : newValue
-                set.weight = valueToStoreLbs
-                exerciseManager.updateSet(set) { _ in }
+            set: { v in
+                let lbs = useMetricUnits ? kgToLbs(v) : v
+                commit { $0.weight = lbs }
             }
         )
     }
@@ -103,510 +58,270 @@ struct EditSetRowView: View {
     private var durationMinutesBinding: Binding<Int> {
         Binding(
             get: { Int((set.targetDuration ?? 60) / 60) },
-            set: { newValue in
-                set.targetDuration = TimeInterval(newValue * 60)
-                exerciseManager.updateSet(set) { _ in }
-            }
+            set: { v in commit { $0.targetDuration = TimeInterval(v * 60) } }
         )
     }
 
-    private var typeBinding: Binding<SetType> {
-        Binding(
-            get: { set.setType },
-            set: { newType in
-                set.setType = newType
-                // Clear incompatible fields and set defaults
-                switch newType {
-                case .duration:
-                    set.targetReps = nil
-                    set.setDescription = nil
-                    if set.targetDuration == nil { set.targetDuration = 60 }
-                case .freeform:
-                    set.targetReps = nil
-                    set.targetDuration = nil
-                    if set.rpe == nil { set.rpe = 6 }
-                case .reps, .amap:
-                    set.setDescription = nil
-                    set.targetDuration = nil
-                    if set.targetReps == nil { set.targetReps = 10 }
-                    if set.weight == nil { set.weight = 0 }
-                }
-                exerciseManager.updateSet(set) { _ in }
-            }
-        )
+    private var rpeBinding: Binding<Int> {
+        Binding(get: { set.rpe ?? 6 }, set: { v in commit { $0.rpe = v } })
     }
+
+    private func select(_ newType: SetType) {
+        guard newType != set.setType else { return }
+        Haptics.lightImpact()
+        commit { set in
+            set.setType = newType
+            // Clear incompatible fields and set defaults
+            switch newType {
+            case .duration:
+                set.targetReps = nil
+                set.setDescription = nil
+                if set.targetDuration == nil { set.targetDuration = 60 }
+            case .freeform:
+                set.targetReps = nil
+                set.targetDuration = nil
+                if set.rpe == nil { set.rpe = 6 }
+            case .reps, .amap:
+                set.setDescription = nil
+                set.targetDuration = nil
+                if set.targetReps == nil { set.targetReps = 10 }
+                if set.weight == nil { set.weight = 0 }
+            }
+        }
+    }
+
+    // MARK: Body
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack {
-                Picker("Type", selection: typeBinding) {
-                    ForEach(SetType.allCases) { type in
-                        Text(type == .amap ? "AMAP" : type.rawValue.capitalized)
-                            .tag(type)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .labelsHidden()
-                .accessibilityLabel("Set type")
-                .accessibilityHint("Choose between reps, as many as possible, timed, or freeform sets")
-
-                Spacer()
-
-                if setCount > 1 {
-                    Button {
-                        DispatchQueue.main.async {
-                            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
-                                exerciseManager.deleteSet(set)
-                            }
-                        }
-                    } label: {
-                        Image(systemName: "trash")
-                            .font(.body)
-                            .foregroundStyle(.red)
-                    }
-                    .buttonStyle(.plain)
-                    .hoverEffectIfAvailable(.highlight)
-                    .accessibilityLabel("Delete set")
-                    .accessibilityHint("Removes this set from the exercise")
-                }
-            }
-            .padding(.vertical, 8)
-
-            switch set.setType {
-            case .reps, .amap:
-                ViewThatFits(in: .horizontal) {
-                    HStack(alignment: .firstTextBaseline, spacing: 16) {
-                        HStack {
-                            Spacer()
-                            Text(set.setType == .amap ? "Reps Attempted" : "Reps")
-                                .font(.body)
-                                .foregroundStyle(.primary)
-                            StepperControl(value: repsNonOptionalBinding, step: 1, display: "\(repsNonOptionalBinding.wrappedValue)", label: "Reps")
-                        }
-                        HStack {
-                            Spacer()
-                            Text("Weight (\(useMetricUnits ? "kg" : "lbs"))")
-                                .font(.body)
-                                .foregroundStyle(.primary)
-                            StepperControlDouble(
-                                value: weightNonOptionalBinding,
-                                step: useMetricUnits ? 2.5 : 5.0,
-                                display: trimTrailingZeros(weightNonOptionalBinding.wrappedValue),
-                                label: "Weight",
-                                unit: useMetricUnits ? "kilograms" : "pounds"
-                            )
-                        }
-                        HStack {
-                            Spacer()
-                            Text("RPE")
-                                .font(.body)
-                                .foregroundStyle(.primary)
-                            HStack(spacing: 6) {
-                                Button(action: { rpeNonOptionalBinding.wrappedValue = max(0, rpeNonOptionalBinding.wrappedValue - 1) }) {
-                                    Image(systemName: "minus.circle.fill")
-                                }
-                                .font(.title)
-                                .foregroundStyle(.primary)
-                                .buttonStyle(.plain)
-                                .hoverEffectIfAvailable(.highlight)
-                                .accessibilityLabel("Decrease RPE")
-
-                                Text("\(rpeNonOptionalBinding.wrappedValue)")
-                                    .font(.title3.monospacedDigit())
-                                    .foregroundStyle(.primary)
-                                    .frame(minWidth: 36)
-                                    .accessibilityHidden(true)
-
-                                Button(action: { rpeNonOptionalBinding.wrappedValue = min(10, rpeNonOptionalBinding.wrappedValue + 1) }) {
-                                    Image(systemName: "plus.circle.fill")
-                                }
-                                .font(.title)
-                                .foregroundStyle(.primary)
-                                .buttonStyle(.plain)
-                                .hoverEffectIfAvailable(.highlight)
-                                .accessibilityLabel("Increase RPE")
-                            }
-                            .accessibilityElement(children: .contain)
-                            .accessibilityLabel("RPE, \(rpeNonOptionalBinding.wrappedValue)")
-                            .accessibilityValue("\(rpeNonOptionalBinding.wrappedValue)")
-                            .accessibilityHint("Rate of perceived exertion, 0 to 10")
-                        }
-                    }
-                    VStack(alignment: .leading, spacing: 10) {
-                        HStack {
-                            Spacer()
-                            Text(set.setType == .amap ? "Reps Attempted" : "Reps")
-                                .font(.body)
-                                .foregroundStyle(.primary)
-                            StepperControl(value: repsNonOptionalBinding, step: 1, display: "\(repsNonOptionalBinding.wrappedValue)", label: "Reps")
-                        }
-                        HStack {
-                            Spacer()
-                            Text("Weight (\(useMetricUnits ? "kg" : "lbs"))")
-                                .font(.body)
-                                .foregroundStyle(.primary)
-                            StepperControlDouble(
-                                value: weightNonOptionalBinding,
-                                step: useMetricUnits ? 2.5 : 5.0,
-                                display: trimTrailingZeros(weightNonOptionalBinding.wrappedValue),
-                                label: "Weight",
-                                unit: useMetricUnits ? "kilograms" : "pounds"
-                            )
-                        }
-                        HStack {
-                            Spacer()
-                            Text("RPE")
-                                .font(.body)
-                                .foregroundStyle(.primary)
-                            HStack(spacing: 6) {
-                                Button(action: { rpeNonOptionalBinding.wrappedValue = max(0, rpeNonOptionalBinding.wrappedValue - 1) }) {
-                                    Image(systemName: "minus.circle.fill")
-                                }
-                                .font(.title)
-                                .foregroundStyle(.primary)
-                                .buttonStyle(.plain)
-                                .hoverEffectIfAvailable(.highlight)
-                                .accessibilityLabel("Decrease RPE")
-
-                                Text("\(rpeNonOptionalBinding.wrappedValue)")
-                                    .font(.title3.monospacedDigit())
-                                    .foregroundStyle(.primary)
-                                    .frame(minWidth: 36)
-                                    .accessibilityHidden(true)
-
-                                Button(action: { rpeNonOptionalBinding.wrappedValue = min(10, rpeNonOptionalBinding.wrappedValue + 1) }) {
-                                    Image(systemName: "plus.circle.fill")
-                                }
-                                .font(.title)
-                                .foregroundStyle(.primary)
-                                .buttonStyle(.plain)
-                                .hoverEffectIfAvailable(.highlight)
-                                .accessibilityLabel("Increase RPE")
-                            }
-                            .accessibilityElement(children: .contain)
-                            .accessibilityLabel("RPE, \(rpeNonOptionalBinding.wrappedValue)")
-                            .accessibilityValue("\(rpeNonOptionalBinding.wrappedValue)")
-                            .accessibilityHint("Rate of perceived exertion, 0 to 10")
-                        }
-                    }
-                }
-            case .duration:
-                ViewThatFits(in: .horizontal) {
-                    HStack(alignment: .firstTextBaseline, spacing: 16) {
-                        HStack {
-                            Spacer()
-                            Text("Duration (min)")
-                                .font(.body)
-                                .foregroundStyle(.primary)
-                            StepperControl(value: durationMinutesBinding, step: 1, display: "\(durationMinutesBinding.wrappedValue)", label: "Duration in minutes")
-                        }
-                        HStack {
-                            Spacer()
-                            Text("RPE")
-                                .font(.body)
-                                .foregroundStyle(.primary)
-                            HStack(spacing: 6) {
-                                Button(action: { rpeNonOptionalBinding.wrappedValue = max(0, rpeNonOptionalBinding.wrappedValue - 1) }) {
-                                    Image(systemName: "minus.circle.fill")
-                                }
-                                .font(.title)
-                                .foregroundStyle(.primary)
-                                .buttonStyle(.plain)
-                                .hoverEffectIfAvailable(.highlight)
-                                .accessibilityLabel("Decrease RPE")
-
-                                Text("\(rpeNonOptionalBinding.wrappedValue)")
-                                    .font(.title3.monospacedDigit())
-                                    .foregroundStyle(.primary)
-                                    .frame(minWidth: 36)
-                                    .accessibilityHidden(true)
-
-                                Button(action: { rpeNonOptionalBinding.wrappedValue = min(10, rpeNonOptionalBinding.wrappedValue + 1) }) {
-                                    Image(systemName: "plus.circle.fill")
-                                }
-                                .font(.title)
-                                .foregroundStyle(.primary)
-                                .buttonStyle(.plain)
-                                .hoverEffectIfAvailable(.highlight)
-                                .accessibilityLabel("Increase RPE")
-                            }
-                            .accessibilityElement(children: .contain)
-                            .accessibilityLabel("RPE, \(rpeNonOptionalBinding.wrappedValue)")
-                            .accessibilityValue("\(rpeNonOptionalBinding.wrappedValue)")
-                            .accessibilityHint("Rate of perceived exertion, 0 to 10")
-                        }
-                    }
-                    VStack(alignment: .leading, spacing: 10) {
-                        HStack {
-                            Spacer()
-                            Text("Duration (min)")
-                                .font(.body)
-                                .foregroundStyle(.primary)
-                            StepperControl(value: durationMinutesBinding, step: 1, display: "\(durationMinutesBinding.wrappedValue)", label: "Duration in minutes")
-                        }
-                        HStack {
-                            Spacer()
-                            Text("RPE")
-                                .font(.body)
-                                .foregroundStyle(.primary)
-                            HStack(spacing: 6) {
-                                Button(action: { rpeNonOptionalBinding.wrappedValue = max(0, rpeNonOptionalBinding.wrappedValue - 1) }) {
-                                    Image(systemName: "minus.circle.fill")
-                                }
-                                .font(.title)
-                                .foregroundStyle(.primary)
-                                .buttonStyle(.plain)
-                                .hoverEffectIfAvailable(.highlight)
-                                .accessibilityLabel("Decrease RPE")
-
-                                Text("\(rpeNonOptionalBinding.wrappedValue)")
-                                    .font(.title3.monospacedDigit())
-                                    .foregroundStyle(.primary)
-                                    .frame(minWidth: 36)
-                                    .accessibilityHidden(true)
-
-                                Button(action: { rpeNonOptionalBinding.wrappedValue = min(10, rpeNonOptionalBinding.wrappedValue + 1) }) {
-                                    Image(systemName: "plus.circle.fill")
-                                }
-                                .font(.title)
-                                .foregroundStyle(.primary)
-                                .buttonStyle(.plain)
-                                .hoverEffectIfAvailable(.highlight)
-                                .accessibilityLabel("Increase RPE")
-                            }
-                            .accessibilityElement(children: .contain)
-                            .accessibilityLabel("RPE, \(rpeNonOptionalBinding.wrappedValue)")
-                            .accessibilityValue("\(rpeNonOptionalBinding.wrappedValue)")
-                            .accessibilityHint("Rate of perceived exertion, 0 to 10")
-                        }
-                    }
-                }
-            case .freeform:
-                ViewThatFits(in: .horizontal) {
-                    HStack(alignment: .firstTextBaseline, spacing: 16) {
-                        HStack {
-                            Spacer()
-                            Text("RPE")
-                                .font(.body)
-                                .foregroundStyle(.primary)
-                            HStack(spacing: 6) {
-                                Button(action: { rpeNonOptionalBinding.wrappedValue = max(0, rpeNonOptionalBinding.wrappedValue - 1) }) {
-                                    Image(systemName: "minus.circle.fill")
-                                }
-                                .font(.title)
-                                .foregroundStyle(.primary)
-                                .buttonStyle(.plain)
-                                .hoverEffectIfAvailable(.highlight)
-                                .accessibilityLabel("Decrease RPE")
-
-                                Text("\(rpeNonOptionalBinding.wrappedValue)")
-                                    .font(.title3.monospacedDigit())
-                                    .foregroundStyle(.primary)
-                                    .frame(minWidth: 36)
-                                    .accessibilityHidden(true)
-
-                                Button(action: { rpeNonOptionalBinding.wrappedValue = min(10, rpeNonOptionalBinding.wrappedValue + 1) }) {
-                                    Image(systemName: "plus.circle.fill")
-                                }
-                                .font(.title)
-                                .foregroundStyle(.primary)
-                                .buttonStyle(.plain)
-                                .hoverEffectIfAvailable(.highlight)
-                                .accessibilityLabel("Increase RPE")
-                            }
-                            .accessibilityElement(children: .contain)
-                            .accessibilityLabel("RPE, \(rpeNonOptionalBinding.wrappedValue)")
-                            .accessibilityValue("\(rpeNonOptionalBinding.wrappedValue)")
-                            .accessibilityHint("Rate of perceived exertion, 0 to 10")
-                        }
-                    }
-                    VStack(alignment: .leading, spacing: 10) {
-                        HStack {
-                            Spacer()
-                            Text("RPE")
-                                .font(.body)
-                                .foregroundStyle(.primary)
-                            HStack(spacing: 6) {
-                                Button(action: { rpeNonOptionalBinding.wrappedValue = max(0, rpeNonOptionalBinding.wrappedValue - 1) }) {
-                                    Image(systemName: "minus.circle.fill")
-                                }
-                                .font(.title)
-                                .foregroundStyle(.primary)
-                                .buttonStyle(.plain)
-                                .hoverEffectIfAvailable(.highlight)
-                                .accessibilityLabel("Decrease RPE")
-
-                                Text("\(rpeNonOptionalBinding.wrappedValue)")
-                                    .font(.title3.monospacedDigit())
-                                    .foregroundStyle(.primary)
-                                    .frame(minWidth: 36)
-                                    .accessibilityHidden(true)
-
-                                Button(action: { rpeNonOptionalBinding.wrappedValue = min(10, rpeNonOptionalBinding.wrappedValue + 1) }) {
-                                    Image(systemName: "plus.circle.fill")
-                                }
-                                .font(.title)
-                                .foregroundStyle(.primary)
-                                .buttonStyle(.plain)
-                                .hoverEffectIfAvailable(.highlight)
-                                .accessibilityLabel("Increase RPE")
-                            }
-                            .accessibilityElement(children: .contain)
-                            .accessibilityLabel("RPE, \(rpeNonOptionalBinding.wrappedValue)")
-                            .accessibilityValue("\(rpeNonOptionalBinding.wrappedValue)")
-                            .accessibilityHint("Rate of perceived exertion, 0 to 10")
-                        }
-                    }
-                }
-            }
+        let tint = set.setType.editorColor
+        VStack(alignment: .leading, spacing: Brand.Space.md) {
+            header(tint: tint)
+            typePicker
+            fields
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
+        .padding(Brand.Space.md)
         .background(
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: Brand.Radius.control, style: .continuous)
                 .fill(.ultraThinMaterial)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.primary.opacity(0.15), lineWidth: 0.5)
+                    RoundedRectangle(cornerRadius: Brand.Radius.control, style: .continuous)
+                        .strokeBorder(tint.opacity(0.35), lineWidth: 1)
                 )
         )
+        .animation(.spring(response: 0.3, dampingFraction: 0.85), value: set.setType)
     }
 
-    private struct StepperControl: View {
-        @Binding var value: Int
-        let step: Int
-        let display: String
-        var label: String = "Value"
+    private func header(tint: Color) -> some View {
+        HStack(spacing: Brand.Space.sm) {
+            if let number {
+                Text("\(number)")
+                    .font(.footnote.weight(.bold).monospacedDigit())
+                    .foregroundStyle(.white)
+                    .frame(width: 26, height: 26)
+                    .background(Circle().fill(tint))
+                    .accessibilityHidden(true)
+            }
+            Text(EditorFormat.pillText(for: set, metric: useMetricUnits))
+                .font(.subheadline.weight(.semibold).monospacedDigit())
+                .foregroundStyle(.primary)
+            Spacer(minLength: 0)
+            if setCount > 1 {
+                Button {
+                    DispatchQueue.main.async {
+                        withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                            exerciseManager.deleteSet(set)
+                        }
+                    }
+                } label: {
+                    Image(systemName: "trash")
+                        .font(.body)
+                        .foregroundStyle(.red)
+                        .frame(width: 32, height: 32)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .hoverEffectIfAvailable(.highlight)
+                .accessibilityLabel("Delete set")
+                .accessibilityHint("Removes this set from the exercise")
+            }
+        }
+    }
 
-        var body: some View {
-            HStack(spacing: 6) {
-                Button(action: {
+    private var typePicker: some View {
+        HStack(spacing: Brand.Space.xs) {
+            ForEach(SetType.allCases) { type in
+                let selected = type == set.setType
+                Button { select(type) } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: type.editorIcon)
+                            .font(.caption.weight(.bold))
+                        Text(type.editorTitle)
+                            .font(.caption.weight(.semibold))
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.7)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 8)
+                    .foregroundStyle(selected ? Color.white : Color.primary)
+                    .background(
+                        Capsule().fill(selected ? type.editorColor : Color.white.opacity(0.08))
+                    )
+                    .contentShape(Capsule())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(type.editorTitle)
+                .accessibilityAddTraits(selected ? [.isSelected, .isButton] : .isButton)
+            }
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Set type")
+        .accessibilityHint("Choose between reps, as many as possible, timed, or freeform sets")
+    }
+
+    @ViewBuilder
+    private var fields: some View {
+        switch set.setType {
+        case .reps, .amap:
+            fieldRow {
+                StepperField(title: set.setType == .amap ? "Reps Attempted" : "Reps",
+                             value: repsBinding, step: 1, display: "\(repsBinding.wrappedValue)",
+                             label: "Reps")
+                StepperFieldDouble(title: useMetricUnits ? "Weight (kg)" : "Weight (lbs)",
+                                   value: weightBinding, step: useMetricUnits ? 2.5 : 5,
+                                   display: EditorFormat.weightString(weightBinding.wrappedValue),
+                                   label: "Weight", unit: useMetricUnits ? "kilograms" : "pounds")
+                rpeField
+            }
+        case .duration:
+            fieldRow {
+                StepperField(title: "Duration (min)", value: durationMinutesBinding, step: 1,
+                             display: "\(durationMinutesBinding.wrappedValue)", label: "Duration in minutes")
+                rpeField
+            }
+        case .freeform:
+            fieldRow { rpeField }
+        }
+    }
+
+    private var rpeField: some View {
+        StepperField(title: "RPE", value: rpeBinding, step: 1, maximum: 10,
+                     display: "\(rpeBinding.wrappedValue)", label: "RPE")
+    }
+
+    /// Fields sit side by side when they fit, and stack otherwise.
+    private func fieldRow<Content: View>(@ViewBuilder _ content: () -> Content) -> some View {
+        let built = content()
+        return ViewThatFits(in: .horizontal) {
+            HStack(alignment: .top, spacing: Brand.Space.lg) { built }
+            VStack(alignment: .leading, spacing: Brand.Space.md) { built }
+        }
+    }
+}
+
+// MARK: - Steppers
+
+private struct StepperField: View {
+    let title: LocalizedStringKey
+    @Binding var value: Int
+    let step: Int
+    var maximum: Int = .max
+    let display: String
+    var label: String = "Value"
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            HStack(spacing: 8) {
+                StepButton(systemName: "minus.circle.fill", label: "Decrease \(label)", hint: "Decreases by \(step)") {
                     let updated = max(0, value - step)
-                    if updated != value {
-                        value = updated
-                        #if os(iOS)
-                        let generator = UIImpactFeedbackGenerator(style: .medium)
-                        generator.impactOccurred()
-                        #endif
-                    }
-                }) {
-                    Image(systemName: "minus.circle.fill")
+                    if updated != value { value = updated; Haptics.lightImpact() }
                 }
-                .font(.title)
-                .foregroundStyle(.primary)
-                .buttonStyle(.plain)
-                .hoverEffectIfAvailable(.highlight)
-                .accessibilityLabel("Decrease \(label)")
-                .accessibilityHint("Decreases by \(step)")
-
                 Text(display)
-                    .font(.title3.monospacedDigit())
-                    .foregroundStyle(.primary)
-                    .frame(minWidth: 36)
+                    .font(.title3.monospacedDigit().weight(.semibold))
+                    .frame(minWidth: 40)
                     .accessibilityHidden(true)
-
-                Button(action: {
-                    let updated = max(0, value + step)
-                    if updated != value {
-                        value = updated
-                        #if os(iOS)
-                        let generator = UIImpactFeedbackGenerator(style: .medium)
-                        generator.impactOccurred()
-                        #endif
-                    }
-                }) {
-                    Image(systemName: "plus.circle.fill")
+                StepButton(systemName: "plus.circle.fill", label: "Increase \(label)", hint: "Increases by \(step)") {
+                    let updated = min(maximum, value + step)
+                    if updated != value { value = updated; Haptics.lightImpact() }
                 }
-                .font(.title)
-                .foregroundStyle(.primary)
-                .buttonStyle(.plain)
-                .hoverEffectIfAvailable(.highlight)
-                .accessibilityLabel("Increase \(label)")
-                .accessibilityHint("Increases by \(step)")
             }
-            .accessibilityElement(children: .contain)
-            .accessibilityLabel("\(label), \(display)")
-            .accessibilityValue(display)
-            .accessibilityAdjustableAction { direction in
-                switch direction {
-                case .increment:
-                    value = max(0, value + step)
-                case .decrement:
-                    value = max(0, value - step)
-                @unknown default:
-                    break
-                }
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(label)
+        .accessibilityValue(display)
+        .accessibilityAdjustableAction { direction in
+            switch direction {
+            case .increment: value = min(maximum, value + step)
+            case .decrement: value = max(0, value - step)
+            @unknown default: break
             }
         }
     }
+}
 
-    private struct StepperControlDouble: View {
-        @Binding var value: Double
-        let step: Double
-        let display: String
-        var label: String = "Value"
-        var unit: String = ""
+private struct StepperFieldDouble: View {
+    let title: LocalizedStringKey
+    @Binding var value: Double
+    let step: Double
+    let display: String
+    var label: String = "Value"
+    var unit: String = ""
 
-        var body: some View {
-            HStack(spacing: 6) {
-                Button(action: {
-                    let updated = max(0.0, value - step)
-                    if updated != value {
-                        value = updated
-                        #if os(iOS)
-                        let generator = UIImpactFeedbackGenerator(style: .medium)
-                        generator.impactOccurred()
-                        #endif
-                    }
-                }) {
-                    Image(systemName: "minus.circle.fill")
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            HStack(spacing: 8) {
+                StepButton(systemName: "minus.circle.fill", label: "Decrease \(label)",
+                           hint: "Decreases by \(EditorFormat.weightString(step)) \(unit)") {
+                    let updated = max(0, value - step)
+                    if updated != value { value = updated; Haptics.lightImpact() }
                 }
-                .font(.title)
-                .foregroundStyle(.primary)
-                .buttonStyle(.plain)
-                .hoverEffectIfAvailable(.highlight)
-                .accessibilityLabel("Decrease \(label)")
-                .accessibilityHint("Decreases by \(String(format: "%.1f", step))\(unit.isEmpty ? "" : " \(unit)")")
-
                 Text(display)
-                    .font(.title3.monospacedDigit())
-                    .foregroundStyle(.primary)
-                    .frame(minWidth: 36)
+                    .font(.title3.monospacedDigit().weight(.semibold))
+                    .frame(minWidth: 48)
                     .accessibilityHidden(true)
-
-                Button(action: {
-                    let updated = max(0.0, value + step)
-                    if updated != value {
-                        value = updated
-                        #if os(iOS)
-                        let generator = UIImpactFeedbackGenerator(style: .medium)
-                        generator.impactOccurred()
-                        #endif
-                    }
-                }) {
-                    Image(systemName: "plus.circle.fill")
-                }
-                .font(.title)
-                .foregroundStyle(.primary)
-                .buttonStyle(.plain)
-                .hoverEffectIfAvailable(.highlight)
-                .accessibilityLabel("Increase \(label)")
-                .accessibilityHint("Increases by \(String(format: "%.1f", step))\(unit.isEmpty ? "" : " \(unit)")")
-            }
-            .accessibilityElement(children: .contain)
-            .accessibilityLabel("\(label), \(display)\(unit.isEmpty ? "" : " \(unit)")")
-            .accessibilityValue("\(display)\(unit.isEmpty ? "" : " \(unit)")")
-            .accessibilityAdjustableAction { direction in
-                switch direction {
-                case .increment:
-                    value = max(0.0, value + step)
-                case .decrement:
-                    value = max(0.0, value - step)
-                @unknown default:
-                    break
+                StepButton(systemName: "plus.circle.fill", label: "Increase \(label)",
+                           hint: "Increases by \(EditorFormat.weightString(step)) \(unit)") {
+                    let updated = max(0, value + step)
+                    if updated != value { value = updated; Haptics.lightImpact() }
                 }
             }
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(label)
+        .accessibilityValue("\(display) \(unit)")
+        .accessibilityAdjustableAction { direction in
+            switch direction {
+            case .increment: value = max(0, value + step)
+            case .decrement: value = max(0, value - step)
+            @unknown default: break
+            }
+        }
+    }
+}
+
+private struct StepButton: View {
+    let systemName: String
+    let label: String
+    let hint: String
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: systemName)
+                .font(.title)
+                .foregroundStyle(.primary)
+                .frame(minWidth: 36, minHeight: 36)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .hoverEffectIfAvailable(.highlight)
+        .accessibilityLabel(label)
+        .accessibilityHint(hint)
     }
 }
 #endif
