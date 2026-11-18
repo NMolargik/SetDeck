@@ -4,202 +4,105 @@
 //
 //  Created by Nick Molargik on 11/23/25.
 //
+//  Routine editor. Compact: one column of rich exercise cards, the selected card expanding
+//  into its set editor. Wide (iPad, unfolded iPhone Duo): two panes split at the hinge —
+//  exercise list leading, the selected exercise's set editor trailing.
+//
 
 #if os(iOS)
 import SwiftUI
-import TipKit
 import SetDeckCore
 import SetDeckDesignSystem
 import SetDeckFeatureShared
-#if canImport(UIKit)
-import UIKit
-#endif
+import SetDeckServices
 
 public struct EditRoutineView: View {
     @Environment(WorkoutDataModel.self) private var exerciseManager
+    /// Optional so the editor still works where no inference service is injected.
+    @Environment(MuscleGroupInferenceService.self) private var inference: MuscleGroupInferenceService?
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.dismiss) private var dismiss
 
     @State private var viewModel = ViewModel()
+    @State private var exercisePendingDelete: SetDeckExercise?
 
     @FocusState private var focusedExerciseID: UUID?
     @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
 
-    // TipKit
-    private let addExerciseTip = AddExerciseTip()
-    private let addSetTip = AddSetTip()
+    /// Below this width the editor is a single column.
+    private let splitThreshold: CGFloat = 640
+    /// Clear space kept on each side of an active hinge.
+    private let hingeInset: CGFloat = 20
 
     public init() {}
 
+    // MARK: Data
+
+    private struct EditorData {
+        var routine: SetDeckRoutine?
+        var exercises: [SetDeckExercise]
+        var sets: [UUID: [SetDeckSet]]
+        var summary: RoutineSummary
+    }
+
+    private func makeData() -> EditorData {
+        // Reading changeStamp makes this re-run whenever data mutates (including CloudKit imports).
+        _ = exerciseManager.changeStamp
+        let exercises = viewModel.exercises(using: exerciseManager).sorted { $0.orderIndex < $1.orderIndex }
+        var sets: [UUID: [SetDeckSet]] = [:]
+        for ex in exercises {
+            sets[ex.uuid] = exerciseManager.sets(for: ex).sorted { $0.orderIndex < $1.orderIndex }
+        }
+        return EditorData(
+            routine: viewModel.currentRoutine(using: exerciseManager),
+            exercises: exercises,
+            sets: sets,
+            summary: RoutineSummary(exercises: exercises, sets: sets)
+        )
+    }
+
+    private var isTodaySelected: Bool { viewModel.selectedDay == viewModel.todayIndex }
+
+    // MARK: Body
+
     public var body: some View {
-        VStack(spacing: 0) {
-            DayPickerView(selectedDay: $viewModel.selectedDay)
-                .padding(.top, 12)
-
-            let currentRoutine = viewModel.currentRoutine(using: exerciseManager)
-            let exercises = viewModel.exercises(using: exerciseManager)
-                .sorted { (lhs: SetDeckExercise, rhs: SetDeckExercise) -> Bool in
-                    (lhs.orderIndex) < (rhs.orderIndex)
-                }
-
-            // Pre-compute sets for all exercises so changes trigger view updates
-            // Reading changeStamp ensures this runs when data mutates
-            let _ = exerciseManager.changeStamp
-            let setsForExercise: [UUID: [SetDeckSet]] = Dictionary(
-                uniqueKeysWithValues: exercises.map { ex in
-                    (ex.uuid, exerciseManager.sets(for: ex).sorted { $0.orderIndex < $1.orderIndex })
-                }
-            )
-
-            List {
-                if exercises.isEmpty {
-                    Section {
-                        VStack(spacing: 8) {
-                            Button {
-                                addExerciseTip.invalidate(reason: .actionPerformed)
-                                withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
-                                    viewModel.addExercise(named: "New Exercise", using: exerciseManager)
-                                }
-                                Task { await TipEvents.firstExerciseAdded.donate() }
-                            } label: {
-                                HStack(spacing: 8) {
-                                    Image(systemName: "plus.circle.fill")
-                                    Text("Add Exercise")
-                                        .font(.callout.weight(.semibold))
-                                }
-                                .padding(.horizontal, 16)
-                                .padding(.vertical, 8)
-                                .foregroundStyle(.white)
-                                .background(
-                                    Capsule()
-                                        .fill(Color.blueStart)
-                                )
-                                .contentShape(Capsule())
-                            }
-                            .buttonStyle(.plain)
-                            .hoverEffectIfAvailable(.highlight)
-                            .accessibilityLabel("Add exercise")
-                            .accessibilityHint("Creates a new exercise for this day's routine")
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .popoverTip(addExerciseTip, arrowEdge: .top)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .listRowBackground(Color.clear)
-                        .listRowSeparator(.hidden)
-                    }
-                } else {
-                    ForEach(exercises, id: \.uuid) { exercise in
-                        let isFirstExercise = exercise.uuid == exercises.first?.uuid
-                        Section(
-                            header: exerciseHeader(for: exercise)
-                                .listRowInsets(EdgeInsets()),
-                            footer: addSetFooter(for: exercise, isFirstExercise: isFirstExercise)
-                        ) {
-                            let sets = setsForExercise[exercise.uuid] ?? []
-                            ForEach(sets, id: \.uuid) { set in
-                                EditSetRowView(set: set, setCount: sets.count)
-                                    .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-                                    .listRowSeparator(.hidden)
-                                    .listRowBackground(Color.clear)
-                            }
-                            .onDelete { offsets in
-                                DispatchQueue.main.async {
-                                    withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
-                                        viewModel.deleteSets(at: offsets, from: sets, using: exerciseManager)
-                                    }
-                                }
-                            }
-                            .onMove { indices, destination in
-                                viewModel.moveSets(from: indices,
-                                                   to: destination,
-                                                   in: sets,
-                                                   exercise: exercise,
-                                                   using: exerciseManager)
-                            }
-                        }
-                    }
-                    .onDelete { offsets in
-                        focusedExerciseID = nil
-                        DispatchQueue.main.async {
-                            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
-                                viewModel.deleteExercises(at: offsets, from: exercises, using: exerciseManager)
-                                // Reindex remaining exercises so new ones appear at the bottom and indices stay contiguous
-                                let remaining = viewModel.exercises(using: exerciseManager)
-                                    .sorted { (l: SetDeckExercise, r: SetDeckExercise) -> Bool in
-                                        (l.orderIndex) < (r.orderIndex)
-                                    }
-                                for (idx, ex) in remaining.enumerated() {
-                                    exerciseManager.updateExercise(ex) { $0.orderIndex = idx }
-                                }
-                            }
-                        }
-                    }
-                    .onMove { indices, destination in
-                        viewModel.moveExercises(from: indices,
-                                                to: destination,
-                                                in: exercises,
-                                                currentRoutine: currentRoutine,
-                                                using: exerciseManager)
-                        // Persist new order indices after move
-                        let reordered = viewModel.exercises(using: exerciseManager)
-                            .sorted { (l: SetDeckExercise, r: SetDeckExercise) -> Bool in
-                                (l.orderIndex) < (r.orderIndex)
-                            }
-                        for (idx, ex) in reordered.enumerated() {
-                            exerciseManager.updateExercise(ex) { $0.orderIndex = idx }
-                        }
-                    }
-
-                    if !exercises.isEmpty {
-                        Section(footer: Button {
-                            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
-                                viewModel.addExercise(named: "New Exercise", using: exerciseManager)
-                            }
-                        } label: {
-                            HStack(spacing: 8) {
-                                Image(systemName: "plus.circle.fill")
-                                Text("Add Exercise")
-                                    .font(.callout.weight(.semibold))
-                            }
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 8)
-                            .foregroundStyle(.white)
-                            .background(
-                                Capsule()
-                                    .fill(Color.blueStart)
-                            )
-                            .contentShape(Capsule())
-                        }
-                        .buttonStyle(.plain)
-                        .hoverEffectIfAvailable(.highlight)
-                        .accessibilityLabel("Add exercise")
-                        .accessibilityHint("Creates a new exercise for this day's routine")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 8)
-                        .listRowInsets(EdgeInsets())) {
-                            EmptyView()
-                        }
-                        .listRowSeparator(.hidden)
-                        .listRowBackground(Color.clear)
-                    }
-                }
+        GeometryReader { proxy in
+            let data = makeData()
+            if proxy.size.width >= splitThreshold {
+                splitLayout(data: data, probe: LayoutProbe(proxy))
+            } else {
+                compactLayout(data: data)
             }
-            .scrollContentBackground(.hidden)
-            .listStyle(.plain)
-            .listRowSeparator(.hidden)
-            .listSectionSeparator(.hidden)
         }
         .onAppear {
             viewModel.resetToToday()
             Task { await TipEvents.editRoutineOpened.donate() }
         }
-        .onChange(of: scenePhase) { oldValue, newValue in
-            if newValue == .active {
-                viewModel.resetToToday()
-            }
+        .onChange(of: scenePhase) { _, newValue in
+            if newValue == .active { viewModel.resetToToday() }
         }
+        .onChange(of: viewModel.selectedDay) { _, _ in
+            viewModel.selectedExerciseID = nil
+            focusedExerciseID = nil
+        }
+        .task(id: inferenceKey) { await inferMissingMuscleGroups() }
         .animation(.spring(response: 0.35, dampingFraction: 0.8), value: viewModel.selectedDay)
+        .confirmationDialog(
+            "Delete exercise?",
+            isPresented: Binding(get: { exercisePendingDelete != nil }, set: { if !$0 { exercisePendingDelete = nil } }),
+            titleVisibility: .visible,
+            presenting: exercisePendingDelete
+        ) { exercise in
+            Button("Delete \(exercise.name)", role: .destructive) {
+                focusedExerciseID = nil
+                withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                    viewModel.deleteExercise(exercise, using: exerciseManager)
+                }
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: { _ in
+            Text("This removes the exercise and all of its sets.")
+        }
         .navigationTitle("Edit Routine")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -216,134 +119,248 @@ public struct EditRoutineView: View {
         }
     }
 
-    @ViewBuilder
-    private func addSetFooter(for exercise: SetDeckExercise, isFirstExercise: Bool) -> some View {
-        let button = Button {
-            addSetTip.invalidate(reason: .actionPerformed)
-            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
-                viewModel.addSet(to: exercise, using: exerciseManager)
-            }
-        } label: {
-            HStack(spacing: 8) {
-                Image(systemName: "plus.circle.fill")
-                Text("Add Set")
-                    .font(.callout.weight(.semibold))
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
-            .foregroundStyle(.white)
-            .background(
-                Capsule()
-                    .fill(Color.blueStart)
-            )
-            .contentShape(Capsule())
-        }
-        .buttonStyle(.plain)
-        .hoverEffectIfAvailable(.highlight)
-        .accessibilityLabel("Add set to \(exercise.name)")
-        .accessibilityHint("Creates a new set for this exercise")
-        .frame(maxWidth: .infinity, alignment: .trailing)
-        .padding(.horizontal, 16)
-        .padding(.vertical, 8)
-        .listRowInsets(EdgeInsets())
-        .listRowSeparator(.hidden)
-        .listRowBackground(Color.clear)
+    // MARK: Compact (single column)
 
-        if isFirstExercise {
-            button.popoverTip(addSetTip, arrowEdge: .bottom)
-        } else {
-            button
+    private func compactLayout(data: EditorData) -> some View {
+        ScrollViewReader { scroller in
+            ScrollView {
+                LazyVStack(spacing: Brand.Space.lg) {
+                    overview(data: data)
+                    if data.exercises.isEmpty {
+                        emptyState
+                    } else {
+                        ForEach(Array(data.exercises.enumerated()), id: \.element.uuid) { index, exercise in
+                            VStack(spacing: 0) {
+                                card(for: exercise, index: index, data: data)
+                                if viewModel.selectedExerciseID == exercise.uuid {
+                                    detailEditor(for: exercise, data: data)
+                                        .padding(Brand.Space.lg)
+                                        .transition(.opacity.combined(with: .move(edge: .top)))
+                                }
+                            }
+                            .id(exercise.uuid)
+                        }
+                        addExerciseButton
+                    }
+                }
+                .padding(.horizontal, Brand.Space.lg)
+                .padding(.vertical, Brand.Space.md)
+            }
+            .scrollDismissesKeyboard(.interactively)
+            .onChange(of: viewModel.selectedExerciseID) { _, id in
+                guard let id else { return }
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
+                    scroller.scrollTo(id, anchor: .top)
+                }
+            }
         }
     }
 
-    @ViewBuilder
-    private func exerciseHeader(for exercise: SetDeckExercise) -> some View {
-        HStack(spacing: 12) {
-            TextField("Exercise Name", text: Binding(
-                get: { exercise.name },
-                set: { newValue in
-                    exerciseManager.updateExercise(exercise) { $0.name = newValue }
-                }
-            ))
-            .font(.caption.weight(.semibold))
-            .foregroundStyle(.primary)
-            .textFieldStyle(.plain)
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(.ultraThinMaterial)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color.primary.opacity(0.2), lineWidth: 1)
-            )
-            .focused($focusedExerciseID, equals: exercise.uuid)
-            .accessibilityLabel("Exercise name")
-            .accessibilityValue(exercise.name)
-            .accessibilityHint("Double tap to edit the exercise name")
+    // MARK: Split (two panes)
 
-            // When focused, show a checkmark button to clear focus
-            if focusedExerciseID == exercise.uuid {
-                Button {
-                    focusedExerciseID = nil
-                } label: {
-                    Image(systemName: "checkmark.circle.fill")
-                        .foregroundStyle(.greenStart)
-                        .font(.title3)
+    private func splitLayout(data: EditorData, probe: LayoutProbe) -> some View {
+        let leadingWidth = probe.foldCenterX ?? probe.width * 0.46
+        let hinge = probe.isFoldActive ? hingeInset : 0
+        let selected = data.exercises.first { $0.uuid == viewModel.selectedExerciseID } ?? data.exercises.first
+
+        return HStack(spacing: 0) {
+            ScrollView {
+                LazyVStack(spacing: Brand.Space.lg) {
+                    overview(data: data)
+                    if data.exercises.isEmpty {
+                        emptyState
+                    } else {
+                        ForEach(Array(data.exercises.enumerated()), id: \.element.uuid) { index, exercise in
+                            card(for: exercise, index: index, data: data, selected: selected)
+                        }
+                        addExerciseButton
+                    }
                 }
-                .buttonStyle(.plain)
-                .hoverEffectIfAvailable(.highlight)
-                .accessibilityLabel("Done editing")
-                .accessibilityHint("Confirms the exercise name change")
+                .padding(.leading, Brand.Space.lg)
+                .padding(.trailing, Brand.Space.lg + hinge)
+                .padding(.vertical, Brand.Space.md)
             }
+            .frame(width: leadingWidth)
 
-            Spacer()
-
-            if focusedExerciseID != exercise.uuid {
-                HStack(spacing: 8) {
-                    Text("Warmup?")
-                        .font(.caption)
-                        .foregroundStyle(.primary)
-                        .accessibilityHidden(true)
-
-                    Toggle("", isOn: Binding(
-                        get: { exercise.isWarmup },
-                        set: { newValue in
-                            exerciseManager.updateExercise(exercise) { $0.isWarmup = newValue }
-                        }
-                    ))
-                    .labelsHidden()
-                    .toggleStyle(SwitchToggleStyle(tint: .orangeStart))
-                    .accessibilityLabel("Warmup exercise")
-                    .accessibilityValue(exercise.isWarmup ? "On" : "Off")
-                    .accessibilityHint("Mark this exercise as a warmup")
-                }
-
-                Button {
-                    if focusedExerciseID == exercise.uuid {
-                        focusedExerciseID = nil
+            ScrollView {
+                Group {
+                    if let selected {
+                        detailEditor(for: selected, data: data)
+                            .padding(Brand.Space.lg)
+                            .background(detailBackground(for: selected))
+                            .id(selected.uuid)
+                    } else {
+                        detailPlaceholder
                     }
-                    DispatchQueue.main.async {
-                        withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
-                            exerciseManager.deleteExercise(exercise)
-                        }
-                    }
-                } label: {
-                    Image(systemName: "trash.fill")
-                        .font(.body)
-                        .foregroundStyle(.red)
                 }
-                .buttonStyle(.plain)
-                .hoverEffectIfAvailable(.highlight)
-                .accessibilityLabel("Delete \(exercise.name)")
-                .accessibilityHint("Removes this exercise and all its sets")
+                .padding(.leading, Brand.Space.lg + hinge)
+                .padding(.trailing, Brand.Space.lg)
+                .padding(.vertical, Brand.Space.md)
+            }
+            .scrollDismissesKeyboard(.interactively)
+            .frame(maxWidth: .infinity)
+        }
+    }
+
+    // MARK: Pieces
+
+    private func overview(data: EditorData) -> some View {
+        VStack(spacing: Brand.Space.md) {
+            DayPickerView(selectedDay: $viewModel.selectedDay)
+            RoutineHeaderView(day: viewModel.selectedDay,
+                              isToday: isTodaySelected,
+                              summary: data.summary,
+                              useMetric: useMetricUnits)
+        }
+    }
+
+    private func card(for exercise: SetDeckExercise,
+                      index: Int,
+                      data: EditorData,
+                      selected: SetDeckExercise? = nil) -> some View {
+        let isSelected = selected.map { $0.uuid == exercise.uuid } ?? (viewModel.selectedExerciseID == exercise.uuid)
+        return ExerciseEditorCard(
+            exercise: exercise,
+            sets: data.sets[exercise.uuid] ?? [],
+            index: index,
+            total: data.exercises.count,
+            isSelected: isSelected,
+            useMetric: useMetricUnits,
+            onSelect: { toggleSelection(of: exercise, splitMode: selected != nil) },
+            onMove: { delta in
+                withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                    viewModel.moveExercise(exercise, by: delta, in: data.exercises,
+                                           currentRoutine: data.routine, using: exerciseManager)
+                }
+            },
+            onDelete: { exercisePendingDelete = exercise }
+        )
+    }
+
+    private func toggleSelection(of exercise: SetDeckExercise, splitMode: Bool) {
+        focusedExerciseID = nil
+        withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+            if splitMode {
+                viewModel.selectedExerciseID = exercise.uuid
+            } else {
+                viewModel.selectedExerciseID = viewModel.selectedExerciseID == exercise.uuid ? nil : exercise.uuid
             }
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 4)
-        .contentShape(Rectangle())
-        .animation(.easeInOut(duration: 0.2), value: focusedExerciseID)
+    }
+
+    private func detailEditor(for exercise: SetDeckExercise, data: EditorData) -> some View {
+        let sets = data.sets[exercise.uuid] ?? []
+        return ExerciseSetEditor(
+            exercise: exercise,
+            sets: sets,
+            canSuggestMuscles: inference?.isAvailable ?? false,
+            isSuggestingMuscles: viewModel.suggestingIDs.contains(exercise.uuid),
+            showsAddSetTip: exercise.uuid == data.exercises.first?.uuid,
+            focus: $focusedExerciseID,
+            onSuggestMuscles: { Task { await suggestMuscleGroups(for: exercise) } },
+            onAddSet: {
+                withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                    viewModel.addSet(to: exercise, using: exerciseManager)
+                }
+            },
+            onMoveSet: { from, to in
+                viewModel.moveSet(from: from, to: to, in: sets, exercise: exercise, using: exerciseManager)
+            }
+        )
+    }
+
+    private func detailBackground(for exercise: SetDeckExercise) -> some View {
+        let tint = exercise.muscleGroups.first?.editorColor ?? .blueStart
+        return RoundedRectangle(cornerRadius: Brand.Radius.card, style: .continuous)
+            .fill(.ultraThinMaterial)
+            .overlay(
+                RoundedRectangle(cornerRadius: Brand.Radius.card, style: .continuous)
+                    .strokeBorder(tint.opacity(0.4), lineWidth: 1)
+            )
+    }
+
+    private var detailPlaceholder: some View {
+        VStack(spacing: Brand.Space.sm) {
+            Image(systemName: "hand.tap")
+                .font(.largeTitle)
+                .foregroundStyle(.secondary)
+                .accessibilityHidden(true)
+            Text("Select an exercise to edit its sets")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, Brand.Space.xxl * 2)
+    }
+
+    private var emptyState: some View {
+        RoutineEmptyState(
+            day: viewModel.selectedDay,
+            onAddBlank: { addExercise(named: "New Exercise", sets: 0, focusName: true) },
+            onAddStarter: { name in addExercise(named: name, sets: 3, focusName: false) }
+        )
+    }
+
+    private var addExerciseButton: some View {
+        Button {
+            addExercise(named: "New Exercise", sets: 0, focusName: true)
+        } label: {
+            Label("Add Exercise", systemImage: "plus.circle.fill")
+                .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.glassCapsule(tint: .greenStart, prominent: true))
+        .accessibilityLabel("Add exercise")
+        .accessibilityHint("Creates a new exercise for this day's routine")
+    }
+
+    // MARK: Actions
+
+    private func addExercise(named name: String, sets: Int, focusName: Bool) {
+        var created: SetDeckExercise?
+        withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+            created = viewModel.addExercise(named: name, sets: sets, using: exerciseManager)
+            viewModel.selectedExerciseID = created?.uuid
+        }
+        Task { await TipEvents.firstExerciseAdded.donate() }
+        guard focusName, let id = created?.uuid else { return }
+        Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(350))
+            focusedExerciseID = id
+        }
+    }
+
+    // MARK: Muscle-group inference
+
+    /// Changes only when an exercise is added or renamed.
+    private var inferenceKey: String {
+        viewModel.exercises(using: exerciseManager).map { "\($0.uuid)|\($0.name)" }.joined(separator: ";")
+    }
+
+    /// Fills empty muscle groups from the exercise name once the name settles. Each id+name
+    /// is attempted once, so clearing the chips by hand sticks.
+    private func inferMissingMuscleGroups() async {
+        guard let inference, inference.isAvailable else { return }
+        try? await Task.sleep(for: .milliseconds(800))
+        guard !Task.isCancelled else { return }
+        for exercise in viewModel.exercises(using: exerciseManager) where exercise.muscleGroups.isEmpty {
+            let name = exercise.name.trimmingCharacters(in: .whitespacesAndNewlines)
+            let attemptKey = "\(exercise.uuid)|\(name)"
+            guard !name.isEmpty, name != "New Exercise", !viewModel.inferenceAttempted.contains(attemptKey) else { continue }
+            viewModel.inferenceAttempted.insert(attemptKey)
+            let groups = await inference.inferMuscleGroups(for: name)
+            guard !Task.isCancelled, !groups.isEmpty, exercise.muscleGroups.isEmpty else { continue }
+            exerciseManager.updateExercise(exercise) { $0.muscleGroups = groups }
+        }
+    }
+
+    private func suggestMuscleGroups(for exercise: SetDeckExercise) async {
+        guard let inference else { return }
+        viewModel.suggestingIDs.insert(exercise.uuid)
+        defer { viewModel.suggestingIDs.remove(exercise.uuid) }
+        let groups = await inference.inferMuscleGroups(for: exercise.name)
+        guard !groups.isEmpty else { return }
+        exerciseManager.updateExercise(exercise) { $0.muscleGroups = groups }
     }
 }
 #endif
