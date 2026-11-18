@@ -52,7 +52,7 @@ public struct SettingsView: View {
                 }
 
                 LabeledContent("Publisher") {
-                    Link("Molargik Software LLC", destination: URL(string: "https://www.molargiksoftware.com")!)
+                    Link(Company.legalName, destination: Company.website)
                         .foregroundStyle(.blueStart)
                 }
 

@@ -33,7 +33,7 @@ struct WorkoutSummaryShareTests {
         let lines = withEnergy.split(separator: "\n").map(String.init)
         #expect(lines.count == 2)
         #expect(lines[0].contains("320 cal"))
-        #expect(lines[1] == "https://molargiksoftware.com/go/setdeck?ct=share_summary")
+        #expect(lines[1] == "https://farsidesoftware.com/setdeck?ct=share_summary")
         let without = WorkoutSummaryShareLink.message(for: summary(kcal: nil))
         #expect(without.hasSuffix("?ct=share_summary"))
         #expect(!without.contains("cal\n"))

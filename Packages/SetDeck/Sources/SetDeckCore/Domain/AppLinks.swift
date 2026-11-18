@@ -12,7 +12,7 @@ nonisolated public enum AppLinks {
     /// Opens the App Store's write-a-review page directly.
     public static let writeReview = URL(string: "https://apps.apple.com/app/id6484503374?action=write-review")!
     /// What "Share SetDeck" in Settings hands to the share sheet.
-    public static let shareApp = URL(string: "https://molargiksoftware.com/go/setdeck?ct=share_app")!
+    public static let shareApp = URL(string: Company.siteBase + "/setdeck?ct=share_app")!
     /// Appended to the workout summary share message.
-    public static let shareSummary = URL(string: "https://molargiksoftware.com/go/setdeck?ct=share_summary")!
+    public static let shareSummary = URL(string: Company.siteBase + "/setdeck?ct=share_summary")!
 }
