@@ -12,10 +12,13 @@ import SetDeckDesignSystem
 
 public struct AchievementsView: View {
     let unlockedAchievements: Set<String>
+    /// The sheet shows a Done button; the split Settings layout embeds the page and hides it.
+    let showsDone: Bool
     @Environment(\.dismiss) private var dismiss
 
-    public init(unlockedAchievements: Set<String>) {
+    public init(unlockedAchievements: Set<String>, showsDone: Bool = true) {
         self.unlockedAchievements = unlockedAchievements
+        self.showsDone = showsDone
     }
 
     public var body: some View {
@@ -35,14 +38,16 @@ public struct AchievementsView: View {
         .navigationTitle("Achievements")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    dismiss()
-                } label: {
-                    Label("Done", systemImage: "checkmark")
+            if showsDone {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Label("Done", systemImage: "checkmark")
+                    }
+                    .bold()
+                    .tint(.greenStart)
                 }
-                .bold()
-                .tint(.greenStart)
             }
         }
     }
