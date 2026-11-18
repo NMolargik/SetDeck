@@ -165,10 +165,8 @@ struct MainView: View {
             }
             .tag(AppTab.health)
 
-            NavigationStack {
-                SettingsView()
-                .navigationTitle(AppTab.settings.rawValue)
-            }
+            // Compact: the pushed list. Unfolded Duo / iPad: list | page split at the hinge.
+            SettingsSplitView()
             .tabItem {
                 AppTab.settings.icon()
                 Text(AppTab.settings.rawValue)
