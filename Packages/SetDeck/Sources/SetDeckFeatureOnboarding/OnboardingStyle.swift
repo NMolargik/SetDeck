@@ -105,11 +105,11 @@ struct OnboardingMetrics: Equatable {
 
     init(_ proxy: GeometryProxy) {
         size = proxy.size
-        let fold = proxy.foldCenterXIfAvailable
-        foldX = proxy.hasFoldIfAvailable ? fold : nil
-        isFoldActive = proxy.isFoldActiveIfAvailable
+        let fold = proxy.hasFoldIfAvailable ? proxy.foldCenterXIfAvailable : nil
         let wide = proxy.size.width >= 600
-        isTwoPane = wide && (foldX != nil || proxy.size.width > proxy.size.height * 1.15)
+        foldX = fold
+        isFoldActive = proxy.isFoldActiveIfAvailable
+        isTwoPane = wide && (fold != nil || proxy.size.width > proxy.size.height * 1.15)
     }
 
     /// Where the two panes meet: the hinge, else the window's middle.
