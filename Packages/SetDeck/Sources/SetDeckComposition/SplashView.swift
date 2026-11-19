@@ -42,16 +42,24 @@ struct SplashView: View {
         ZStack {
             OnboardingBackdrop(glow: .greenStart, showsGlow: showsGlow)
 
-            GeometryReader { proxy in
-                let foldX = proxy.hasFoldIfAvailable ? proxy.foldCenterXIfAvailable : nil
-                if let foldX, proxy.size.width >= 600 {
-                    foldedLayout(size: proxy.size, foldX: foldX, isFoldActive: proxy.isFoldActiveIfAvailable,
-                                 trailingInset: LayoutProbe.isVerticalBar(proxy.safeAreaInsets) ? proxy.safeAreaInsets.trailing : 0)
-                } else {
-                    flatLayout(size: proxy.size, trailingInset: LayoutProbe.isVerticalBar(proxy.safeAreaInsets) ? proxy.safeAreaInsets.trailing : 0)
+            // The outer reader respects the safe area so its insets are real; the inner one
+            // ignores it (the mark must match the launch screen's full-screen centre), and a
+            // reader inside `.ignoresSafeArea()` reports zero insets, which let the Duo's
+            // vertical bar go unreserved and the button run to the trailing edge.
+            GeometryReader { outer in
+                let insets = outer.safeAreaInsets
+                let trailingInset = LayoutProbe.isVerticalBar(insets) ? insets.trailing : 0
+                GeometryReader { proxy in
+                    let foldX = proxy.hasFoldIfAvailable ? proxy.foldCenterXIfAvailable : nil
+                    if let foldX, proxy.size.width >= 600 {
+                        foldedLayout(size: proxy.size, foldX: foldX, isFoldActive: proxy.isFoldActiveIfAvailable,
+                                     trailingInset: trailingInset)
+                    } else {
+                        flatLayout(size: proxy.size, trailingInset: trailingInset)
+                    }
                 }
+                .ignoresSafeArea()
             }
-            .ignoresSafeArea()
         }
         .onAppear(perform: runEntrance)
     }
