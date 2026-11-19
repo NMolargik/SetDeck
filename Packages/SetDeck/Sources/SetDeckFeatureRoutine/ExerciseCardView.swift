@@ -57,22 +57,47 @@ struct ExerciseCardView: View {
         return "\(setText) · \(names)"
     }
 
-    /// Set rows are at least this tall and grow to share the card's spare height.
+    /// Set rows are at least this tall and grow to share the card's spare height, up to a cap.
     private static let minRowHeight: CGFloat = 64
-    private static let maxRowHeight: CGFloat = 220
+    private static let maxRowHeight: CGFloat = 300
+
+    /// Height the card may use: the deck's limit, or the (smaller) height the top card settled on.
+    private var availableHeight: CGFloat {
+        guard maxHeight.isFinite else { return maxHeight }
+        if let matchedHeight { return min(matchedHeight, maxHeight) }
+        return maxHeight
+    }
+
+    /// Everything in the card except the set rows themselves.
+    private func chromeHeight(setCount: Int, allLogged: Bool) -> CGFloat {
+        Brand.Space.xl * 2 + headerHeight + Brand.Space.lg
+            + Brand.Space.sm * CGFloat(max(setCount - 1, 0)) + (allLogged ? 40 : 0)
+    }
+
+    /// Raw per-row share of the available height (uncapped).
+    private func rowShare(setCount: Int, allLogged: Bool) -> CGFloat {
+        (availableHeight - chromeHeight(setCount: setCount, allLogged: allLogged)) / CGFloat(setCount)
+    }
 
     /// Height for each collapsed set row so the rows together fill the card.
     private func rowHeight(setCount: Int, allLogged: Bool) -> CGFloat {
         guard maxHeight.isFinite, setCount > 0, headerHeight > 0 else { return Self.minRowHeight }
-        let chrome = Brand.Space.xl * 2 + headerHeight + Brand.Space.lg
-            + Brand.Space.sm * CGFloat(setCount - 1) + (allLogged ? 40 : 0)
-        let share = (maxHeight - chrome) / CGFloat(setCount)
+        let share = rowShare(setCount: setCount, allLogged: allLogged)
         return min(max(share, Self.minRowHeight), Self.maxRowHeight)
     }
 
-    private var cardHeight: CGFloat? {
-        // Fill all the height the deck offers, so gesture targets are as large as possible.
-        if maxHeight.isFinite { return maxHeight }
+    /// The card fills the deck's height until every row has hit the cap; after that it
+    /// shrinks to its content (and the deck centres it) rather than leaving an empty band.
+    private func cardHeight(setCount: Int, allLogged: Bool) -> CGFloat? {
+        if maxHeight.isFinite {
+            guard setCount > 0, headerHeight > 0,
+                  rowShare(setCount: setCount, allLogged: allLogged) > Self.maxRowHeight
+            else { return availableHeight }
+            let fit = chromeHeight(setCount: setCount, allLogged: allLogged)
+                + Self.maxRowHeight * CGFloat(setCount)
+            // An expanded row makes the content taller than the capped rows: let the card follow.
+            return min(max(fit, contentHeight), availableHeight)
+        }
         if let matchedHeight { return matchedHeight }
         guard contentHeight > 0 else { return nil }
         return min(contentHeight, maxHeight)
@@ -134,7 +159,7 @@ struct ExerciseCardView: View {
             .scrollBounceBehavior(.basedOnSize)
             .scrollDisabled(matchedHeight != nil)
         }
-        .frame(height: cardHeight, alignment: .top)
+        .frame(height: cardHeight(setCount: sets.count, allLogged: allLogged), alignment: .top)
         .clipShape(RoundedRectangle(cornerRadius: Brand.Radius.card, style: .continuous))
         .accessibilityElement(children: .contain)
         .accessibilityLabel("\(exercise.name), exercise \(index + 1)")

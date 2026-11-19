@@ -20,6 +20,9 @@ nonisolated public enum DebugLaunch {
 
     public static func int(_ name: String) -> Int? { value(name).flatMap(Int.init) }
 
+    /// Running under `-uiTesting` (sample data, clean screenshots).
+    public static var isUITesting: Bool { flag("-uiTesting") }
+
     public static func flag(_ name: String) -> Bool { ProcessInfo.processInfo.arguments.contains(name) }
 }
 #endif

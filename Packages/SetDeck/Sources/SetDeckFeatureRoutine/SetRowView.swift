@@ -14,7 +14,6 @@ import SetDeckFeatureShared
 struct SetRowView: View {
     @Environment(WorkoutDataModel.self) private var exerciseManager
     @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     @Binding var isEditing: Bool
     @State private var editReps: Int = 0
@@ -146,52 +145,12 @@ struct SetRowView: View {
                                 }
 
                                 // Vertical editor fields in a horizontal row
-                                if horizontalSizeClass == .compact {
-                                    VStack(alignment: .leading, spacing: 12) {
-                                        if set.setType != .duration {
-                                            editorFieldVertical("Reps") {
-                                                StepperControl(value: $editReps, step: 1, display: "\(editReps)")
-                                            }
-                                        }
-                                        editorFieldVertical("Weight (\(useMetricUnits ? "kg" : "lbs"))") {
-                                            StepperControlDouble(
-                                                value: $editWeight,
-                                                step: useMetricUnits ? 2.5 : 5.0,
-                                                display: trimTrailingZeros(editWeight)
-                                            )
-                                        }
-                                        if set.setType == .duration {
-                                            editorFieldVertical("Duration (minutes)") {
-                                                StepperControl(value: $editDurationMinutes, step: 1, display: "\(editDurationMinutes)")
-                                            }
-                                        }
-                                        editorFieldVertical("RPE") {
-                                            StepperControl(value: $editRPE, step: 1, display: "\(editRPE)")
-                                        }
-                                    }
-                                } else {
-                                    HStack(alignment: .top, spacing: 12) {
-                                        if set.setType != .duration {
-                                            editorFieldVertical("Reps") {
-                                                StepperControl(value: $editReps, step: 1, display: "\(editReps)")
-                                            }
-                                        }
-                                        editorFieldVertical("Weight (\(useMetricUnits ? "kg" : "lbs"))") {
-                                            StepperControlDouble(
-                                                value: $editWeight,
-                                                step: useMetricUnits ? 2.5 : 5.0,
-                                                display: trimTrailingZeros(editWeight)
-                                            )
-                                        }
-                                        if set.setType == .duration {
-                                            editorFieldVertical("Duration (minutes)") {
-                                                StepperControl(value: $editDurationMinutes, step: 1, display: "\(editDurationMinutes)")
-                                            }
-                                        }
-                                        editorFieldVertical("RPE") {
-                                            StepperControl(value: $editRPE, step: 1, display: "\(editRPE)")
-                                        }
-                                    }
+                                // Side by side when the card is wide enough; stacked otherwise. Chosen by
+                                // available width (not size class): an iPad portrait card is narrow, and a
+                                // forced row overflowed and pushed the card off-screen.
+                                ViewThatFits(in: .horizontal) {
+                                    HStack(alignment: .top, spacing: 12) { editorFields }
+                                    VStack(alignment: .leading, spacing: 12) { editorFields }
                                 }
                             }
                         }
@@ -215,6 +174,30 @@ struct SetRowView: View {
         .animation(.easeInOut(duration: 0.25), value: isEditing)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(accessibilitySummary)
+    }
+
+    @ViewBuilder
+    private var editorFields: some View {
+        if set.setType != .duration {
+            editorFieldVertical("Reps") {
+                StepperControl(value: $editReps, step: 1, display: "\(editReps)")
+            }
+        }
+        editorFieldVertical("Weight (\(useMetricUnits ? "kg" : "lbs"))") {
+            StepperControlDouble(
+                value: $editWeight,
+                step: useMetricUnits ? 2.5 : 5.0,
+                display: trimTrailingZeros(editWeight)
+            )
+        }
+        if set.setType == .duration {
+            editorFieldVertical("Duration (minutes)") {
+                StepperControl(value: $editDurationMinutes, step: 1, display: "\(editDurationMinutes)")
+            }
+        }
+        editorFieldVertical("RPE") {
+            StepperControl(value: $editRPE, step: 1, display: "\(editRPE)")
+        }
     }
 
     private var typeAbbreviation: String {

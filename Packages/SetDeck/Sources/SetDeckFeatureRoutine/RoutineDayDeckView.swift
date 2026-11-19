@@ -178,7 +178,7 @@ struct RoutineDayDeckView: View {
         // (e.g. an exercise is deleted from the Edit Routine sheet).
         let currentExercises = exercises
 
-        ZStack(alignment: .top) {
+        ZStack(alignment: .center) {
             // Render cards in reverse order so the current card is on top
             ForEach(visibleCardIndices.reversed(), id: \.self) { index in
                 let relativeIndex = index - pageSelection
@@ -194,7 +194,7 @@ struct RoutineDayDeckView: View {
                 }
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     }
 
     private var visibleCardIndices: [Int] {
