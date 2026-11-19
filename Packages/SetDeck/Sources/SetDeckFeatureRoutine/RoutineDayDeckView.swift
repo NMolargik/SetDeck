@@ -7,6 +7,7 @@
 
 #if os(iOS)
 import SwiftUI
+import SwiftData
 import SetDeckCore
 import SetDeckDesignSystem
 import SetDeckFeatureShared
@@ -30,11 +31,16 @@ struct RoutineDayDeckView: View {
     @State private var dealtCards: Set<Int> = []
     @State private var hasCompletedInitialDeal: Bool = false
     @State private var isTransitioning: Bool = false
-    @State private var displayedRoutine: SetDeckRoutine?
-    @State private var previousRoutineID: UUID?
+    /// The *outgoing* routine, held only while its cards animate out. Never a cache of
+    /// the live routine: a cached copy went stale (or pointed at a deleted model) when
+    /// routines were created/replaced, so new cards never appeared until relaunch.
+    @State private var outgoingRoutine: SetDeckRoutine?
 
     private var exercises: [SetDeckExercise] {
-        (displayedRoutine ?? routine)?.exercises ?? []
+        if let outgoing = outgoingRoutine, !outgoing.isDeleted {
+            return outgoing.exercises ?? []
+        }
+        return routine?.exercises ?? []
     }
 
     // Configuration for the card stack appearance
@@ -72,14 +78,11 @@ struct RoutineDayDeckView: View {
             }
             dismissedCards.removeAll()
         }
-        .onChange(of: routine?.uuid) { oldID, newID in
-            guard oldID != newID, !isTransitioning else { return }
-            transitionToNewRoutine()
+        .onChange(of: routine) { old, new in
+            guard old?.persistentModelID != new?.persistentModelID, !isTransitioning else { return }
+            transitionToNewRoutine(from: old)
         }
         .onAppear {
-            displayedRoutine = routine
-            previousRoutineID = routine?.uuid
-
             if animateEntrance && !exercises.isEmpty {
                 dealCardsIn()
             } else {
@@ -91,8 +94,11 @@ struct RoutineDayDeckView: View {
 
     // MARK: - Transition Animation
 
-    private func transitionToNewRoutine() {
+    private func transitionToNewRoutine(from old: SetDeckRoutine?) {
         isTransitioning = true
+        // `routine` is already the new one here; keep the outgoing cards on screen
+        // until they have animated out.
+        outgoingRoutine = old
 
         // Animate current cards out (top card first, then down the stack)
         let cardsToExit = visibleCardIndices
@@ -111,8 +117,7 @@ struct RoutineDayDeckView: View {
         // After exit animation, switch to new routine and animate in
         DispatchQueue.main.asyncAfter(deadline: .now() + exitDuration + 0.1) {
             // Reset state for new routine
-            displayedRoutine = routine
-            previousRoutineID = routine?.uuid
+            outgoingRoutine = nil
             pageSelection = 0
             dealtCards.removeAll()
             dismissedCards.removeAll()

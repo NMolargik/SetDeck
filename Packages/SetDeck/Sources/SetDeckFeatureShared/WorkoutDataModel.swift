@@ -141,8 +141,11 @@ public final class WorkoutDataModel {
     /// Every mutation (including CloudKit imports relayed by CloudSyncManager) bumps
     /// the change stamp through the one multicast stream.
     private func startObserving() {
+        // Subscribe synchronously: creating the stream inside the Task would drop any
+        // change that lands before the Task first runs (e.g. a routine created right
+        // after launch or sample data generated immediately).
+        let stream = observeChanges()
         observationTask = Task { [weak self] in
-            guard let stream = self?.observeChanges() else { return }
             for await _ in stream {
                 guard let self else { return }
                 self.changeStamp &+= 1

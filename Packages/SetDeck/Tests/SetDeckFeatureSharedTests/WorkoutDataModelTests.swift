@@ -186,6 +186,20 @@ struct WorkoutDataModelTests {
         }
         #expect(model.changeStamp > before)
     }
+
+    @Test("a change right after init is not lost (new routines show without a relaunch)")
+    func changeImmediatelyAfterInitIsObserved() async {
+        let store = FakeWorkoutStore()
+        let model = store.makeModel()
+        let before = model.changeStamp
+
+        // No retry loop: the subscription must already exist when init returns.
+        store.changeCenter.notify()
+        for _ in 0..<100 where model.changeStamp == before {
+            try? await Task.sleep(for: .milliseconds(10))
+        }
+        #expect(model.changeStamp > before)
+    }
 }
 
 // MARK: - AchievementModel
@@ -215,6 +229,7 @@ struct SharedAchievementModelTests {
         )
         #expect(model.pendingCelebration == nil)
 
+        // New activity after the (silent, empty) first evaluation.
         store.stats = WorkoutStats(
             completionDates: [Date()], totalSetsLogged: 1, maxWeightLogged: 100,
             uniqueExerciseNames: ["Squat"], daysWithExercises: [0]
@@ -254,5 +269,58 @@ struct SharedAchievementModelTests {
 
         #expect(model.unlockedAchievements.isEmpty)
         #expect(model.pendingCelebration == nil)
+    }
+
+    @Test("a returning install does not celebrate history that is already earned")
+    func returningInstallIsSilent() async {
+        let store = FakeWorkoutStore()
+        store.stats = WorkoutStats(
+            completionDates: [Date()], totalSetsLogged: 10, maxWeightLogged: 135,
+            uniqueExerciseNames: ["Squat"], daysWithExercises: [0]
+        )
+        let model = AchievementModel(
+            loadWorkoutStats: FakeWorkoutStore.LoadStatsFake(store: store),
+            tracker: AchievementTracker(defaults: FakeKeyValueStore()),
+            observeChanges: ObserveWorkoutChangesUseCase(center: store.changeCenter)
+        )
+        #expect(model.pendingCelebration == nil)
+        #expect(model.unlockedAchievements.contains(Achievement.firstWorkout.rawValue))
+
+        // A local change with the same history still must not celebrate.
+        model.checkAchievements()
+        #expect(model.pendingCelebration == nil)
+    }
+
+    @Test("history imported from CloudKit is absorbed silently; later local activity celebrates")
+    func remoteImportIsSilent() async {
+        let store = FakeWorkoutStore()
+        let model = AchievementModel(
+            loadWorkoutStats: FakeWorkoutStore.LoadStatsFake(store: store),
+            tracker: AchievementTracker(defaults: FakeKeyValueStore()),
+            observeChanges: ObserveWorkoutChangesUseCase(center: store.changeCenter)
+        )
+
+        // Existing iCloud history syncs in after launch.
+        store.stats = WorkoutStats(
+            completionDates: [Date()], totalSetsLogged: 10, maxWeightLogged: 135,
+            uniqueExerciseNames: ["Squat"], daysWithExercises: [0]
+        )
+        store.changeCenter.notify(.remoteImport)
+        for _ in 0..<100 where model.unlockedAchievements.isEmpty {
+            try? await Task.sleep(for: .milliseconds(10))
+        }
+        #expect(model.unlockedAchievements.contains(Achievement.onePlate.rawValue))
+        #expect(model.pendingCelebration == nil)
+
+        // This device's own new activity crosses a new threshold.
+        store.stats = WorkoutStats(
+            completionDates: [Date()], totalSetsLogged: 10, maxWeightLogged: 225,
+            uniqueExerciseNames: ["Squat"], daysWithExercises: [0]
+        )
+        for _ in 0..<100 where model.pendingCelebration == nil {
+            store.changeCenter.notify(.local)
+            try? await Task.sleep(for: .milliseconds(10))
+        }
+        #expect(model.pendingCelebration == .twoPlates)
     }
 }

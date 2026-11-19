@@ -75,7 +75,7 @@ struct ReviewPromptPolicyTests {
     @Test("links point at SetDeck and carry attribution")
     func links() {
         #expect(AppLinks.writeReview.absoluteString == "https://apps.apple.com/app/id6484503374?action=write-review")
-        #expect(AppLinks.shareApp.absoluteString == "https://molargiksoftware.com/go/setdeck?ct=share_app")
-        #expect(AppLinks.shareSummary.absoluteString == "https://molargiksoftware.com/go/setdeck?ct=share_summary")
+        #expect(AppLinks.shareApp.absoluteString == "https://farsidesoftware.com/setdeck?ct=share_app")
+        #expect(AppLinks.shareSummary.absoluteString == "https://farsidesoftware.com/setdeck?ct=share_summary")
     }
 }

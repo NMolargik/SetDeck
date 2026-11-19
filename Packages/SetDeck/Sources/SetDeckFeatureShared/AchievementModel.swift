@@ -36,6 +36,11 @@ public final class AchievementModel {
         self.loadWorkoutStats = loadWorkoutStats
         self.tracker = tracker
         self.observeChanges = observeChanges
+        // Silent first evaluation: a fresh/returning install must not celebrate what the
+        // account already earned.
+        if let stats = currentStats(), !tracker.isBaselineEstablished {
+            tracker.markUnlockedAsSeen(from: stats)
+        }
         refreshUnlockedAchievements()
         startObserving()
     }
@@ -45,11 +50,19 @@ public final class AchievementModel {
     }
 
     private func startObserving() {
+        // Subscribe synchronously so no change between init and the Task's first run is lost.
+        let stream = observeChanges()
         observationTask = Task { [weak self] in
-            guard let stream = self?.observeChanges() else { return }
-            for await _ in stream {
+            for await change in stream {
                 guard let self else { return }
-                self.checkAchievements()
+                switch change {
+                case .local:
+                    self.checkAchievements()
+                case .remoteImport:
+                    // History merged in from another install: earned elsewhere, so
+                    // absorb it silently; only this device's new activity celebrates.
+                    self.absorbRemoteHistory()
+                }
             }
         }
     }
@@ -66,6 +79,14 @@ public final class AchievementModel {
             pendingCelebration = toCelebrate
             Log.achievements.info("Achievement unlocked: \(toCelebrate.displayName)")
         }
+    }
+
+    /// Marks whatever the (just-imported) history already earns as seen, without a
+    /// celebration, and refreshes the unlocked set.
+    public func absorbRemoteHistory() {
+        guard let stats = currentStats() else { return }
+        tracker.markUnlockedAsSeen(from: stats)
+        unlockedAchievements = Set(tracker.unlockedAchievements(from: stats).map(\.rawValue))
     }
 
     /// Clears the pending celebration.
