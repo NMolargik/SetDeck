@@ -122,7 +122,7 @@ public final class WaterReminderScheduler {
         let today = WaterReminderGoalAction.dayKey(for: now, calendar: calendar)
         let action = WaterReminderGoalAction.decide(
             todayML: todayML,
-            goalML: WaterReminderKeys.dailyGoalML,
+            goalML: WaterReminderKeys.dailyGoal(from: defaults),
             skippedDay: defaults.string(forKey: WaterReminderKeys.skippedDay),
             today: today
         )

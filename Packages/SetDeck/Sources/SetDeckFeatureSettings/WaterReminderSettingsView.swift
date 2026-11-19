@@ -22,6 +22,8 @@ public struct WaterReminderSettingsView: View {
     @AppStorage(WaterReminderKeys.startMinute) private var startMinute = WaterReminderKeys.defaultStartMinute
     @AppStorage(WaterReminderKeys.endMinute) private var endMinute = WaterReminderKeys.defaultEndMinute
     @AppStorage(WaterReminderKeys.intervalMinutes) private var intervalMinutes = WaterReminderKeys.defaultIntervalMinutes
+    @AppStorage(WaterReminderKeys.dailyGoalMLKey) private var dailyGoalML = Int(WaterReminderKeys.dailyGoalML)
+    @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
 
     @State private var scheduler = WaterReminderScheduler()
     @State private var permissionDenied = false
@@ -70,6 +72,12 @@ public struct WaterReminderSettingsView: View {
                     }
                 }
                 .tint(.blueStart)
+
+                Stepper(value: goalBinding, in: WaterReminderKeys.minGoalML...WaterReminderKeys.maxGoalML,
+                        step: WaterReminderKeys.goalStepML) {
+                    LabeledContent("Daily Goal", value: goalText)
+                }
+                .accessibilityIdentifier("waterDailyGoal")
             }
         } header: {
             Text("Hydration")
@@ -83,6 +91,7 @@ public struct WaterReminderSettingsView: View {
         .onChange(of: startMinute) { _, _ in reschedule() }
         .onChange(of: endMinute) { _, _ in reschedule() }
         .onChange(of: intervalMinutes) { _, _ in reschedule() }
+        .onChange(of: dailyGoalML) { _, _ in reschedule() }
     }
 
     // MARK: - Bindings
@@ -101,6 +110,24 @@ public struct WaterReminderSettingsView: View {
                 }
             }
         )
+    }
+
+    /// The goal clamped to the allowed range (an unset or stale value reads as the default).
+    private var goalBinding: Binding<Int> {
+        Binding(
+            get: { min(max(dailyGoalML, WaterReminderKeys.minGoalML), WaterReminderKeys.maxGoalML) },
+            set: { dailyGoalML = $0 }
+        )
+    }
+
+    private var goalText: String {
+        let ml = Double(goalBinding.wrappedValue)
+        if useMetricUnits {
+            return Measurement(value: ml / 1000, unit: UnitVolume.liters)
+                .formatted(.measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(0...2))))
+        }
+        return Measurement(value: ml, unit: UnitVolume.milliliters).converted(to: .fluidOunces)
+            .formatted(.measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(0))))
     }
 
     private func timeBinding(_ minutes: Binding<Int>, maxMinute: Int, isStart: Bool) -> Binding<Date> {

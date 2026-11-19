@@ -97,6 +97,18 @@ struct WaterReminderSettingsTests {
         #expect(s.isEnabled)
         #expect(s.plan == WaterReminderPlan(startMinute: 0, endMinute: 600, intervalMinutes: 90))
     }
+
+    @Test("Daily goal defaults to 2000 ml, reads back and clamps")
+    func dailyGoal() {
+        let d = FakeDefaults()
+        #expect(WaterReminderKeys.dailyGoal(from: d) == 2000)
+        d.set(2750, forKey: WaterReminderKeys.dailyGoalMLKey)
+        #expect(WaterReminderKeys.dailyGoal(from: d) == 2750)
+        d.set(500, forKey: WaterReminderKeys.dailyGoalMLKey)
+        #expect(WaterReminderKeys.dailyGoal(from: d) == 1000)
+        d.set(9000, forKey: WaterReminderKeys.dailyGoalMLKey)
+        #expect(WaterReminderKeys.dailyGoal(from: d) == 4000)
+    }
 }
 
 @Suite("Water reminder daily goal")
