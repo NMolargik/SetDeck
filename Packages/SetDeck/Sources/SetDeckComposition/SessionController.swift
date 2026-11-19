@@ -241,7 +241,8 @@ public final class SessionController {
             let model = achievements
             Task {
                 try? await Task.sleep(for: .seconds(2))
-                model.pendingCelebration = .firstWorkout
+                // `-sdCelebrate threePlates` picks the achievement; default First Workout.
+                model.pendingCelebration = DebugLaunch.value("-sdCelebrate").flatMap(Achievement.init(rawValue:)) ?? .firstWorkout
             }
         }
         if ProcessInfo.processInfo.arguments.contains("-duoStartWorkout") {
