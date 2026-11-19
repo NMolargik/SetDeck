@@ -169,6 +169,18 @@ public final class SessionController {
         )
         #endif
 
+        // UI-test affordance (DEBUG only): skip onboarding/sync and seed deterministic
+        // sample data so the main interface is populated immediately. Seeded BEFORE the
+        // achievement model's silent first evaluation so the seed behaves like history
+        // that already existed (no celebration backlog), exactly as a restored install.
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("-uiTesting") {
+            defaults.set(true, forKey: AppStorageKeys.isOnboardingComplete)
+            defaults.set(true, forKey: AppStorageKeys.hasCompletedInitialSync)
+            workoutData.generateSampleDataForLast30Days()
+        }
+        #endif
+
         achievements = AchievementModel(
             loadWorkoutStats: loadWorkoutStats,
             tracker: AchievementTracker(defaults: defaults),
@@ -212,15 +224,8 @@ public final class SessionController {
         phoneConnectivity = phone
         #endif
 
-        // UI-test affordance (DEBUG only): skip onboarding/sync and seed
-        // deterministic sample data so the main interface is populated
-        // immediately. Gated to DEBUG so it can never run in a shipping build.
+        // Screenshot affordances (DEBUG only; can never run in a shipping build).
         #if DEBUG
-        if ProcessInfo.processInfo.arguments.contains("-uiTesting") {
-            defaults.set(true, forKey: AppStorageKeys.isOnboardingComplete)
-            defaults.set(true, forKey: AppStorageKeys.hasCompletedInitialSync)
-            workoutData.generateSampleDataForLast30Days()
-        }
         // Screenshot affordance (DEBUG only): start a running strength workout so the
         // live-workout UI is on screen without touch input.
         // `-duoLink setdeck://stats` stages a deep link (opens a tab or sheet).

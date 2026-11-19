@@ -38,19 +38,25 @@ private final class FakeIndexer: ExerciseIndexing {
 @MainActor
 struct SessionControllerTests {
 
-    private func makeSession(
-        indexer: FakeIndexer? = nil,
-        indexDebounce: Duration = .milliseconds(750)
-    ) throws -> SessionController {
+    private func makeContainer() throws -> ModelContainer {
         let storeURL = URL.temporaryDirectory.appending(path: "setdeck-test-\(UUID().uuidString).store")
         let config = ModelConfiguration(url: storeURL, cloudKitDatabase: .none)
-        let container = try ModelContainer(
+        return try ModelContainer(
             for: SetDeckRoutine.self, SetDeckExercise.self, SetDeckSet.self, SetDeckSetHistory.self,
             configurations: config
         )
+    }
+
+    private func makeSession(
+        container: ModelContainer? = nil,
+        defaults: FakeKeyValueStore = FakeKeyValueStore(),
+        indexer: FakeIndexer? = nil,
+        indexDebounce: Duration = .milliseconds(750)
+    ) throws -> SessionController {
+        let container = try container ?? makeContainer()
         return SessionController(
             container: container,
-            defaults: FakeKeyValueStore(),
+            defaults: defaults,
             indexer: indexer,
             indexDebounce: indexDebounce
         )
@@ -110,6 +116,32 @@ struct SessionControllerTests {
 
         session.achievements.dismissCelebration()
         #expect(session.achievements.pendingCelebration == nil)
+    }
+
+    @Test("a fresh install whose store already holds history celebrates nothing")
+    func restoredInstallHasNoCelebrationBacklog() async throws {
+        let container = try makeContainer()
+
+        // A previous install earned achievements; the store (iCloud) carries the history.
+        let earlier = try makeSession(container: container, defaults: FakeKeyValueStore())
+        let exercise = try #require(earlier.workoutData.addExercise(named: "Squat", toDay: 0))
+        let set = try #require(earlier.workoutData.sets(for: exercise).first)
+        earlier.workoutData.update(set: set, withReps: 10, weight: 100, rpe: 7)
+        earlier.achievements.checkAchievements()
+        #expect(!earlier.achievements.unlockedAchievements.isEmpty)
+
+        // Fresh install: empty UserDefaults, same store.
+        let restored = try makeSession(container: container, defaults: FakeKeyValueStore())
+        #expect(restored.achievements.pendingCelebration == nil)
+        #expect(restored.achievements.unlockedAchievements.contains(Achievement.firstWorkout.rawValue))
+
+        // Later local activity must not replay the old unlocks either.
+        _ = restored.workoutData.addExercise(named: "Bench", toDay: 1)
+        for _ in 0..<20 {
+            restored.achievements.checkAchievements()
+            try? await Task.sleep(for: .milliseconds(10))
+        }
+        #expect(restored.achievements.pendingCelebration == nil)
     }
 
     // MARK: - Spotlight
