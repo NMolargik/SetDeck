@@ -59,6 +59,8 @@ struct ExerciseCardView: View {
 
     /// Set rows are at least this tall and grow to share the card's spare height, up to a cap.
     private static let minRowHeight: CGFloat = 64
+    /// Scroll anchor on the card header, used to return to the top when a set row closes.
+    private static let cardTopID = "exercise-card-top"
     private static let maxRowHeight: CGFloat = 300
 
     /// Height the card may use: the deck's limit, or the (smaller) height the top card settled on.
@@ -154,6 +156,7 @@ struct ExerciseCardView: View {
                     }
                 }
                 .padding(Brand.Space.xl)
+                .id(Self.cardTopID)
                 .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { height in
                     contentHeight = height
                     onHeightChange?(height)
@@ -164,11 +167,15 @@ struct ExerciseCardView: View {
             .scrollDisabled(matchedHeight != nil)
             .onChange(of: expandedSetID) { _, newID in
                 // An open row can be taller than the card: bring it fully into the scroll view.
-                guard let newID else { return }
+                // When it closes, return to the top so the exercise name and header show again.
                 Task { @MainActor in
                     try? await Task.sleep(for: .milliseconds(320))
                     withAnimation(.easeInOut(duration: 0.25)) {
-                        proxy.scrollTo(newID, anchor: .top)
+                        if let newID {
+                            proxy.scrollTo(newID, anchor: .top)
+                        } else {
+                            proxy.scrollTo(Self.cardTopID, anchor: .top)
+                        }
                     }
                 }
             }
