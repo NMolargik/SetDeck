@@ -230,22 +230,70 @@
     "%lld sets" : {
       "extractionState" : "manual",
       "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld set"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld sets"
+                }
+              }
+            }
+          }
+        },
         "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld series"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld serie"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld series"
+                }
+              }
+            }
           }
         },
         "fr-CA" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld séries"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld série"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld séries"
+                }
+              }
+            }
           }
         },
         "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lldセット"
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lldセット"
+                }
+              }
+            }
           }
         }
       },
@@ -1085,6 +1133,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "すべてのルーティン、エクササイズ、セット、履歴を削除しました。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "All sets logged" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todas las series registradas"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toutes les séries enregistrées"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべてのセットを記録済み"
           }
         }
       },
@@ -1971,6 +2043,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "7日分のサンプルエクササイズとセット、および30日分のワークアウト履歴を作成します。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Daily Goal" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meta diaria"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Objectif quotidien"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1日の目標"
           }
         }
       },
@@ -3877,6 +3973,30 @@
         }
       }
     },
+    "Logged" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registrada"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enregistrée"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "記録済み"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
     "Mark this exercise as a warmup" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4165,6 +4285,30 @@
       },
       "shouldGenerateSymbol" : false
     },
+    "Next" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siguiente"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suivante"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
     "Next exercise" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4184,6 +4328,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "次のエクササイズ"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Next set" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siguiente serie"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Série suivante"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次のセット"
           }
         }
       },
@@ -4643,6 +4811,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "farsidesoftware.com のプライバシーポリシーを開きます。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Opens the routine editor" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre el editor de rutinas"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvre l'éditeur de routine"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ルーティンエディタを開きます"
           }
         }
       },
@@ -6990,6 +7182,30 @@
       },
       "shouldGenerateSymbol" : false
     },
+    "Video" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vídeo"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vidéo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "動画"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
     "View Achievements" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -7033,6 +7249,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "トレーニング量"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Warm-up" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calentamiento"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Échauffement"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウォームアップ"
           }
         }
       },

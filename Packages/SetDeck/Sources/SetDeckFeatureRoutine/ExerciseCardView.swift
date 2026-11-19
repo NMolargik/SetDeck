@@ -191,14 +191,14 @@ struct ExerciseCardView: View {
                 if exercise.isWarmup || hasEquipment || hasVideo {
                     HStack(spacing: Brand.Space.sm) {
                         if exercise.isWarmup {
-                            cardPill("Warm-up", systemImage: "flame.fill", tint: .orangeStart)
+                            cardPill(String(localized: "Warm-up"), systemImage: "flame.fill", tint: .orangeStart)
                         }
                         if let equipment = exercise.equipment, !equipment.isEmpty {
                             cardPill(equipment, systemImage: "scalemass.fill", tint: .secondary)
                         }
                         if let urlString = exercise.videoURL, let url = URL(string: urlString.absoluteString), !urlString.absoluteString.isEmpty {
                             Link(destination: url) {
-                                cardPill("Video", systemImage: "play.fill", tint: .red, filled: true)
+                                cardPill(String(localized: "Video"), systemImage: "play.fill", tint: .red, filled: true)
                             }
                             .buttonStyle(.plain)
                         }
