@@ -19,7 +19,7 @@ Your data syncs privately through iCloud, and your Apple Watch is ready at the r
 
 PLAN YOUR WEEK
 • A routine for each day, Sunday through Saturday, shown as a deck of exercise cards
-• Visual exercise cards with muscle-group colours and icons
+• Visual exercise cards with muscle-group colors and icons
 • Four set types: reps, AMAP (as many as possible), timed duration and freeform
 • Mark exercises as warm-ups, reorder them, and set targets for weight, reps and time
 • On supported devices, muscle groups can be suggested for you, on-device
@@ -92,7 +92,7 @@ Words already in the name or subtitle (setdeck, workout, tracker, plan, lifts, l
 ## What's New in 3.0 — 392/4000
 ```
 SetDeck 3.0 is here!
-• Made for iPhone Duo: unfold for a routine deck beside your exercise, two-column stats and a split Settings
+• Made for iPhone Duo: unfold for your routine deck beside the week, two-column stats and a split Settings
 • A redesigned routine editor with visual exercise cards
 • New water reminders with a daily goal and a "Log a Glass" action (optional, in Settings)
 • A fresh onboarding experience

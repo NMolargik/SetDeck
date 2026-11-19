@@ -92,7 +92,7 @@ SetDeck lo crea Farside Software. ¿Preguntas o ideas? Encuentra ayuda y contact
 ## What's New in 3.0 — 499/4000
 ```
 ¡Ya está aquí SetDeck 3.0!
-• Pensado para iPhone Duo: despliégalo para ver la baraja de rutinas junto a tu ejercicio, estadísticas en dos columnas y unos ajustes divididos
+• Pensado para iPhone Duo: despliégalo para ver la baraja de rutinas junto a tu semana, estadísticas en dos columnas y unos ajustes divididos
 • Un editor de rutinas renovado con tarjetas de ejercicio visuales
 • Nuevos recordatorios de agua con objetivo diario y la acción "Registrar un vaso" (opcionales, en Ajustes)
 • Una nueva experiencia de bienvenida
