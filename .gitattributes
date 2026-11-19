@@ -1,0 +1,7 @@
+Marketing/**/*.png filter=lfs diff=lfs merge=lfs -text
+Marketing/**/*.af filter=lfs diff=lfs merge=lfs -text
+Marketing/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+Marketing/**/*.svg filter=lfs diff=lfs merge=lfs -text
+Marketing/**/*.mp4 filter=lfs diff=lfs merge=lfs -text
+Marketing/**/*.webp filter=lfs diff=lfs merge=lfs -text
+Marketing/**/*.wav filter=lfs diff=lfs merge=lfs -text

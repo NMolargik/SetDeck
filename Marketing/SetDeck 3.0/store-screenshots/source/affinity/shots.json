@@ -1,0 +1,19 @@
+{
+ "captions": {
+  "01": ["Your week,", "one deck at a time.", "green"],
+  "02": ["Log every set", "in one tap.", "green"],
+  "03": ["Build routines", "you can see.", "green"],
+  "04": ["Watch your numbers", "climb.", "green"],
+  "05": ["See every muscle", "you trained.", "green"],
+  "06": ["Hit your water goal,", "every day.", "blue"],
+  "07": ["Reminders that", "know when to stop.", "blue"],
+  "08": ["Earn every", "achievement.", "orange"]
+ },
+ "slugs": {"01": "routine", "02": "logged", "03": "edit", "04": "stats", "05": "heatmap", "06": "health", "07": "reminders", "08": "achievements"},
+ "sets": {
+  "iphone": ["01","02","03","04","05","06","07","08"],
+  "ipad": ["01","02","03","04","05","06","07","08"],
+  "duo-outer": ["01","02","04","06","08"],
+  "duo-inner": ["01","03","04","07"]
+ }
+}

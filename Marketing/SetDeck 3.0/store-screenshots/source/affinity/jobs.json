@@ -1,0 +1,1094 @@
+[
+ {
+  "name": "iphone 01",
+  "out": "iphone-01-01",
+  "x": 0,
+  "y": 0,
+  "w": 1320,
+  "h": 2868,
+  "bg": "iphone-background.png",
+  "images": [
+   {
+    "file": "iphone-01-routine.png",
+    "x": 145.19999999999993,
+    "y": 512.5949291903196,
+    "w": 1029.6000000000001,
+    "h": 2104.9600000000005,
+    "name": "Device"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Your week,",
+     "#F2F4F3"
+    ]
+   ],
+   [
+    [
+     "one deck at a time.",
+     "#4FC290"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 113.1,
+  "leading": 126.6,
+  "top": 172.07999999999998,
+  "tracking": -0.01,
+  "align": "left",
+  "margin": 99.0
+ },
+ {
+  "name": "iphone 02",
+  "out": "iphone-02-02",
+  "x": 1560,
+  "y": 0,
+  "w": 1320,
+  "h": 2868,
+  "bg": "iphone-background.png",
+  "images": [
+   {
+    "file": "iphone-02-logged.png",
+    "x": 145.19999999999993,
+    "y": 512.5949291903196,
+    "w": 1029.6000000000001,
+    "h": 2104.9600000000005,
+    "name": "Device"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Log every set",
+     "#F2F4F3"
+    ]
+   ],
+   [
+    [
+     "in one tap.",
+     "#4FC290"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 113.1,
+  "leading": 126.6,
+  "top": 172.07999999999998,
+  "tracking": -0.01,
+  "align": "left",
+  "margin": 99.0
+ },
+ {
+  "name": "iphone 03",
+  "out": "iphone-03-03",
+  "x": 3120,
+  "y": 0,
+  "w": 1320,
+  "h": 2868,
+  "bg": "iphone-background.png",
+  "images": [
+   {
+    "file": "iphone-03-edit.png",
+    "x": 145.19999999999993,
+    "y": 512.5949291903196,
+    "w": 1029.6000000000001,
+    "h": 2104.9600000000005,
+    "name": "Device"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Build routines",
+     "#F2F4F3"
+    ]
+   ],
+   [
+    [
+     "you can see.",
+     "#4FC290"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 113.1,
+  "leading": 126.6,
+  "top": 172.07999999999998,
+  "tracking": -0.01,
+  "align": "left",
+  "margin": 99.0
+ },
+ {
+  "name": "iphone 04",
+  "out": "iphone-04-04",
+  "x": 4680,
+  "y": 0,
+  "w": 1320,
+  "h": 2868,
+  "bg": "iphone-background.png",
+  "images": [
+   {
+    "file": "iphone-04-stats.png",
+    "x": 145.19999999999993,
+    "y": 512.5949291903196,
+    "w": 1029.6000000000001,
+    "h": 2104.9600000000005,
+    "name": "Device"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Watch your numbers",
+     "#F2F4F3"
+    ]
+   ],
+   [
+    [
+     "climb.",
+     "#4FC290"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 113.1,
+  "leading": 126.6,
+  "top": 172.07999999999998,
+  "tracking": -0.01,
+  "align": "left",
+  "margin": 99.0
+ },
+ {
+  "name": "iphone 05",
+  "out": "iphone-05-05",
+  "x": 6240,
+  "y": 0,
+  "w": 1320,
+  "h": 2868,
+  "bg": "iphone-background.png",
+  "images": [
+   {
+    "file": "iphone-05-heatmap.png",
+    "x": 145.19999999999993,
+    "y": 512.5949291903196,
+    "w": 1029.6000000000001,
+    "h": 2104.9600000000005,
+    "name": "Device"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "See every muscle",
+     "#F2F4F3"
+    ]
+   ],
+   [
+    [
+     "you trained.",
+     "#4FC290"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 113.1,
+  "leading": 126.6,
+  "top": 172.07999999999998,
+  "tracking": -0.01,
+  "align": "left",
+  "margin": 99.0
+ },
+ {
+  "name": "iphone 06",
+  "out": "iphone-06-06",
+  "x": 7800,
+  "y": 0,
+  "w": 1320,
+  "h": 2868,
+  "bg": "iphone-background.png",
+  "images": [
+   {
+    "file": "iphone-06-health.png",
+    "x": 145.19999999999993,
+    "y": 512.5949291903196,
+    "w": 1029.6000000000001,
+    "h": 2104.9600000000005,
+    "name": "Device"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Hit your water goal,",
+     "#F2F4F3"
+    ]
+   ],
+   [
+    [
+     "every day.",
+     "#4E9EEA"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 113.1,
+  "leading": 126.6,
+  "top": 172.07999999999998,
+  "tracking": -0.01,
+  "align": "left",
+  "margin": 99.0
+ },
+ {
+  "name": "iphone 07",
+  "out": "iphone-07-07",
+  "x": 9360,
+  "y": 0,
+  "w": 1320,
+  "h": 2868,
+  "bg": "iphone-background.png",
+  "images": [
+   {
+    "file": "iphone-07-reminders.png",
+    "x": 145.19999999999993,
+    "y": 512.5949291903196,
+    "w": 1029.6000000000001,
+    "h": 2104.9600000000005,
+    "name": "Device"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Reminders that",
+     "#F2F4F3"
+    ]
+   ],
+   [
+    [
+     "know when to stop.",
+     "#4E9EEA"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 113.1,
+  "leading": 126.6,
+  "top": 172.07999999999998,
+  "tracking": -0.01,
+  "align": "left",
+  "margin": 99.0
+ },
+ {
+  "name": "iphone 08",
+  "out": "iphone-08-08",
+  "x": 10920,
+  "y": 0,
+  "w": 1320,
+  "h": 2868,
+  "bg": "iphone-background.png",
+  "images": [
+   {
+    "file": "iphone-08-achievements.png",
+    "x": 145.19999999999993,
+    "y": 512.5949291903196,
+    "w": 1029.6000000000001,
+    "h": 2104.9600000000005,
+    "name": "Device"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Earn every",
+     "#F2F4F3"
+    ]
+   ],
+   [
+    [
+     "achievement.",
+     "#F2844A"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 113.1,
+  "leading": 126.6,
+  "top": 172.07999999999998,
+  "tracking": -0.01,
+  "align": "left",
+  "margin": 99.0
+ },
+ {
+  "name": "ipad 01",
+  "out": "ipad-01-01",
+  "x": 0,
+  "y": 3300,
+  "w": 2064,
+  "h": 2752,
+  "bg": "ipad-background.png",
+  "images": [
+   {
+    "file": "ipad-01-routine.png",
+    "x": 185.7600000000001,
+    "y": 556.56448,
+    "w": 1692.4799999999998,
+    "h": 2207.5826086956517,
+    "name": "Device"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Your week,",
+     "#F2F4F3"
+    ]
+   ],
+   [
+    [
+     "one deck at a time.",
+     "#4FC290"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 143.1,
+  "leading": 160.3,
+  "top": 165.12,
+  "tracking": -0.01,
+  "align": "centre",
+  "margin": 154.79999999999998
+ },
+ {
+  "name": "ipad 02",
+  "out": "ipad-02-02",
+  "x": 2304,
+  "y": 3300,
+  "w": 2064,
+  "h": 2752,
+  "bg": "ipad-background.png",
+  "images": [
+   {
+    "file": "ipad-02-logged.png",
+    "x": 185.7600000000001,
+    "y": 556.56448,
+    "w": 1692.4799999999998,
+    "h": 2207.5826086956517,
+    "name": "Device"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Log every set",
+     "#F2F4F3"
+    ]
+   ],
+   [
+    [
+     "in one tap.",
+     "#4FC290"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 143.1,
+  "leading": 160.3,
+  "top": 165.12,
+  "tracking": -0.01,
+  "align": "centre",
+  "margin": 154.79999999999998
+ },
+ {
+  "name": "ipad 03",
+  "out": "ipad-03-03",
+  "x": 4608,
+  "y": 3300,
+  "w": 2064,
+  "h": 2752,
+  "bg": "ipad-background.png",
+  "images": [
+   {
+    "file": "ipad-03-edit.png",
+    "x": 185.7600000000001,
+    "y": 556.56448,
+    "w": 1692.4799999999998,
+    "h": 2207.5826086956517,
+    "name": "Device"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Build routines",
+     "#F2F4F3"
+    ]
+   ],
+   [
+    [
+     "you can see.",
+     "#4FC290"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 143.1,
+  "leading": 160.3,
+  "top": 165.12,
+  "tracking": -0.01,
+  "align": "centre",
+  "margin": 154.79999999999998
+ },
+ {
+  "name": "ipad 04",
+  "out": "ipad-04-04",
+  "x": 6912,
+  "y": 3300,
+  "w": 2064,
+  "h": 2752,
+  "bg": "ipad-background.png",
+  "images": [
+   {
+    "file": "ipad-04-stats.png",
+    "x": 185.7600000000001,
+    "y": 556.56448,
+    "w": 1692.4799999999998,
+    "h": 2207.5826086956517,
+    "name": "Device"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Watch your numbers",
+     "#F2F4F3"
+    ]
+   ],
+   [
+    [
+     "climb.",
+     "#4FC290"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 143.1,
+  "leading": 160.3,
+  "top": 165.12,
+  "tracking": -0.01,
+  "align": "centre",
+  "margin": 154.79999999999998
+ },
+ {
+  "name": "ipad 05",
+  "out": "ipad-05-05",
+  "x": 9216,
+  "y": 3300,
+  "w": 2064,
+  "h": 2752,
+  "bg": "ipad-background.png",
+  "images": [
+   {
+    "file": "ipad-05-heatmap.png",
+    "x": 185.7600000000001,
+    "y": 556.56448,
+    "w": 1692.4799999999998,
+    "h": 2207.5826086956517,
+    "name": "Device"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "See every muscle",
+     "#F2F4F3"
+    ]
+   ],
+   [
+    [
+     "you trained.",
+     "#4FC290"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 143.1,
+  "leading": 160.3,
+  "top": 165.12,
+  "tracking": -0.01,
+  "align": "centre",
+  "margin": 154.79999999999998
+ },
+ {
+  "name": "ipad 06",
+  "out": "ipad-06-06",
+  "x": 11520,
+  "y": 3300,
+  "w": 2064,
+  "h": 2752,
+  "bg": "ipad-background.png",
+  "images": [
+   {
+    "file": "ipad-06-health.png",
+    "x": 185.7600000000001,
+    "y": 556.56448,
+    "w": 1692.4799999999998,
+    "h": 2207.5826086956517,
+    "name": "Device"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Hit your water goal,",
+     "#F2F4F3"
+    ]
+   ],
+   [
+    [
+     "every day.",
+     "#4E9EEA"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 143.1,
+  "leading": 160.3,
+  "top": 165.12,
+  "tracking": -0.01,
+  "align": "centre",
+  "margin": 154.79999999999998
+ },
+ {
+  "name": "ipad 07",
+  "out": "ipad-07-07",
+  "x": 13824,
+  "y": 3300,
+  "w": 2064,
+  "h": 2752,
+  "bg": "ipad-background.png",
+  "images": [
+   {
+    "file": "ipad-07-reminders.png",
+    "x": 185.7600000000001,
+    "y": 556.56448,
+    "w": 1692.4799999999998,
+    "h": 2207.5826086956517,
+    "name": "Device"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Reminders that",
+     "#F2F4F3"
+    ]
+   ],
+   [
+    [
+     "know when to stop.",
+     "#4E9EEA"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 143.1,
+  "leading": 160.3,
+  "top": 165.12,
+  "tracking": -0.01,
+  "align": "centre",
+  "margin": 154.79999999999998
+ },
+ {
+  "name": "ipad 08",
+  "out": "ipad-08-08",
+  "x": 16128,
+  "y": 3300,
+  "w": 2064,
+  "h": 2752,
+  "bg": "ipad-background.png",
+  "images": [
+   {
+    "file": "ipad-08-achievements.png",
+    "x": 185.7600000000001,
+    "y": 556.56448,
+    "w": 1692.4799999999998,
+    "h": 2207.5826086956517,
+    "name": "Device"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Earn every",
+     "#F2F4F3"
+    ]
+   ],
+   [
+    [
+     "achievement.",
+     "#F2844A"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 143.1,
+  "leading": 160.3,
+  "top": 165.12,
+  "tracking": -0.01,
+  "align": "centre",
+  "margin": 154.79999999999998
+ },
+ {
+  "name": "duo-outer 01",
+  "out": "duo-outer-01-01",
+  "x": 0,
+  "y": 6500,
+  "w": 1398,
+  "h": 2034,
+  "bg": "duo-outer-background.png",
+  "images": [
+   {
+    "file": "duo-outer-placeholder.png",
+    "x": 209.70000000000005,
+    "y": 411.35615999999993,
+    "w": 978.5999999999999,
+    "h": 1497.8571428571427,
+    "name": "Device placeholder"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Your week,",
+     "#F2F4F3"
+    ]
+   ],
+   [
+    [
+     "one deck at a time.",
+     "#4FC290"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 105.8,
+  "leading": 118.5,
+  "top": 122.03999999999999,
+  "tracking": -0.01,
+  "align": "left",
+  "margin": 104.85
+ },
+ {
+  "name": "duo-outer 02",
+  "out": "duo-outer-02-02",
+  "x": 1638,
+  "y": 6500,
+  "w": 1398,
+  "h": 2034,
+  "bg": "duo-outer-background.png",
+  "images": [
+   {
+    "file": "duo-outer-placeholder.png",
+    "x": 209.70000000000005,
+    "y": 411.35615999999993,
+    "w": 978.5999999999999,
+    "h": 1497.8571428571427,
+    "name": "Device placeholder"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Log every set",
+     "#F2F4F3"
+    ]
+   ],
+   [
+    [
+     "in one tap.",
+     "#4FC290"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 105.8,
+  "leading": 118.5,
+  "top": 122.03999999999999,
+  "tracking": -0.01,
+  "align": "left",
+  "margin": 104.85
+ },
+ {
+  "name": "duo-outer 03",
+  "out": "duo-outer-03-04",
+  "x": 3276,
+  "y": 6500,
+  "w": 1398,
+  "h": 2034,
+  "bg": "duo-outer-background.png",
+  "images": [
+   {
+    "file": "duo-outer-placeholder.png",
+    "x": 209.70000000000005,
+    "y": 411.35615999999993,
+    "w": 978.5999999999999,
+    "h": 1497.8571428571427,
+    "name": "Device placeholder"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Watch your numbers",
+     "#F2F4F3"
+    ]
+   ],
+   [
+    [
+     "climb.",
+     "#4FC290"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 105.8,
+  "leading": 118.5,
+  "top": 122.03999999999999,
+  "tracking": -0.01,
+  "align": "left",
+  "margin": 104.85
+ },
+ {
+  "name": "duo-outer 04",
+  "out": "duo-outer-04-06",
+  "x": 4914,
+  "y": 6500,
+  "w": 1398,
+  "h": 2034,
+  "bg": "duo-outer-background.png",
+  "images": [
+   {
+    "file": "duo-outer-placeholder.png",
+    "x": 209.70000000000005,
+    "y": 411.35615999999993,
+    "w": 978.5999999999999,
+    "h": 1497.8571428571427,
+    "name": "Device placeholder"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Hit your water goal,",
+     "#F2F4F3"
+    ]
+   ],
+   [
+    [
+     "every day.",
+     "#4E9EEA"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 105.8,
+  "leading": 118.5,
+  "top": 122.03999999999999,
+  "tracking": -0.01,
+  "align": "left",
+  "margin": 104.85
+ },
+ {
+  "name": "duo-outer 05",
+  "out": "duo-outer-05-08",
+  "x": 6552,
+  "y": 6500,
+  "w": 1398,
+  "h": 2034,
+  "bg": "duo-outer-background.png",
+  "images": [
+   {
+    "file": "duo-outer-placeholder.png",
+    "x": 209.70000000000005,
+    "y": 411.35615999999993,
+    "w": 978.5999999999999,
+    "h": 1497.8571428571427,
+    "name": "Device placeholder"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Earn every",
+     "#F2F4F3"
+    ]
+   ],
+   [
+    [
+     "achievement.",
+     "#F2844A"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 105.8,
+  "leading": 118.5,
+  "top": 122.03999999999999,
+  "tracking": -0.01,
+  "align": "left",
+  "margin": 104.85
+ },
+ {
+  "name": "duo-inner 01",
+  "out": "duo-inner-01-01",
+  "x": 0,
+  "y": 9000,
+  "w": 2853,
+  "h": 2007,
+  "bg": "duo-unfolded-background.png",
+  "images": [
+   {
+    "file": "duo-inner-placeholder.png",
+    "x": 299.32922535211264,
+    "y": 326.13750000000005,
+    "w": 2254.3415492957747,
+    "h": 1600.5825,
+    "name": "Device placeholder"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Your week, ",
+     "#F2F4F3"
+    ],
+    [
+     "one deck at a time.",
+     "#4FC290"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 140.5,
+  "leading": 157.3,
+  "top": 130.455,
+  "tracking": -0.01,
+  "align": "centre",
+  "margin": 213.975
+ },
+ {
+  "name": "duo-inner 02",
+  "out": "duo-inner-02-03",
+  "x": 3093,
+  "y": 9000,
+  "w": 2853,
+  "h": 2007,
+  "bg": "duo-unfolded-background.png",
+  "images": [
+   {
+    "file": "duo-inner-placeholder.png",
+    "x": 299.32922535211264,
+    "y": 326.13750000000005,
+    "w": 2254.3415492957747,
+    "h": 1600.5825,
+    "name": "Device placeholder"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Build routines ",
+     "#F2F4F3"
+    ],
+    [
+     "you can see.",
+     "#4FC290"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 140.5,
+  "leading": 157.3,
+  "top": 130.455,
+  "tracking": -0.01,
+  "align": "centre",
+  "margin": 213.975
+ },
+ {
+  "name": "duo-inner 03",
+  "out": "duo-inner-03-04",
+  "x": 6186,
+  "y": 9000,
+  "w": 2853,
+  "h": 2007,
+  "bg": "duo-unfolded-background.png",
+  "images": [
+   {
+    "file": "duo-inner-placeholder.png",
+    "x": 299.32922535211264,
+    "y": 326.13750000000005,
+    "w": 2254.3415492957747,
+    "h": 1600.5825,
+    "name": "Device placeholder"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Watch your numbers ",
+     "#F2F4F3"
+    ],
+    [
+     "climb.",
+     "#4FC290"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 140.5,
+  "leading": 157.3,
+  "top": 130.455,
+  "tracking": -0.01,
+  "align": "centre",
+  "margin": 213.975
+ },
+ {
+  "name": "duo-inner 04",
+  "out": "duo-inner-04-07",
+  "x": 9279,
+  "y": 9000,
+  "w": 2853,
+  "h": 2007,
+  "bg": "duo-unfolded-background.png",
+  "images": [
+   {
+    "file": "duo-inner-placeholder.png",
+    "x": 299.32922535211264,
+    "y": 326.13750000000005,
+    "w": 2254.3415492957747,
+    "h": 1600.5825,
+    "name": "Device placeholder"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Reminders that ",
+     "#F2F4F3"
+    ],
+    [
+     "know when to stop.",
+     "#4E9EEA"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 140.5,
+  "leading": 157.3,
+  "top": 130.455,
+  "tracking": -0.01,
+  "align": "centre",
+  "margin": 213.975
+ },
+ {
+  "name": "header 21x9",
+  "out": "header",
+  "x": 0,
+  "y": 12000,
+  "w": 3840,
+  "h": 1646,
+  "bg": "header-background.png",
+  "images": [
+   {
+    "file": "ipad-01-routine.png",
+    "x": 1120,
+    "y": 720,
+    "w": 860,
+    "h": 1121.7391304347827,
+    "name": "iPad"
+   },
+   {
+    "file": "iphone-02-logged.png",
+    "x": 2000,
+    "y": 760,
+    "w": 500,
+    "h": 1022.2222222222222,
+    "name": "iPhone"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Plan the week. ",
+     "#F2F4F3"
+    ],
+    [
+     "Log every set.",
+     "#4FC290"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 111.1,
+  "leading": 124.4,
+  "top": 520,
+  "tracking": -0.01,
+  "align": "centre",
+  "margin": 0
+ },
+ {
+  "name": "search 3x2",
+  "out": "search",
+  "x": 0,
+  "y": 14000,
+  "w": 3840,
+  "h": 2560,
+  "bg": "search-background.png",
+  "images": [
+   {
+    "file": "iphone-01-routine.png",
+    "x": 1010.0,
+    "y": 1110,
+    "w": 540,
+    "h": 1104.0,
+    "name": "iPhone 1"
+   },
+   {
+    "file": "iphone-03-edit.png",
+    "x": 2290.0,
+    "y": 1110,
+    "w": 540,
+    "h": 1104.0,
+    "name": "iPhone 3"
+   },
+   {
+    "file": "iphone-02-logged.png",
+    "x": 1600.0,
+    "y": 1010,
+    "w": 640,
+    "h": 1308.4444444444443,
+    "name": "iPhone 2"
+   }
+  ],
+  "lines": [
+   [
+    [
+     "Your week, ",
+     "#F2F4F3"
+    ],
+    [
+     "one deck at a time.",
+     "#4FC290"
+    ]
+   ]
+  ],
+  "font": "SFProDisplay-Heavy",
+  "fontSize": 135.2,
+  "leading": 151.4,
+  "top": 800,
+  "tracking": -0.01,
+  "align": "centre",
+  "margin": 0
+ }
+]

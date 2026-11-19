@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 SetDeck is a fitness-tracking app (weekly routines → exercises → sets, with a completion audit trail) built with SwiftUI + SwiftData and iCloud/CloudKit private-database sync. It ships an iOS app, home-screen widgets (water/energy), a Control Center widget, a strength-training Live Activity, and an Apple Watch companion with its own complication.
 
-The app is a **thin app target on top of an SPM umbrella package** (`Packages/SetDeck`) of layered, single-responsibility modules — the same clean architecture as Stork/Waffle/SCOUT. Dependencies point **inward**: features depend on the design system and core; data implements core's protocols; **core depends on nothing** (Foundation + SwiftData only).
+The app is a **thin app target on top of an SPM umbrella package** (`Packages/SetDeck`) of layered, single-responsibility modules — the same clean architecture as Stork and Waffle. Dependencies point **inward**: features depend on the design system and core; data implements core's protocols; **core depends on nothing** (Foundation + SwiftData only).
 
 ## Build & Run
 
