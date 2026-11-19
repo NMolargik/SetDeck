@@ -206,9 +206,19 @@ struct RoutineSummary: Equatable {
 
     /// The dominant body region, used for a subtitle like "Push focus".
     var focus: MuscleRegion? {
+        // Ties must resolve the same way every launch: dictionary order is randomised per
+        // process, which made the same routine read "Pull focus" on one device and "Legs
+        // focus" on another. `muscleGroups` is already most-trained-first, so the region
+        // that appears first wins a tie.
         var tally: [MuscleRegion: Int] = [:]
-        for g in muscleGroups { tally[g.region, default: 0] += 1 }
-        return tally.max { $0.value < $1.value }?.key
+        var firstSeen: [MuscleRegion: Int] = [:]
+        for (i, g) in muscleGroups.enumerated() {
+            tally[g.region, default: 0] += 1
+            if firstSeen[g.region] == nil { firstSeen[g.region] = i }
+        }
+        return tally.min {
+            $0.value != $1.value ? $0.value > $1.value : (firstSeen[$0.key] ?? 0) < (firstSeen[$1.key] ?? 0)
+        }?.key
     }
 }
 
