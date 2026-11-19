@@ -8,8 +8,21 @@
 import SwiftUI
 
 struct ContentView: View {
+    #if DEBUG
+    @State private var tab: Int = {
+        switch WatchDemo.screen {
+        case "workout", "restbanner": return 0
+        case "rest": return 3
+        case .some: return 1
+        case .none: return 0
+        }
+    }()
+    #else
+    @State private var tab = 0
+    #endif
+
     var body: some View {
-        TabView {
+        TabView(selection: $tab) {
             // Standalone workout: start, log, rest
             ActiveWorkoutView()
                 .tag(0)
