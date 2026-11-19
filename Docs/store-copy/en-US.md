@@ -8,8 +8,8 @@ SetDeck: Workout Tracker
 ## Subtitle — 26/30
 Plan lifts. Log every set.
 
-## Promotional text — 165/170
-Build a weekly routine, log every set, and track water and energy with Apple Health. New in 3.0: iPhone Duo layouts, a redesigned routine editor and water reminders.
+## Promotional text — 141/170
+Free, no ads, no account, no subscription. New in 3.0: iPhone Duo layouts, a redesigned routine editor and water reminders with a daily goal.
 
 ## Description — 3107/4000
 ```
@@ -119,4 +119,4 @@ Alternative keyword sets assume the default name and subtitle. If you adopt a na
 - 3.0 items (Duo layouts, editor, water reminders, onboarding) are written as shipping per the brief; confirm against the final build.
 - Water reminders: the daily goal setting and the stop-at-goal behaviour were added on 2026-11-19; recheck against the final build.
 - 2026-11-19 review: removed equipment/notes/video from the exercise-card line (they display when present but cannot be edited in the app), pointed contact at the support page (no farsidesoftware.com mailbox exists yet), and matched the Duo routine line to the shipped layout (deck beside the week overview).
-- No prices, competitor names or "best". The old "Free, no subscriptions" line was dropped to avoid a price claim.
+- No prices, competitor names or "best". The promotional text keeps the live listing's "Free, no ads, no account, no subscription" lead (2026-11-19): every feature is free, so it is accurate.
