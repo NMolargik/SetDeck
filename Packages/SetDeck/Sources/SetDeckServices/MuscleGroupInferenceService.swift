@@ -53,6 +53,12 @@ public final class MuscleGroupInferenceService {
             return cached
         }
 
+        // Common lifts are resolved instantly without the language model.
+        if let known = ExerciseMuscleHeuristics.groups(for: exerciseName) {
+            inferenceCache[normalizedName] = known
+            return known
+        }
+
         // Perform inference if available
         #if canImport(FoundationModels)
         if #available(iOS 26.0, macOS 26.0, watchOS 26.0, *) {
@@ -63,6 +69,8 @@ public final class MuscleGroupInferenceService {
                 return result
             } catch {
                 logger.error("Failed to infer muscle groups for '\(exerciseName)': \(error.localizedDescription)")
+                // Remember the failure for this session so a refresh does not retry every name.
+                inferenceCache[normalizedName] = []
                 return []
             }
         }
@@ -168,12 +176,34 @@ public final class MuscleGroupInferenceService {
         return mappings[input]
     }
 
-    /// Batch infer muscle groups for multiple exercises
+    /// Batch infer muscle groups for multiple exercises. Names the heuristic knows are
+    /// answered immediately; the rest run through the model a few at a time.
     public func inferMuscleGroups(for exerciseNames: [String]) async -> [String: [MuscleGroup]] {
         var results: [String: [MuscleGroup]] = [:]
+        var pending: [String] = []
 
         for name in exerciseNames {
-            results[name] = await inferMuscleGroups(for: name)
+            let key = name.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+            if let cached = inferenceCache[key] {
+                results[name] = cached
+            } else if let known = ExerciseMuscleHeuristics.groups(for: name) {
+                inferenceCache[key] = known
+                results[name] = known
+            } else {
+                pending.append(name)
+            }
+        }
+
+        // Bounded concurrency: the model calls suspend, so several can be in flight at once.
+        let width = 4
+        var index = 0
+        while index < pending.count {
+            let slice = Array(pending[index..<min(index + width, pending.count)])
+            index += width
+            let tasks = slice.map { name in Task { await self.inferMuscleGroups(for: name) } }
+            for (name, task) in zip(slice, tasks) {
+                results[name] = await task.value
+            }
         }
 
         return results

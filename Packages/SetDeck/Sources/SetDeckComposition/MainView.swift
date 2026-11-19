@@ -92,7 +92,10 @@ struct MainView: View {
     private func tabView() -> some View {
         TabView(selection: $viewModel.appTab) {
             NavigationStack {
-                RoutineView(animateEntrance: animateDeckEntrance)
+                RoutineView(animateEntrance: animateDeckEntrance, onEditRoutine: {
+                    editRoutineTip.invalidate(reason: .actionPerformed)
+                    viewModel.showingEditRoutineSheet = true
+                })
                     .navigationTitle("SetDeck")
                     .toolbar {
                         ToolbarItem(placement: .topBarTrailing) {

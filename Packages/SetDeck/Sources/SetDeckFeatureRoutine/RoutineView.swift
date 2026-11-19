@@ -13,6 +13,7 @@ import SetDeckFeatureShared
 
 public struct RoutineView: View {
     var animateEntrance: Bool = false
+    var onEditRoutine: (() -> Void)? = nil
 
     @State private var selectedDay: Int = 0 // 0 = Sunday
     @State private var hasAnimatedInitialEntrance: Bool = false
@@ -20,8 +21,9 @@ public struct RoutineView: View {
     @Environment(WorkoutDataModel.self) private var exerciseManager
     @Environment(\.scenePhase) private var scenePhase
 
-    public init(animateEntrance: Bool = false) {
+    public init(animateEntrance: Bool = false, onEditRoutine: (() -> Void)? = nil) {
         self.animateEntrance = animateEntrance
+        self.onEditRoutine = onEditRoutine
     }
 
     // Optional convenience if you need the routine for the selected day later
@@ -74,7 +76,8 @@ public struct RoutineView: View {
 
             RoutineDayDeckView(
                 routine: exerciseManager.routine(for: selectedDay),
-                animateEntrance: animateEntrance && !hasAnimatedInitialEntrance
+                animateEntrance: animateEntrance && !hasAnimatedInitialEntrance,
+                onEditRoutine: onEditRoutine
             )
         }
         .padding(.top, 12)

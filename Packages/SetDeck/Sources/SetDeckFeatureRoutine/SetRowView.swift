@@ -29,6 +29,11 @@ struct SetRowView: View {
     @State private var originalDurationMinutes: Int = 0
 
     let set: SetDeckSet
+    /// The first set of the exercise not yet logged today: marked "Next".
+    var isNext: Bool = false
+    /// Logged today.
+    var isLogged: Bool = false
+    var accent: Color = .greenStart
 
     private var hasChanges: Bool {
         editReps != originalReps ||
@@ -46,7 +51,7 @@ struct SetRowView: View {
                 // Type badge
                 Text(typeAbbreviation)
                     .font(.caption2.bold())
-                    .foregroundStyle(Color.greenEnd)
+                    .foregroundStyle(Color.greenStart)
                     .padding(.vertical, 5)
                     .padding(.horizontal, 8)
                     .background(Color.greenStart.opacity(0.18), in: Capsule(style: .continuous))
@@ -57,7 +62,7 @@ struct SetRowView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(primaryLine)
                         .font(.title3).bold()
-                        .foregroundStyle(.black)
+                        .foregroundStyle(.primary)
                         .lineLimit(1)
                         .minimumScaleFactor(0.75)
                         .truncationMode(.tail)
@@ -65,7 +70,7 @@ struct SetRowView: View {
                     if let detail = secondaryLine {
                         Text(detail)
                             .font(.subheadline)
-                            .foregroundStyle(.black)
+                            .foregroundStyle(.primary)
                             .lineLimit(1)
                             .truncationMode(.tail)
                     }
@@ -73,9 +78,23 @@ struct SetRowView: View {
 
                 Spacer()
 
+                if isNext && !isEditing {
+                    Text("Next")
+                        .font(.caption2.weight(.bold))
+                        .foregroundStyle(.black)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Capsule().fill(accent))
+                }
+                if isLogged && !isEditing {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.body.weight(.semibold))
+                        .foregroundStyle(Color.greenStart)
+                        .accessibilityHidden(true)
+                }
                 Image(systemName: isEditing ? "chevron.down" : "chevron.right")
                     .font(.body.weight(.semibold))
-                    .foregroundStyle(.greenStart)
+                    .foregroundStyle(isNext ? accent : Color.secondary)
                     .animation(.easeInOut(duration: 0.25), value: isEditing)
             }
             .padding(12)
@@ -183,13 +202,13 @@ struct SetRowView: View {
         }
         .background(
             RoundedRectangle(cornerRadius: Brand.Radius.chip, style: .continuous)
-                .fill(Color(white: 0.96))
+                .fill(Color.white.opacity(isNext ? 0.12 : 0.07))
                 .overlay(
                     RoundedRectangle(cornerRadius: Brand.Radius.chip, style: .continuous)
-                        .stroke(Color.black.opacity(0.06), lineWidth: 1)
+                        .stroke(isNext ? accent.opacity(0.7) : Color.white.opacity(0.10), lineWidth: isNext ? 1.5 : 1)
                 )
-                .shadow(color: .black.opacity(0.05), radius: 3, y: 1)
         )
+        .opacity(isLogged && !isEditing ? 0.7 : 1)
         .animation(.easeInOut(duration: 0.25), value: isEditing)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(accessibilitySummary)
@@ -241,6 +260,8 @@ struct SetRowView: View {
         var comps: [String] = []
         comps.append(primaryLine)
         if let s = secondaryLine { comps.append(s) }
+        if isLogged { comps.append(String(localized: "Logged")) }
+        if isNext { comps.append(String(localized: "Next set")) }
         return comps.joined(separator: ", ")
     }
 
@@ -311,7 +332,7 @@ struct SetRowView: View {
         HStack(spacing: 8) {
             Text(title)
                 .font(.body)
-                .foregroundStyle(.black)
+                .foregroundStyle(.primary)
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
                 .truncationMode(.tail)
@@ -322,11 +343,11 @@ struct SetRowView: View {
         .padding(.vertical, 6)
         .background(
             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(Color.white.opacity(0.6))
+                .fill(Color.white.opacity(0.08))
         )
         .overlay(
             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .stroke(Color.black.opacity(0.08), lineWidth: 1)
+                .stroke(Color.white.opacity(0.14), lineWidth: 1)
         )
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -336,7 +357,7 @@ struct SetRowView: View {
         VStack(alignment: .leading, spacing: 6) {
             Text(title)
                 .font(.caption)
-                .foregroundStyle(.black)
+                .foregroundStyle(.primary)
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
                 .truncationMode(.tail)
@@ -346,11 +367,11 @@ struct SetRowView: View {
         .padding(.vertical, 6)
         .background(
             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(Color.white.opacity(0.6))
+                .fill(Color.white.opacity(0.08))
         )
         .overlay(
             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .stroke(Color.black.opacity(0.08), lineWidth: 1)
+                .stroke(Color.white.opacity(0.14), lineWidth: 1)
         )
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -363,15 +384,15 @@ struct SetRowView: View {
             HStack(spacing: 8) {
                 Button(action: { value = max(0, value - step) }) { Image(systemName: "minus.circle.fill") }
                     .font(.title2)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.primary)
                     .hoverEffectIfAvailable(.highlight)
                 Text(display)
                     .font(.title3.monospacedDigit())
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.primary)
                     .frame(minWidth: 44, idealWidth: 64, maxWidth: 80)
                 Button(action: { value = max(0, value + step) }) { Image(systemName: "plus.circle.fill") }
                     .font(.title2)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.primary)
                     .hoverEffectIfAvailable(.highlight)
             }
             .buttonStyle(.plain)
@@ -380,11 +401,11 @@ struct SetRowView: View {
             .frame(maxWidth: .infinity)
             .background(
                 Capsule(style: .continuous)
-                    .fill(Color.white.opacity(0.4))
+                    .fill(Color.white.opacity(0.08))
             )
             .overlay(
                 Capsule(style: .continuous)
-                    .stroke(Color.black.opacity(0.08), lineWidth: 1)
+                    .stroke(Color.white.opacity(0.14), lineWidth: 1)
             )
             .sensoryFeedback(.selection, trigger: value)
         }
@@ -398,15 +419,15 @@ struct SetRowView: View {
             HStack(spacing: 8) {
                 Button(action: { value = max(0.0, value - step) }) { Image(systemName: "minus.circle.fill") }
                     .font(.title2)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.primary)
                     .hoverEffectIfAvailable(.highlight)
                 Text(display)
                     .font(.title3.monospacedDigit())
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.primary)
                     .frame(minWidth: 44, idealWidth: 64, maxWidth: 80)
                 Button(action: { value = max(0.0, value + step) }) { Image(systemName: "plus.circle.fill") }
                     .font(.title2)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.primary)
                     .hoverEffectIfAvailable(.highlight)
             }
             .buttonStyle(.plain)
@@ -415,11 +436,11 @@ struct SetRowView: View {
             .frame(maxWidth: .infinity)
             .background(
                 Capsule(style: .continuous)
-                    .fill(Color.white.opacity(0.4))
+                    .fill(Color.white.opacity(0.08))
             )
             .overlay(
                 Capsule(style: .continuous)
-                    .stroke(Color.black.opacity(0.08), lineWidth: 1)
+                    .stroke(Color.white.opacity(0.14), lineWidth: 1)
             )
             .sensoryFeedback(
                 .selection,

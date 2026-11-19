@@ -10,17 +10,25 @@ import SwiftUI
 import SetDeckCore
 import SetDeckDesignSystem
 import SetDeckFeatureShared
+import SetDeckServices
 
 struct ExerciseCardView: View {
     @Environment(WorkoutDataModel.self) private var exerciseManager: WorkoutDataModel
     @AppStorage(AppStorageKeys.useMetricUnits) private var useMetricUnits = false
 
     @State private var expandedSetID: UUID? = nil
+    @State private var contentHeight: CGFloat = 0
     @Environment(\.openURL) private var openURLAction
     let index: Int
     let exercise: SetDeckExercise
-    /// The deck's "suit" accent, supplied by the day. Defaults to brand green.
+    /// Fallback "suit" accent, used when the exercise has no muscle group.
     var accent: Color = .greenStart
+    /// Tallest the card may grow; taller content scrolls inside the card.
+    var maxHeight: CGFloat = .infinity
+    /// Cards behind the top card borrow the top card's height so the stack stays tidy.
+    var matchedHeight: CGFloat? = nil
+    /// Reports the card's natural height (top card only).
+    var onHeightChange: ((CGFloat) -> Void)? = nil
 
     private var orderedSets: [SetDeckSet] {
         // Prefer manager fetch for consistent ordering; fallback to relationship if needed
@@ -29,32 +37,54 @@ struct ExerciseCardView: View {
         return (exercise.sets ?? []).sorted { $0.orderIndex < $1.orderIndex }
     }
 
+    /// The exercise's own muscle groups, else a best guess from its name.
+    private var muscleGroups: [MuscleGroup] {
+        exercise.muscleGroups.isEmpty ? (ExerciseMuscleHeuristics.groups(for: exercise.name) ?? []) : exercise.muscleGroups
+    }
+    private var primaryGroup: MuscleGroup? { muscleGroups.first }
+    private var tint: Color { primaryGroup?.editorColor ?? accent }
+    private var icon: String {
+        primaryGroup?.editorIcon ?? (exercise.isWarmup ? "flame.fill" : "dumbbell.fill")
+    }
+
+    private func isLogged(_ set: SetDeckSet) -> Bool {
+        (set.history ?? []).contains { Calendar.current.isDateInToday($0.completedDate) }
+    }
+
+    private var subtitle: String {
+        let count = orderedSets.count
+        let setText = count == 0
+            ? String(localized: "No sets yet")
+            : (count == 1 ? String(localized: "1 set") : String(localized: "\(count) sets"))
+        guard !muscleGroups.isEmpty else { return setText }
+        let names = muscleGroups.prefix(3).map(\.displayName).joined(separator: ", ")
+        return "\(setText) · \(names)"
+    }
+
+    private var cardHeight: CGFloat? {
+        if let matchedHeight { return matchedHeight }
+        guard contentHeight > 0 else { return nil }
+        return min(contentHeight, maxHeight)
+    }
+
     var body: some View {
+        let _ = exerciseManager.changeStamp
+        let sets = orderedSets
+        let nextID = sets.first(where: { !isLogged($0) })?.uuid
+        let allLogged = !sets.isEmpty && nextID == nil
+
         ZStack(alignment: .topLeading) {
             cardBase
-
-            // Large faint rank watermark — fills the face and reinforces the
-            // deck-of-cards identity.
-            Text("\(index + 1)")
-                .font(.system(size: 220, weight: .bold, design: .rounded))
-                .foregroundStyle(accent.opacity(0.06))
-                .minimumScaleFactor(0.5)
-                .lineLimit(1)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-                .padding(.trailing, -8)
-                .padding(.bottom, -24)
-                .clipped()
-                .accessibilityHidden(true)
 
             ScrollView {
                 VStack(alignment: .leading, spacing: Brand.Space.lg) {
                     header
 
-                    if orderedSets.isEmpty {
+                    if sets.isEmpty {
                         emptyState
                     } else {
                         VStack(spacing: Brand.Space.sm) {
-                            ForEach(orderedSets, id: \.uuid) { set in
+                            ForEach(sets, id: \.uuid) { set in
                                 let isExpanded = Binding<Bool>(
                                     get: { expandedSetID == set.uuid },
                                     set: { newValue in
@@ -63,16 +93,34 @@ struct ExerciseCardView: View {
                                         }
                                     }
                                 )
-                                SetRowView(isEditing: isExpanded, set: set)
+                                SetRowView(
+                                    isEditing: isExpanded,
+                                    set: set,
+                                    isNext: set.uuid == nextID,
+                                    isLogged: isLogged(set),
+                                    accent: tint
+                                )
                             }
+                        }
+                        if allLogged {
+                            Label("All sets logged", systemImage: "checkmark.seal.fill")
+                                .font(.footnote.weight(.semibold))
+                                .foregroundStyle(Color.greenStart)
+                                .frame(maxWidth: .infinity)
                         }
                     }
                 }
                 .padding(Brand.Space.xl)
+                .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { height in
+                    contentHeight = height
+                    onHeightChange?(height)
+                }
             }
             .scrollIndicators(.hidden)
             .scrollBounceBehavior(.basedOnSize)
+            .scrollDisabled(matchedHeight != nil)
         }
+        .frame(height: cardHeight, alignment: .top)
         .clipShape(RoundedRectangle(cornerRadius: Brand.Radius.card, style: .continuous))
         .accessibilityElement(children: .contain)
         .accessibilityLabel("\(exercise.name), exercise \(index + 1)")
@@ -82,28 +130,26 @@ struct ExerciseCardView: View {
 
     private var cardBase: some View {
         RoundedRectangle(cornerRadius: Brand.Radius.card, style: .continuous)
-            .fill(LinearGradient(colors: [Color(white: 0.99), Color(white: 0.95)], startPoint: .top, endPoint: .bottom))
-            .overlay( // crisp inner card-stock highlight
+            .fill(LinearGradient(colors: [Color(white: 0.16), Color(white: 0.10)], startPoint: .top, endPoint: .bottom))
+            .overlay( // soft muscle-group wash from the top
                 RoundedRectangle(cornerRadius: Brand.Radius.card, style: .continuous)
-                    .stroke(.white, lineWidth: 3)
+                    .fill(LinearGradient(colors: [tint.opacity(0.22), .clear], startPoint: .top, endPoint: .center))
             )
-            .overlay( // subtle accent-tinted edge
-                RoundedRectangle(cornerRadius: Brand.Radius.card - 2, style: .continuous)
-                    .stroke(
-                        LinearGradient(colors: [accent.opacity(0.45), accent.opacity(0.12)], startPoint: .top, endPoint: .bottom),
-                        lineWidth: 1.5
+            .overlay(
+                RoundedRectangle(cornerRadius: Brand.Radius.card, style: .continuous)
+                    .strokeBorder(
+                        LinearGradient(colors: [tint.opacity(0.55), Color.white.opacity(0.10)], startPoint: .top, endPoint: .bottom),
+                        lineWidth: 1.2
                     )
-                    .padding(3)
             )
-            .shadow(color: .black.opacity(0.28), radius: 20, x: 0, y: 14)
-            .shadow(color: accent.opacity(0.18), radius: 30, x: 0, y: 0)
+            .shadow(color: .black.opacity(0.35), radius: 16, x: 0, y: 10)
     }
 
     private var emptyState: some View {
         VStack(spacing: Brand.Space.sm) {
             Image(systemName: "plus.rectangle.on.rectangle")
                 .font(.title2)
-                .foregroundStyle(accent)
+                .foregroundStyle(tint)
                 .symbolEffect(.pulse)
             Text("No sets yet")
                 .font(.subheadline.weight(.medium))
@@ -114,41 +160,50 @@ struct ExerciseCardView: View {
     }
 
     private var header: some View {
-        HStack(alignment: .top, spacing: Brand.Space.md) {
-            // Suit-style accent pip
-            ZStack {
-                Circle()
-                    .fill(LinearGradient(colors: [accent, accent.opacity(0.7)], startPoint: .topLeading, endPoint: .bottomTrailing))
-                Image(systemName: exercise.isWarmup ? "flame.fill" : "figure.strengthtraining.traditional")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundStyle(.white)
-            }
-            .frame(width: 40, height: 40)
-            .shadow(color: accent.opacity(0.4), radius: 8, y: 3)
-            .accessibilityHidden(true)
+        HStack(alignment: .center, spacing: Brand.Space.md) {
+            Image(systemName: icon)
+                .font(.title3.weight(.semibold))
+                .foregroundStyle(.white)
+                .frame(width: 48, height: 48)
+                .background(
+                    RoundedRectangle(cornerRadius: Brand.Radius.chip, style: .continuous)
+                        .fill(LinearGradient(colors: [tint, tint.opacity(0.55)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                )
+                .shadow(color: tint.opacity(0.4), radius: 8, y: 3)
+                .accessibilityHidden(true)
 
-            VStack(alignment: .leading, spacing: Brand.Space.sm) {
+            VStack(alignment: .leading, spacing: 4) {
                 Text(exercise.name.isEmpty ? "Exercise" : exercise.name)
                     .font(.title2.weight(.bold))
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.primary)
                     .lineLimit(2)
                     .minimumScaleFactor(0.7)
                     .truncationMode(.tail)
                     .fixedSize(horizontal: false, vertical: true)
 
-                HStack(spacing: Brand.Space.sm) {
-                    if exercise.isWarmup {
-                        cardPill("Warm-up", systemImage: "flame.fill", tint: .orangeStart)
-                    }
-                    if let equipment = exercise.equipment, !equipment.isEmpty {
-                        cardPill(equipment, systemImage: "scalemass.fill", tint: .secondary)
-                    }
-                    if let urlString = exercise.videoURL, let url = URL(string: urlString.absoluteString), !urlString.absoluteString.isEmpty {
-                        Link(destination: url) {
-                            cardPill("Video", systemImage: "play.fill", tint: .red, filled: true)
+                Text(subtitle)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+
+                let hasVideo = exercise.videoURL.map { !$0.absoluteString.isEmpty } ?? false
+                let hasEquipment = !(exercise.equipment ?? "").isEmpty
+                if exercise.isWarmup || hasEquipment || hasVideo {
+                    HStack(spacing: Brand.Space.sm) {
+                        if exercise.isWarmup {
+                            cardPill("Warm-up", systemImage: "flame.fill", tint: .orangeStart)
                         }
-                        .buttonStyle(.plain)
+                        if let equipment = exercise.equipment, !equipment.isEmpty {
+                            cardPill(equipment, systemImage: "scalemass.fill", tint: .secondary)
+                        }
+                        if let urlString = exercise.videoURL, let url = URL(string: urlString.absoluteString), !urlString.absoluteString.isEmpty {
+                            Link(destination: url) {
+                                cardPill("Video", systemImage: "play.fill", tint: .red, filled: true)
+                            }
+                            .buttonStyle(.plain)
+                        }
                     }
+                    .padding(.top, 2)
                 }
             }
             Spacer(minLength: 0)
