@@ -31,7 +31,11 @@ public struct WaterReminderSettingsView: View {
     public var body: some View {
         Section {
             Toggle(isOn: enabledBinding) {
-                Label("Water Reminders", systemImage: "drop.fill")
+                Label {
+                    Text("Water Reminders")
+                } icon: {
+                    Image(systemName: "drop.fill").foregroundStyle(Color.blueStart)
+                }
             }
             .tint(.blueStart)
 
@@ -65,6 +69,7 @@ public struct WaterReminderSettingsView: View {
                         Text(interval.label).tag(interval.minutes)
                     }
                 }
+                .tint(.blueStart)
             }
         } header: {
             Text("Hydration")

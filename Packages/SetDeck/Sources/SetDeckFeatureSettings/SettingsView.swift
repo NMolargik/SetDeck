@@ -76,6 +76,18 @@ public struct SettingsView: View {
                         .foregroundStyle(.blueStart)
                 }
 
+                Link(destination: Company.support) {
+                    Label("Support", systemImage: "lifepreserver")
+                }
+                .accessibilityHint("Opens the SetDeck support page on farsidesoftware.com.")
+                .hoverEffectIfAvailable(.highlight)
+
+                Link(destination: Company.privacy) {
+                    Label("Privacy Policy", systemImage: "hand.raised.fill")
+                }
+                .accessibilityHint("Opens the privacy policy on farsidesoftware.com.")
+                .hoverEffectIfAvailable(.highlight)
+
                 Link(destination: AppLinks.writeReview) {
                     Label("Rate SetDeck", systemImage: "star.fill")
                 }
@@ -207,6 +219,12 @@ public struct SettingsView: View {
             }
         }
         #if DEBUG
+        .task {
+            if page == nil, DebugLaunch.flag("-sdShowAchievementsSheet") {
+                try? await Task.sleep(for: .milliseconds(500))
+                viewModel.showAchievementsSheet = true
+            }
+        }
         .task {
             // Screenshot affordance: scroll the pushed list to a page's section.
             guard page == nil, let target = SettingsPage.debugLaunchPage else { return }

@@ -94,7 +94,7 @@ struct DayPickerView: View {
                 )
                 .overlay(
                     Capsule()
-                        .strokeBorder(Color.red.opacity(0.8), lineWidth: index == todayIndex ? 2 : 0)
+                        .strokeBorder(Color.greenStart.opacity(0.9), lineWidth: index == todayIndex ? 2 : 0)
                 )
         }
     }

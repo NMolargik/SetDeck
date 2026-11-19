@@ -227,6 +227,30 @@
       },
       "shouldGenerateSymbol" : false
     },
+    "%lld sets" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld series"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld séries"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lldセット"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
     "%lld/%lld" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -259,6 +283,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "他 %lld 件"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "1 set" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 serie"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 série"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1セット"
           }
         }
       },
@@ -4552,6 +4600,54 @@
       },
       "shouldGenerateSymbol" : false
     },
+    "Opens the SetDeck support page on farsidesoftware.com." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre la página de ayuda de SetDeck en farsidesoftware.com."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvre la page d'assistance de SetDeck sur farsidesoftware.com."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "farsidesoftware.com の SetDeck サポートページを開きます。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Opens the privacy policy on farsidesoftware.com." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abre la política de privacidad en farsidesoftware.com."
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvre la politique de confidentialité sur farsidesoftware.com."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "farsidesoftware.com のプライバシーポリシーを開きます。"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
     "Options for %@" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4691,6 +4787,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "前のエクササイズ"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Privacy Policy" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Política de privacidad"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Politique de confidentialité"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プライバシーポリシー"
           }
         }
       },
@@ -6103,6 +6223,30 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "日曜日"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Support" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ayuda"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assistance"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サポート"
           }
         }
       },

@@ -27,7 +27,9 @@ struct ExerciseEditorCard: View {
     private var icon: String { primaryGroup?.editorIcon ?? "dumbbell.fill" }
 
     private var subtitle: String {
-        let setText = sets.isEmpty ? String(localized: "No sets yet") : String(localized: "\(sets.count) sets")
+        let setText = sets.isEmpty
+            ? String(localized: "No sets yet")
+            : (sets.count == 1 ? String(localized: "1 set") : String(localized: "\(sets.count) sets"))
         guard !exercise.muscleGroups.isEmpty else { return setText }
         let names = exercise.muscleGroups.prefix(3).map(\.displayName).joined(separator: ", ")
         return "\(setText) · \(names)"
