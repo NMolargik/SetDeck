@@ -22,6 +22,8 @@ struct OnboardingBuilderPage: View {
             EditRoutineView()
                 .padding(.horizontal, Brand.Space.lg)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+                // Keep the scrolling editor from running flush into the action bar.
+                .padding(.bottom, Brand.Space.md)
         }
         .padding(.top, Brand.Space.sm)
     }

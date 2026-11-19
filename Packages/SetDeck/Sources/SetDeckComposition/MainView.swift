@@ -137,6 +137,8 @@ struct MainView: View {
                                 .navigationBarTitleDisplayMode(.inline)
                         }
                         .preferredColorScheme(.dark)
+                        // Regular width: a page-sized sheet so the editor reaches its two-pane layout.
+                        .presentationSizing(.page)
                     }
             }
             .tabItem {

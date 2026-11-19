@@ -133,7 +133,7 @@ nonisolated public enum Achievement: String, CaseIterable, Identifiable, Sendabl
         case .twoWeekStreak:     return "bolt.fill"
         case .monthStrong:       return "crown.fill"
         case .gettingStarted:    return "10.square.fill"
-        case .century:           return "100.square.fill"
+        case .century:           return "number.square.fill"
         case .fiveHundredClub:   return "trophy.fill"
         case .thousandStrong:    return "star.circle.fill"
         case .setMachine:        return "gearshape.2.fill"
