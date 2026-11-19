@@ -77,7 +77,11 @@ public final class WaterReminderScheduler {
         guard settings.isEnabled else { return }
 
         let status = await authorizationStatus()
+        #if os(macOS)
+        guard status == .authorized || status == .provisional else { return }
+        #else
         guard status == .authorized || status == .provisional || status == .ephemeral else { return }
+        #endif
 
         for slot in settings.plan.slots {
             let (hour, minute) = WaterReminderPlan.hourAndMinute(fromMinute: slot)
