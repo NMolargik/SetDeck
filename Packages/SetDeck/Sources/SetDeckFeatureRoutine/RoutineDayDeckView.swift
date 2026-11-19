@@ -15,7 +15,10 @@ import SetDeckFeatureShared
 struct RoutineDayDeckView: View {
     let routine: SetDeckRoutine?
     var animateEntrance: Bool = false
+    /// Opens the routine editor (the same action as the Edit Routine toolbar button).
+    var onEditRoutine: (() -> Void)? = nil
 
+    @State private var topCardHeight: CGFloat?
     @State private var pageSelection: Int = 0
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
@@ -56,9 +59,10 @@ struct RoutineDayDeckView: View {
             GeometryReader { proxy in
                 ZStack {
                     if exercises.isEmpty {
-                        EmptyDayCardView()
-                            .frame(maxWidth: .infinity)
-                            .padding()
+                        EmptyDayCardView(onEdit: onEditRoutine)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                            .padding(.horizontal)
+                            .padding(.top, 8)
                     } else {
                         cardStack(in: proxy)
                     }
@@ -174,7 +178,7 @@ struct RoutineDayDeckView: View {
         // (e.g. an exercise is deleted from the Edit Routine sheet).
         let currentExercises = exercises
 
-        ZStack {
+        ZStack(alignment: .top) {
             // Render cards in reverse order so the current card is on top
             ForEach(visibleCardIndices.reversed(), id: \.self) { index in
                 let relativeIndex = index - pageSelection
@@ -184,12 +188,13 @@ struct RoutineDayDeckView: View {
                         for: currentExercises[index],
                         at: index,
                         relativeIndex: relativeIndex,
-                        cardWidth: cardWidth
+                        cardWidth: cardWidth,
+                        maxHeight: max(proxy.size.height - 48, 200)
                     )
                 }
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
     }
 
     private var visibleCardIndices: [Int] {
@@ -207,7 +212,8 @@ struct RoutineDayDeckView: View {
         for exercise: SetDeckExercise,
         at index: Int,
         relativeIndex: Int,
-        cardWidth: CGFloat
+        cardWidth: CGFloat,
+        maxHeight: CGFloat
     ) -> some View {
         let isTopCard = relativeIndex == 0
         // Card is considered dealt if: it was part of initial deal animation, OR the initial deal is complete
@@ -215,7 +221,13 @@ struct RoutineDayDeckView: View {
         let isLastCard = pageSelection >= exercises.count - 1
         let canSwipe = isTopCard && isDealt && !isTransitioning && !isLastCard
 
-        ExerciseCardView(index: index, exercise: exercise)
+        ExerciseCardView(
+            index: index,
+            exercise: exercise,
+            maxHeight: maxHeight,
+            matchedHeight: isTopCard ? nil : topCardHeight.map { min($0, maxHeight) },
+            onHeightChange: isTopCard ? { height in topCardHeight = min(height, maxHeight) } : nil
+        )
             .frame(width: cardWidth)
             .contentShape(Rectangle())
             .offset(x: offsetX(for: relativeIndex, isTop: isTopCard),
