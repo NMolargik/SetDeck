@@ -70,10 +70,10 @@ extension SampleWorkoutData {
             .ramp("Back Squat", [.quads, .glutes, .hamstrings], "Barbell",
                   reps: [8, 5, 5, 5, 5], fractions: [0.55, 0.7, 0.85, 1, 1], top: 315),
             .even("Romanian Deadlift", [.hamstrings, .glutes, .lowerBack], "Barbell", sets: 4, reps: 8, top: 225),
-            .even("Leg Press", [.quads, .glutes], "Machine", sets: 4, reps: 12, top: 450),
+            .even("Leg Press", [.quads, .glutes], "Machine", sets: 4, reps: 12, top: 360),
             .even("Bulgarian Split Squat", [.quads, .glutes], "Dumbbell", sets: 3, reps: 10, top: 60),
             .even("Hip Thrust", [.glutes, .hamstrings], "Barbell", sets: 3, reps: 10, top: 275),
-            .even("Calf Raise", [.calves], "Machine", sets: 4, reps: 15, top: 180),
+            .even("Calf Raise", [.calves], "Machine", sets: 4, reps: 15, top: 140),
         ],
         // 3: Upper
         [
@@ -160,13 +160,13 @@ extension SampleWorkoutData {
             setsByTemplate.append(exerciseSets)
         }
 
-        // History: 90 days, strength rising from ~78% to ~100% of today's targets.
+        // History: 90 days, strength rising from ~62% to ~100% of today's targets.
         for d in stride(from: 90, through: 1, by: -1) {
             if d > 34 && (d % 11 == 0 || d % 13 == 0) { continue }   // a few rest days early on
             guard let date = calendar.date(byAdding: .day, value: -d, to: today) else { continue }
             let t = ((7 - d % 7) % 7)
             let progress = 1 - Double(d) / 90
-            let factor = 0.78 + 0.22 * progress
+            let factor = 0.62 + 0.38 * progress
             var minute = 0
             for (li, lift) in Self.templates[t].enumerated() {
                 for (si, set) in setsByTemplate[t][li].enumerated() {
