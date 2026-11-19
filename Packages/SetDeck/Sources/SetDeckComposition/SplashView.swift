@@ -127,7 +127,7 @@ struct SplashView: View {
     // MARK: Pieces
 
     private var mark: some View {
-        Image("icon")
+        Image("SetDeckMark")
             .resizable()
             .scaledToFit()
             .accessibilityHidden(true)

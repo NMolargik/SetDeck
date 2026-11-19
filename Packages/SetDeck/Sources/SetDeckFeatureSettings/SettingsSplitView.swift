@@ -79,20 +79,24 @@ public enum SettingsPage: Hashable, CaseIterable, Identifiable {
 public struct SettingsSplitView: View {
     @Environment(AchievementModel.self) private var achievementManager
     @State private var selection: SettingsPage? = .preferences
+    #if DEBUG
+    /// Compact layout: the page `-sdSettingsPage` asked for is pushed onto the stack.
+    @State private var compactPath: [SettingsPage] = []
+    #endif
 
     public init() {
         #if DEBUG
-        if let page = SettingsPage.debugLaunchPage { _selection = State(initialValue: page) }
+        if let page = SettingsPage.debugLaunchPage {
+            _selection = State(initialValue: page)
+            _compactPath = State(initialValue: [page])
+        }
         #endif
     }
 
     public var body: some View {
         FoldSplit(
             compact: {
-                NavigationStack {
-                    SettingsView()
-                        .navigationTitle("Settings")
-                }
+                compactStack
             },
             leading: {
                 NavigationStack {
@@ -107,6 +111,30 @@ public struct SettingsSplitView: View {
             }
         )
         .background(BrandBackground(tint: .purpleStart))
+    }
+
+    @ViewBuilder
+    private var compactStack: some View {
+        #if DEBUG
+        NavigationStack(path: $compactPath) {
+            SettingsView()
+                .navigationTitle("Settings")
+                .navigationDestination(for: SettingsPage.self) { page in
+                    if page == .achievements {
+                        AchievementsView(unlockedAchievements: achievementManager.unlockedAchievements, showsDone: false)
+                    } else {
+                        SettingsView(page: page)
+                            .navigationTitle(page.title)
+                            .navigationBarTitleDisplayMode(.inline)
+                    }
+                }
+        }
+        #else
+        NavigationStack {
+            SettingsView()
+                .navigationTitle("Settings")
+        }
+        #endif
     }
 
     private var pageList: some View {

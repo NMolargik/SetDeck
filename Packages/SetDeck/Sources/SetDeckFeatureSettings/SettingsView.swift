@@ -225,12 +225,6 @@ public struct SettingsView: View {
                 viewModel.showAchievementsSheet = true
             }
         }
-        .task {
-            // Screenshot affordance: scroll the pushed list to a page's section.
-            guard page == nil, let target = SettingsPage.debugLaunchPage else { return }
-            try? await Task.sleep(for: .milliseconds(500))
-            proxy.scrollTo(target, anchor: .top)
-        }
         #endif
         .scrollContentBackground(.hidden)
         .background(BrandBackground(tint: .purpleStart))

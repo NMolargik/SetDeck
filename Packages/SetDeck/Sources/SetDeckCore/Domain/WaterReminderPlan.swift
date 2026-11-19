@@ -25,6 +25,19 @@ nonisolated public enum WaterReminderKeys {
     public static let skippedDay = "waterReminders.skippedDay"
     /// Daily water goal used to quiet reminders: 2 litres (about 68 fl oz).
     public static let dailyGoalML: Double = 2000
+    /// Stored daily goal in whole millilitres (0 / unset means `dailyGoalML`).
+    public static let dailyGoalMLKey = "waterReminders.dailyGoalML"
+    public static let minGoalML = 1000
+    public static let maxGoalML = 4000
+    public static let goalStepML = 250
+
+    /// The goal in ml read from a store: unset falls back to the default, out-of-range
+    /// values are clamped.
+    public static func dailyGoal(from defaults: any KeyValueStoring) -> Double {
+        let stored = defaults.integer(forKey: dailyGoalMLKey)
+        guard stored > 0 else { return dailyGoalML }
+        return Double(min(max(stored, minGoalML), maxGoalML))
+    }
 
     public static let requestIdentifierPrefix = "setdeck.waterReminder."
     public static let categoryIdentifier = "setdeck.waterReminder.category"
