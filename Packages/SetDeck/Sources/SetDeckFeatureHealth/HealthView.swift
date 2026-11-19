@@ -97,77 +97,39 @@ public struct HealthView: View {
     // MARK: - Body
     public var body: some View {
 
-        ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
-                // Active Workout Section
-                if (!isRegularWidth) {
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack(spacing: 8) {
-                            Image(systemName: "figure.strengthtraining.traditional")
-                                .foregroundStyle(.primary)
-                                .scaleEffect(isStrengthWorkoutActive && isPulsing ? 1.15 : 1.0)
-                                .animation(
-                                    isStrengthWorkoutActive && isPulsing
-                                    ? .easeInOut(duration: 0.9).repeatForever(autoreverses: true)
-                                    : .easeOut(duration: 0.2),
-                                    value: isPulsing
-                                )
-                                .onChange(of: isStrengthWorkoutActive) { _, active in
-                                    if active {
-                                        // Kick off pulsing when workout becomes active
-                                        isPulsing = true
-                                    } else {
-                                        // Immediately stop pulsing when workout ends/pauses
-                                        isPulsing = false
-                                    }
-                                }
-                            if (isStrengthWorkoutActive) {
-                                Text(workoutElapsedString)
-                                    .monospacedDigit()
-                                    .font(.subheadline).bold()
-                                    .foregroundStyle(.greenStart)
-                            } else {
-                                Text("Record Workout")
-                                    .font(.headline)
-                            }
-                            Spacer()
-                            if isStrengthWorkoutActive {
-                                Button(role: .destructive) {
-                                    Task { await healthManager.stopStrengthTrainingWorkoutIfSupported() }
-                                } label: {
-                                    Label("Stop", systemImage: "stop.fill")
-                                }
-                                .buttonStyle(.borderedProminent)
-                                .tint(.red)
-                                .accessibilityLabel("Stop workout")
-                                .accessibilityHint("Ends the current strength training workout and saves it to Apple Health")
-                            } else {
-                                Button {
-                                    recordWorkoutTip.invalidate(reason: .actionPerformed)
-                                    Task { await healthManager.startStrengthTrainingWorkoutIfSupported() }
-                                } label: {
-                                    Label("Start", systemImage: "play.fill")
-                                }
-                                .buttonStyle(.borderedProminent)
-                                .tint(.greenStart)
-                                .accessibilityLabel("Start workout")
-                                .accessibilityHint("Begins recording a strength training workout to Apple Health")
-                                .popoverTip(recordWorkoutTip, arrowEdge: .bottom)
-                            }
-                        }
+        // Folded / any phone: the single column. Unfolded Duo or iPad: sections paired across
+        // the hinge (workout control + history | hydration + energy).
+        FoldSplit(
+            compact: {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 24) {
+                        if !isRegularWidth { workoutSection }
+                        hydrationSection
+                        energySection
+                        WorkoutHistorySectionView()
                     }
                     .padding()
-                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20))
-                    .accessibilityElement(children: .contain)
-                    .accessibilityLabel(isStrengthWorkoutActive ? "Workout in progress, \(workoutElapsedString)" : "Record workout")
                 }
-
-                HydrationSectionView(newWaterIntakeOZ: $newWaterIntakeOZ, isExpanded: $isWaterExpanded, didAddWater: $didAddWater)
-                EnergySectionView(newCalorieIntake: $newCalorieIntake, isExpanded: $isCaloriesExpanded, didAddFood: $didAddFood)
-                WorkoutHistorySectionView()
+            },
+            leading: {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 24) {
+                        workoutSection
+                        WorkoutHistorySectionView()
+                    }
+                    .padding()
+                }
+            },
+            trailing: {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 24) {
+                        hydrationSection
+                        energySection
+                    }
+                    .padding()
+                }
             }
-            .padding()
-        }
+        )
         .scrollContentBackground(.hidden)
         .background(BrandBackground(tint: .red))
         .task {
@@ -186,6 +148,79 @@ public struct HealthView: View {
             workoutTimer = nil
             isPulsing = false
         }
+    }
+
+    // MARK: - Sections
+
+    /// Workout control: start/stop and the running timer.
+    private var workoutSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 8) {
+                Image(systemName: "figure.strengthtraining.traditional")
+                    .foregroundStyle(.primary)
+                    .scaleEffect(isStrengthWorkoutActive && isPulsing ? 1.15 : 1.0)
+                    .animation(
+                        isStrengthWorkoutActive && isPulsing
+                        ? .easeInOut(duration: 0.9).repeatForever(autoreverses: true)
+                        : .easeOut(duration: 0.2),
+                        value: isPulsing
+                    )
+                    .onChange(of: isStrengthWorkoutActive) { _, active in
+                        if active {
+                            // Kick off pulsing when workout becomes active
+                            isPulsing = true
+                        } else {
+                            // Immediately stop pulsing when workout ends/pauses
+                            isPulsing = false
+                        }
+                    }
+                if (isStrengthWorkoutActive) {
+                    Text(workoutElapsedString)
+                        .monospacedDigit()
+                        .font(.subheadline).bold()
+                        .foregroundStyle(.greenStart)
+                } else {
+                    Text("Record Workout")
+                        .font(.headline)
+                }
+                Spacer()
+                if isStrengthWorkoutActive {
+                    Button(role: .destructive) {
+                        Task { await healthManager.stopStrengthTrainingWorkoutIfSupported() }
+                    } label: {
+                        Label("Stop", systemImage: "stop.fill")
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(.red)
+                    .accessibilityLabel("Stop workout")
+                    .accessibilityHint("Ends the current strength training workout and saves it to Apple Health")
+                } else {
+                    Button {
+                        recordWorkoutTip.invalidate(reason: .actionPerformed)
+                        Task { await healthManager.startStrengthTrainingWorkoutIfSupported() }
+                    } label: {
+                        Label("Start", systemImage: "play.fill")
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(.greenStart)
+                    .accessibilityLabel("Start workout")
+                    .accessibilityHint("Begins recording a strength training workout to Apple Health")
+                    .popoverTip(recordWorkoutTip, arrowEdge: .bottom)
+                }
+            }
+        }
+        .padding()
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20))
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(isStrengthWorkoutActive ? "Workout in progress, \(workoutElapsedString)" : "Record workout")
+    }
+
+    private var hydrationSection: some View {
+        HydrationSectionView(newWaterIntakeOZ: $newWaterIntakeOZ, isExpanded: $isWaterExpanded, didAddWater: $didAddWater)
+    }
+
+    private var energySection: some View {
+        EnergySectionView(newCalorieIntake: $newCalorieIntake, isExpanded: $isCaloriesExpanded, didAddFood: $didAddFood)
     }
 
     private var waterData: [SeriesItem] { last7Days(waterSeries()) }

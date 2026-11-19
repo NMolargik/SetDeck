@@ -23,10 +23,20 @@ public struct SettingsView: View {
 
     @State private var viewModel = ViewModel()
 
-    public init() {}
+    /// Which page to show; nil is the full list (the pushed layout). The split layout shows one page per pane.
+    private let page: SettingsPage?
 
-    public var body: some View {
-        Form {
+    public init(page: SettingsPage? = nil) {
+        self.page = page
+    }
+
+    // MARK: - Sections
+    // One builder per Settings page. Rows live in these; add new rows here and new pages to
+    // `SettingsPage` so they appear in both the pushed list and the split layout.
+
+    @ViewBuilder
+    private var preferencesSection: some View {
+        Group {
             // MARK: - Units & Date Format
             Section {
                 Toggle("Display Water in Liters", isOn: $useMetricUnits)
@@ -38,7 +48,12 @@ public struct SettingsView: View {
                     .accessibilityHint("Switch between Month–Day–Year and Day–Month–Year formats for dates.")
                     .onChange(of: useDayMonthYearDates) { _, _ in Haptics.lightImpact() }
             }
+        }
+    }
 
+    @ViewBuilder
+    private var aboutSection: some View {
+        Group {
             // MARK: - App Info
             Section("SetDeck") {
                 LabeledContent("Version") {
@@ -68,7 +83,12 @@ public struct SettingsView: View {
                 .accessibilityHint("Shares a link to SetDeck.")
                 .hoverEffectIfAvailable(.highlight)
             }
+        }
+    }
 
+    @ViewBuilder
+    private var achievementsSection: some View {
+        Group {
             // MARK: - Achievements
             Section {
                 Button {
@@ -92,7 +112,12 @@ public struct SettingsView: View {
                 }
                 .hoverEffectIfAvailable(.highlight)
             }
+        }
+    }
 
+    @ViewBuilder
+    private var dataSection: some View {
+        Group {
             // MARK: - Danger Zone
             Section {
                 Button {
@@ -126,8 +151,13 @@ public struct SettingsView: View {
             } footer: {
                 Text("These actions cannot be undone.")
             }
+        }
+    }
 
-            #if DEBUG
+    #if DEBUG
+    @ViewBuilder
+    private var debugSection: some View {
+        Group {
             // MARK: - Debug
             Section {
                 Button {
@@ -143,7 +173,32 @@ public struct SettingsView: View {
             } footer: {
                 Text("Creates sample exercises and sets for all 7 days, plus 30 days of workout history.")
             }
-            #endif
+        }
+    }
+    #endif
+
+
+    public var body: some View {
+        Form {
+            if let page {
+                switch page {
+                case .preferences: preferencesSection
+                case .about: aboutSection
+                case .achievements: achievementsSection
+                case .data: dataSection
+                #if DEBUG
+                case .debug: debugSection
+                #endif
+                }
+            } else {
+                preferencesSection
+                aboutSection
+                achievementsSection
+                dataSection
+                #if DEBUG
+                debugSection
+                #endif
+            }
         }
         .scrollContentBackground(.hidden)
         .background(BrandBackground(tint: .purpleStart))

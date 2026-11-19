@@ -35,15 +35,15 @@ public struct RoutineView: View {
         ZStack {
             BrandBackground()
 
-            VStack(spacing: 0) {
-                DayPickerView(selectedDay: $selectedDay)
-
-                RoutineDayDeckView(
-                    routine: exerciseManager.routine(for: selectedDay),
-                    animateEntrance: animateEntrance && !hasAnimatedInitialEntrance
-                )
-            }
-            .padding(.top, 12)
+            // Folded / any phone: the single deck. Unfolded Duo or iPad: today's deck on one
+            // side of the hinge and the week overview on the other.
+            FoldSplit(
+                compact: { deckColumn },
+                leading: { deckColumn },
+                trailing: {
+                    WeekOverviewView(selectedDay: $selectedDay, todayIndex: todayIndex)
+                }
+            )
         }
         .animation(.spring(response: 0.35, dampingFraction: 0.8), value: selectedDay)
         .onAppear {
@@ -60,6 +60,18 @@ public struct RoutineView: View {
                 selectedDay = todayIndex
             }
         }
+    }
+
+    private var deckColumn: some View {
+        VStack(spacing: 0) {
+            DayPickerView(selectedDay: $selectedDay)
+
+            RoutineDayDeckView(
+                routine: exerciseManager.routine(for: selectedDay),
+                animateEntrance: animateEntrance && !hasAnimatedInitialEntrance
+            )
+        }
+        .padding(.top, 12)
     }
 
     private var todayIndex: Int {
