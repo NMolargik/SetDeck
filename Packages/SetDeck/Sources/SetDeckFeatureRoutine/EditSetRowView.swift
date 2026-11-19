@@ -176,20 +176,36 @@ struct EditSetRowView: View {
     }
 
     private var typePicker: some View {
+        ViewThatFits(in: .horizontal) {
+            typeChips(showIcon: true, showTitle: true)
+            typeChips(showIcon: false, showTitle: true)
+            typeChips(showIcon: true, showTitle: false)
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Set type")
+        .accessibilityHint("Choose between reps, as many as possible, timed, or freeform sets")
+    }
+
+    private func typeChips(showIcon: Bool, showTitle: Bool) -> some View {
         HStack(spacing: Brand.Space.xs) {
             ForEach(SetType.allCases) { type in
                 let selected = type == set.setType
                 Button { select(type) } label: {
                     HStack(spacing: 4) {
-                        Image(systemName: type.editorIcon)
-                            .font(.caption.weight(.bold))
-                        Text(type.editorTitle)
-                            .font(.caption.weight(.semibold))
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.7)
+                        if showIcon {
+                            Image(systemName: type.editorIcon)
+                                .font(.caption.weight(.bold))
+                        }
+                        if showTitle {
+                            Text(type.editorTitle)
+                                .font(.caption.weight(.semibold))
+                                .lineLimit(1)
+                                .fixedSize(horizontal: true, vertical: false)
+                        }
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 8)
+                    .padding(.horizontal, 6)
                     .foregroundStyle(selected ? Color.white : Color.primary)
                     .background(
                         Capsule().fill(selected ? type.editorColor : Color.white.opacity(0.08))
@@ -201,9 +217,6 @@ struct EditSetRowView: View {
                 .accessibilityAddTraits(selected ? [.isSelected, .isButton] : .isButton)
             }
         }
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel("Set type")
-        .accessibilityHint("Choose between reps, as many as possible, timed, or freeform sets")
     }
 
     @ViewBuilder

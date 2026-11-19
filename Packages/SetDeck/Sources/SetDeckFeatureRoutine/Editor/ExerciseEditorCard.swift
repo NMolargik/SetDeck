@@ -22,16 +22,16 @@ struct ExerciseEditorCard: View {
     let onMove: (Int) -> Void
     let onDelete: () -> Void
 
-    private var primaryGroup: MuscleGroup? { exercise.muscleGroups.first }
-    private var tint: Color { primaryGroup?.editorColor ?? .blueStart }
-    private var icon: String { primaryGroup?.editorIcon ?? "dumbbell.fill" }
+    private var tint: Color { exercise.presentationTint() }
+    private var icon: String { exercise.presentationIcon }
 
     private var subtitle: String {
         let setText = sets.isEmpty
             ? String(localized: "No sets yet")
             : (sets.count == 1 ? String(localized: "1 set") : String(localized: "\(sets.count) sets"))
-        guard !exercise.muscleGroups.isEmpty else { return setText }
-        let names = exercise.muscleGroups.prefix(3).map(\.displayName).joined(separator: ", ")
+        let groups = exercise.presentationGroups
+        guard !groups.isEmpty else { return setText }
+        let names = groups.prefix(3).map(\.displayName).joined(separator: ", ")
         return "\(setText) · \(names)"
     }
 
@@ -53,9 +53,12 @@ struct ExerciseEditorCard: View {
                         Text(exercise.name.isEmpty ? String(localized: "Untitled Exercise") : exercise.name)
                             .font(.headline)
                             .lineLimit(2)
+                            .layoutPriority(1)
                         if exercise.isWarmup {
-                            Label("Warmup", systemImage: "flame.fill")
+                            Label(String(localized: "Warm-up"), systemImage: "flame.fill")
                                 .labelStyle(.titleAndIcon)
+                                .lineLimit(1)
+                                .fixedSize()
                                 .font(.caption2.weight(.bold))
                                 .padding(.horizontal, 7)
                                 .padding(.vertical, 3)

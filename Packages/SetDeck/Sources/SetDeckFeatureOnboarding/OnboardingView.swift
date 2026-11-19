@@ -98,7 +98,10 @@ public struct OnboardingView: View {
         return Group {
             if metrics.isTwoPane {
                 HStack(spacing: 0) {
-                    Color.clear.frame(width: metrics.leadingWidth + metrics.gutter)
+                    // Zero height: a bare `Color.clear` is vertically flexible and made every
+                    // row of the page claim an equal share of the height, so a tall card
+                    // was clipped in a short middle band.
+                    Color.clear.frame(width: metrics.leadingWidth + metrics.gutter, height: 0)
                     built.frame(width: metrics.trailingWidth)
                 }
             } else {

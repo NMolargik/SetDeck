@@ -18,6 +18,7 @@ struct ExerciseCardView: View {
 
     @State private var expandedSetID: UUID? = nil
     @State private var contentHeight: CGFloat = 0
+    @State private var headerHeight: CGFloat = 0
     @Environment(\.openURL) private var openURLAction
     let index: Int
     let exercise: SetDeckExercise
@@ -38,14 +39,9 @@ struct ExerciseCardView: View {
     }
 
     /// The exercise's own muscle groups, else a best guess from its name.
-    private var muscleGroups: [MuscleGroup] {
-        exercise.muscleGroups.isEmpty ? (ExerciseMuscleHeuristics.groups(for: exercise.name) ?? []) : exercise.muscleGroups
-    }
-    private var primaryGroup: MuscleGroup? { muscleGroups.first }
-    private var tint: Color { primaryGroup?.editorColor ?? accent }
-    private var icon: String {
-        primaryGroup?.editorIcon ?? (exercise.isWarmup ? "flame.fill" : "dumbbell.fill")
-    }
+    private var muscleGroups: [MuscleGroup] { exercise.presentationGroups }
+    private var tint: Color { exercise.presentationTint(fallback: accent) }
+    private var icon: String { exercise.presentationIcon }
 
     private func isLogged(_ set: SetDeckSet) -> Bool {
         (set.history ?? []).contains { Calendar.current.isDateInToday($0.completedDate) }
@@ -61,7 +57,22 @@ struct ExerciseCardView: View {
         return "\(setText) · \(names)"
     }
 
+    /// Set rows are at least this tall and grow to share the card's spare height.
+    private static let minRowHeight: CGFloat = 64
+    private static let maxRowHeight: CGFloat = 220
+
+    /// Height for each collapsed set row so the rows together fill the card.
+    private func rowHeight(setCount: Int, allLogged: Bool) -> CGFloat {
+        guard maxHeight.isFinite, setCount > 0, headerHeight > 0 else { return Self.minRowHeight }
+        let chrome = Brand.Space.xl * 2 + headerHeight + Brand.Space.lg
+            + Brand.Space.sm * CGFloat(setCount - 1) + (allLogged ? 40 : 0)
+        let share = (maxHeight - chrome) / CGFloat(setCount)
+        return min(max(share, Self.minRowHeight), Self.maxRowHeight)
+    }
+
     private var cardHeight: CGFloat? {
+        // Fill all the height the deck offers, so gesture targets are as large as possible.
+        if maxHeight.isFinite { return maxHeight }
         if let matchedHeight { return matchedHeight }
         guard contentHeight > 0 else { return nil }
         return min(contentHeight, maxHeight)
@@ -72,6 +83,7 @@ struct ExerciseCardView: View {
         let sets = orderedSets
         let nextID = sets.first(where: { !isLogged($0) })?.uuid
         let allLogged = !sets.isEmpty && nextID == nil
+        let rowHeight = rowHeight(setCount: sets.count, allLogged: allLogged)
 
         ZStack(alignment: .topLeading) {
             cardBase
@@ -79,6 +91,7 @@ struct ExerciseCardView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: Brand.Space.lg) {
                     header
+                        .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { headerHeight = $0 }
 
                     if sets.isEmpty {
                         emptyState
@@ -98,7 +111,8 @@ struct ExerciseCardView: View {
                                     set: set,
                                     isNext: set.uuid == nextID,
                                     isLogged: isLogged(set),
-                                    accent: tint
+                                    accent: tint,
+                                    minRowHeight: rowHeight
                                 )
                             }
                         }
