@@ -26,7 +26,10 @@ struct SetDeckApp: App {
         // Expose the session to App Intents (Siri, Shortcuts, Spotlight).
         AppDependencyManager.shared.add(dependency: session)
 
-        // Configure TipKit
+        // Configure TipKit (screenshot runs under -uiTesting show no tips)
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("-uiTesting") { Tips.hideAllTipsForTesting() }
+        #endif
         try? Tips.configure([
             .displayFrequency(.immediate)
         ])

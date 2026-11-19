@@ -33,11 +33,20 @@ public enum SettingsPage: Hashable, CaseIterable, Identifiable {
         case "about": .about
         case "achievements": .achievements
         case "data": .data
-        case "debug": .debug
+        case "debug": DebugLaunch.isUITesting ? nil : .debug
         default: nil
         }
     }
     #endif
+
+    /// Pages shown in the list. Debug is hidden under `-uiTesting` so screenshots stay clean.
+    static var visible: [SettingsPage] {
+        #if DEBUG
+        allCases.filter { $0 != .debug || !DebugLaunch.isUITesting }
+        #else
+        allCases
+        #endif
+    }
 
     var title: LocalizedStringKey {
         switch self {
@@ -141,7 +150,7 @@ public struct SettingsSplitView: View {
 
     private var pageList: some View {
         List {
-            ForEach(SettingsPage.allCases) { page in
+            ForEach(SettingsPage.visible) { page in
                 let isSelected = selection == page
                 Button {
                     Haptics.lightImpact()

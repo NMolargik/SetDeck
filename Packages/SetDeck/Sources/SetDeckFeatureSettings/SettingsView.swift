@@ -214,7 +214,7 @@ public struct SettingsView: View {
                 achievementsSection.id(SettingsPage.achievements)
                 dataSection.id(SettingsPage.data)
                 #if DEBUG
-                debugSection.id(SettingsPage.debug)
+                if !DebugLaunch.isUITesting { debugSection.id(SettingsPage.debug) }
                 #endif
             }
         }
