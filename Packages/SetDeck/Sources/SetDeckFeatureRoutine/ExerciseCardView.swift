@@ -108,11 +108,15 @@ struct ExerciseCardView: View {
         let sets = orderedSets
         let nextID = sets.first(where: { !isLogged($0) })?.uuid
         let allLogged = !sets.isEmpty && nextID == nil
-        let rowHeight = rowHeight(setCount: sets.count, allLogged: allLogged)
+        // While a row is open, the others drop to their minimum so the open row gets the room.
+        let rowHeight = expandedSetID == nil
+            ? rowHeight(setCount: sets.count, allLogged: allLogged)
+            : Self.minRowHeight
 
         ZStack(alignment: .topLeading) {
             cardBase
 
+            ScrollViewReader { proxy in
             ScrollView {
                 VStack(alignment: .leading, spacing: Brand.Space.lg) {
                     header
@@ -158,6 +162,17 @@ struct ExerciseCardView: View {
             .scrollIndicators(.hidden)
             .scrollBounceBehavior(.basedOnSize)
             .scrollDisabled(matchedHeight != nil)
+            .onChange(of: expandedSetID) { _, newID in
+                // An open row can be taller than the card: bring it fully into the scroll view.
+                guard let newID else { return }
+                Task { @MainActor in
+                    try? await Task.sleep(for: .milliseconds(320))
+                    withAnimation(.easeInOut(duration: 0.25)) {
+                        proxy.scrollTo(newID, anchor: .top)
+                    }
+                }
+            }
+            }
         }
         .frame(height: cardHeight(setCount: sets.count, allLogged: allLogged), alignment: .top)
         .clipShape(RoundedRectangle(cornerRadius: Brand.Radius.card, style: .continuous))
