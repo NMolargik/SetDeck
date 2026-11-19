@@ -86,8 +86,8 @@ Disponible en inglés, español, francés (canadiense) y japonés.
 SetDeck lo crea Farside Software. ¿Preguntas o ideas? Encuentra ayuda y contacto en farsidesoftware.com/support.
 ```
 
-## Keywords — 98/100
-`gimnasio,fuerza,rutina,repetición,musculación,hidratación,agua,recordatorio,plegable,watch,músculo`
+## Keywords — 97/100 bytes
+`gimnasio,fuerza,rutina,repetición,musculación,hidratación,recordatorio,plegable,watch,músculo`
 
 ## What's New in 3.0 — 499/4000
 ```

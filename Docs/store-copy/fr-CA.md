@@ -86,8 +86,8 @@ Offert en anglais, en espagnol, en français (canadien) et en japonais.
 SetDeck est conçu par Farside Software. Des questions ou des idées? Écrivez-nous via farsidesoftware.com/support.
 ```
 
-## Keywords — 100/100
-`musculation,gym,force,poids,routine,répétition,hydratation,eau,rappel,pliable,montre,muscle,calories`
+## Keywords — 98/100 bytes
+`musculation,gym,force,poids,routine,répétition,hydratation,rappel,pliable,montre,muscle,calories`
 
 ## What's New in 3.0 — 535/4000
 ```
