@@ -47,7 +47,7 @@ public struct OnboardingView: View {
         }
         .onAppear(perform: configure)
         .onChange(of: model.step) { _, step in
-            Haptics.selection()
+            Haptics.lightImpact()
             AccessibilityNotification.Announcement("Step \(step.pageNumber) of \(OnboardingStep.pageCount): \(step.title)").post()
         }
     }
