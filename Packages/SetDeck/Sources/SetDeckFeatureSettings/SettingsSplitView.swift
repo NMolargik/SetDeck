@@ -25,6 +25,20 @@ public enum SettingsPage: Hashable, CaseIterable, Identifiable {
 
     public var id: Self { self }
 
+    #if DEBUG
+    /// Screenshot affordance: `-sdSettingsPage preferences|about|achievements|data|debug`.
+    static var debugLaunchPage: SettingsPage? {
+        switch DebugLaunch.value("-sdSettingsPage") {
+        case "preferences": .preferences
+        case "about": .about
+        case "achievements": .achievements
+        case "data": .data
+        case "debug": .debug
+        default: nil
+        }
+    }
+    #endif
+
     var title: LocalizedStringKey {
         switch self {
         case .preferences: "Preferences"
@@ -66,7 +80,11 @@ public struct SettingsSplitView: View {
     @Environment(AchievementModel.self) private var achievementManager
     @State private var selection: SettingsPage? = .preferences
 
-    public init() {}
+    public init() {
+        #if DEBUG
+        if let page = SettingsPage.debugLaunchPage { _selection = State(initialValue: page) }
+        #endif
+    }
 
     public var body: some View {
         FoldSplit(

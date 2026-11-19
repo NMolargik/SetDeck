@@ -136,6 +136,11 @@ final class StageModel {
             appStage = .main
             return
         }
+        // Screenshot affordance: main app with an empty store (no seeding).
+        if ProcessInfo.processInfo.arguments.contains("-sdSkipOnboarding") {
+            appStage = .main
+            return
+        }
         // Screenshot affordance: jump straight into onboarding past the splash.
         if ProcessInfo.processInfo.arguments.contains("-duoOnboarding") {
             appStage = .onboarding

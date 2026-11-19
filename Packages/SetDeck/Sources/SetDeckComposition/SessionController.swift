@@ -236,6 +236,14 @@ public final class SessionController {
            let url = URL(string: launchArgs[i + 1]) {
             pendingDeepLink = DeepLink(url: url)
         }
+        // `-sdCelebrate` shows the achievement celebration once, shortly after launch.
+        if DebugLaunch.flag("-sdCelebrate") {
+            let model = achievements
+            Task {
+                try? await Task.sleep(for: .seconds(2))
+                model.pendingCelebration = .firstWorkout
+            }
+        }
         if ProcessInfo.processInfo.arguments.contains("-duoStartWorkout") {
             #if canImport(HealthKit) && !os(macOS)
             let health = healthManager

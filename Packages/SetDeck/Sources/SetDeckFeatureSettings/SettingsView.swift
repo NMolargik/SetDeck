@@ -184,6 +184,7 @@ public struct SettingsView: View {
 
 
     public var body: some View {
+        ScrollViewReader { proxy in
         Form {
             if let page {
                 switch page {
@@ -196,15 +197,23 @@ public struct SettingsView: View {
                 #endif
                 }
             } else {
-                preferencesSection
-                aboutSection
-                achievementsSection
-                dataSection
+                preferencesSection.id(SettingsPage.preferences)
+                aboutSection.id(SettingsPage.about)
+                achievementsSection.id(SettingsPage.achievements)
+                dataSection.id(SettingsPage.data)
                 #if DEBUG
-                debugSection
+                debugSection.id(SettingsPage.debug)
                 #endif
             }
         }
+        #if DEBUG
+        .task {
+            // Screenshot affordance: scroll the pushed list to a page's section.
+            guard page == nil, let target = SettingsPage.debugLaunchPage else { return }
+            try? await Task.sleep(for: .milliseconds(500))
+            proxy.scrollTo(target, anchor: .top)
+        }
+        #endif
         .scrollContentBackground(.hidden)
         .background(BrandBackground(tint: .purpleStart))
         .sheet(isPresented: $viewModel.showAchievementsSheet) {
@@ -284,6 +293,7 @@ public struct SettingsView: View {
             Text("Sample routines and 30 days of history have been created.")
         }
         #endif
+        }
     }
 }
 #endif

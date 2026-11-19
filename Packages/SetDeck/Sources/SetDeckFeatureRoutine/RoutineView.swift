@@ -48,6 +48,9 @@ public struct RoutineView: View {
         .animation(.spring(response: 0.35, dampingFraction: 0.8), value: selectedDay)
         .onAppear {
             selectedDay = todayIndex
+            #if DEBUG
+            if let day = DebugLaunch.int("-sdDay") { selectedDay = day }
+            #endif
             // Mark that we've done the initial entrance animation
             if animateEntrance {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
@@ -58,6 +61,9 @@ public struct RoutineView: View {
         .onChange(of: scenePhase) { oldValue, newValue in
             if newValue == .active {
                 selectedDay = todayIndex
+                #if DEBUG
+                if let day = DebugLaunch.int("-sdDay") { selectedDay = day }
+                #endif
             }
         }
     }

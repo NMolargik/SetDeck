@@ -86,6 +86,14 @@ public struct EditRoutineView: View {
             focusedExerciseID = nil
         }
         .task(id: inferenceKey) { await inferMissingMuscleGroups() }
+        #if DEBUG
+        .task {
+            // Screenshot affordance: `-sdSelectExercise` expands the first exercise.
+            guard DebugLaunch.flag("-sdSelectExercise") else { return }
+            try? await Task.sleep(for: .milliseconds(600))
+            viewModel.selectedExerciseID = exerciseManager.exercises(forDay: viewModel.selectedDay).first?.uuid
+        }
+        #endif
         .animation(.spring(response: 0.35, dampingFraction: 0.8), value: viewModel.selectedDay)
         .confirmationDialog(
             "Delete exercise?",

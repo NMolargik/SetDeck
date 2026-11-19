@@ -35,6 +35,9 @@ extension EditRoutineView {
 
         func resetToToday() {
             selectedDay = todayIndex
+            #if DEBUG
+            if let day = DebugLaunch.int("-sdDay") { selectedDay = day }
+            #endif
         }
 
         // MARK: - Data Accessors
