@@ -22,6 +22,12 @@ struct ExercisePRCardView: View {
         String(Int(lbs.weight(useMetric: useMetricUnits).rounded()))
     }
     private var unitLabel: String { useMetricUnits ? "kg" : "lb" }
+    /// m:ss for holds under an hour, h:mm:ss beyond.
+    private func formatDuration(_ seconds: TimeInterval) -> String {
+        let total = Int(seconds.rounded())
+        let h = total / 3600, m = (total % 3600) / 60, sec = total % 60
+        return h > 0 ? String(format: "%d:%02d:%02d", h, m, sec) : String(format: "%d:%02d", m, sec)
+    }
     private func formatDate(_ date: Date) -> String {
         if useDayMonthYearDates {
             let df = DateFormatter()
@@ -31,6 +37,13 @@ struct ExercisePRCardView: View {
         } else {
             return DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .none)
         }
+    }
+
+    private func accessibilityText(for pr: StatsView.PRSummary) -> LocalizedStringKey {
+        if let duration = pr.bestDuration {
+            return "\(pr.exerciseName), best time \(formatDuration(duration)), achieved on \(formatDate(pr.bestDate))"
+        }
+        return "\(pr.exerciseName), best weight \(displayWeight(pr.bestWeight)) \(unitLabel), estimated one rep max \(displayWeight(pr.best1RM)) \(unitLabel), achieved on \(formatDate(pr.bestDate))"
     }
 
     var body: some View {
@@ -48,9 +61,15 @@ struct ExercisePRCardView: View {
                             VStack(alignment: .leading) {
                                 Text(pr.exerciseName)
                                     .font(.subheadline)
+                                if let duration = pr.bestDuration {
+                                    Text("Best: \(formatDuration(duration))")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                } else {
                                 Text("Best: \(displayWeight(pr.bestWeight)) \(unitLabel) • est. 1RM \(displayWeight(pr.best1RM)) \(unitLabel)")
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
+                                }
                             }
                             Spacer()
                             Text(formatDate(pr.bestDate))
@@ -59,7 +78,7 @@ struct ExercisePRCardView: View {
                         }
                         .padding(.vertical, 2)
                         .accessibilityElement(children: .combine)
-                        .accessibilityLabel("\(pr.exerciseName), best weight \(displayWeight(pr.bestWeight)) \(unitLabel), estimated one rep max \(displayWeight(pr.best1RM)) \(unitLabel), achieved on \(formatDate(pr.bestDate))")
+                        .accessibilityLabel(accessibilityText(for: pr))
                     }
                 }
             }

@@ -22,6 +22,9 @@ public struct SampleWorkoutData: GenerateSampleData {
         self.history = history
     }
 
+    /// Exercises held for time rather than counted in reps.
+    private static let timedExerciseNames: Set<String> = ["Plank"]
+
     private static let baseExerciseNames: [String] = [
         "Back Squat", "Front Squat", "Romanian Deadlift", "Deadlift",
         "Bench Press", "Incline Bench Press", "Overhead Press", "Dumbbell Press",
@@ -73,6 +76,18 @@ public struct SampleWorkoutData: GenerateSampleData {
 
             for set in daySets {
                 let sessionIndex = set.history?.count ?? 0
+
+                if set.setType == .duration {
+                    // Timed sets log a hold, never reps or weight.
+                    let target = set.targetDuration ?? 60
+                    let actual = target + Double(min(6, sessionIndex)) * 5
+                    _ = try history.recordHistory(
+                        for: set, completedDate: workoutDate, actualReps: nil, actualWeight: nil,
+                        actualWeightUnit: nil, actualDuration: actual, actualDescription: nil,
+                        actualRpe: set.rpe, note: nil)
+                    try routines.updateSet(set) { s in s.targetDuration = actual }
+                    continue
+                }
 
                 let baseReps = set.targetReps ?? 8
                 let baseWeight = set.weight ?? 40.0
@@ -153,6 +168,16 @@ public struct SampleWorkoutData: GenerateSampleData {
                 currentSets = try routines.sets(for: exercise)
                 let baseWeight = 40.0 + Double(day * 5 + index * 3)
                 for (setIndex, set) in currentSets.enumerated() {
+                    if Self.timedExerciseNames.contains(exercise.name) {
+                        try routines.updateSet(set) { s in
+                            s.setType = .duration
+                            s.targetReps = nil
+                            s.weight = nil
+                            s.targetDuration = 45 + Double(setIndex) * 15
+                            s.rpe = 6 + ((setIndex + day) % 3)
+                        }
+                        continue
+                    }
                     try routines.updateSet(set) { s in
                         s.setType = .reps
                         s.targetReps = 6 + ((setIndex + index) % 5)

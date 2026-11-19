@@ -124,6 +124,36 @@
       },
       "shouldGenerateSymbol" : false
     },
+    "%@, best time %@, achieved on %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, best time %2$@, achieved on %3$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, mejor tiempo %2$@, logrado el %3$@"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, meilleur temps %2$@, réalisé le %3$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@、ベストタイム %2$@、達成日 %3$@"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
     "%@, best weight %@ %@, estimated one rep max %@ %@, achieved on %@" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1439,6 +1469,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "紹介を始めます"
+          }
+        }
+      },
+      "shouldGenerateSymbol" : false
+    },
+    "Best: %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Best: %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mejor: %@"
+          }
+        },
+        "fr-CA" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meilleur : %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ベスト: %@"
           }
         }
       },

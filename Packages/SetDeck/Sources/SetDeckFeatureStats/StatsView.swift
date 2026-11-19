@@ -323,6 +323,8 @@ public struct StatsView: View {
         let bestWeight: Double
         let bestDate: Date
         let best1RM: Double
+        /// Longest hold in seconds for timed exercises (plank etc.); nil for weighted ones.
+        var bestDuration: TimeInterval? = nil
     }
 
     var exercisePRs: [PRSummary] {

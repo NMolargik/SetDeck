@@ -101,34 +101,15 @@ extension StatsView {
         }
 
         func exercisePRs(filteredHistory: [SetDeckSetHistory]) -> [StatsView.PRSummary] {
-            let grouped = Dictionary(grouping: filteredHistory) { entry in
-                entry.set?.exercise?.name ?? "Unknown exercise"
-            }
-
-            return grouped.compactMap { (name, entries) in
-                var bestEntry: SetDeckSetHistory?
-                var best1RM: Double = 0
-
-                for e in entries {
-                    let weight = e.actualWeight ?? 0
-                    let reps = e.actualReps ?? 0
-                    let estimate = estimated1RM(weight: weight, reps: reps)
-                    if estimate > best1RM {
-                        best1RM = estimate
-                        bestEntry = e
-                    }
-                }
-
-                guard let best = bestEntry,
-                      let bestWeight = best.actualWeight else { return nil }
-
-                return StatsView.PRSummary(
-                    exerciseName: name,
-                    bestWeight: bestWeight,
-                    bestDate: best.completedDate,
-                    best1RM: best1RM
+            PersonalRecords.summaries(from: filteredHistory).map {
+                StatsView.PRSummary(
+                    exerciseName: $0.exerciseName,
+                    bestWeight: $0.bestWeight,
+                    bestDate: $0.bestDate,
+                    best1RM: $0.best1RM,
+                    bestDuration: $0.bestDuration
                 )
-            }.sorted { $0.best1RM > $1.best1RM }
+            }
         }
 
         func exercise1RMPoints(filteredHistory: [SetDeckSetHistory]) -> [String: [StatsView.OneRMPoint]] {
