@@ -10,6 +10,7 @@
 import SwiftUI
 import SetDeckCore
 import SetDeckDesignSystem
+import SetDeckServices
 
 // MARK: - Muscle group presentation
 
@@ -62,6 +63,21 @@ extension MuscleGroup {
     var region: MuscleRegion { MuscleRegion(self) }
     var editorColor: Color { region.color }
     var editorIcon: String { region.icon }
+}
+
+/// One presentation of an exercise (muscle groups -> icon and colour) shared by the deck card
+/// and the routine editor, so the same exercise always looks the same.
+extension SetDeckExercise {
+    /// The exercise's own muscle groups, else a best guess from its name.
+    var presentationGroups: [MuscleGroup] {
+        muscleGroups.isEmpty ? (ExerciseMuscleHeuristics.groups(for: name) ?? []) : muscleGroups
+    }
+    func presentationTint(fallback: Color = .blueStart) -> Color {
+        presentationGroups.first?.editorColor ?? fallback
+    }
+    var presentationIcon: String {
+        presentationGroups.first?.editorIcon ?? (isWarmup ? "flame.fill" : "dumbbell.fill")
+    }
 }
 
 extension SetType {

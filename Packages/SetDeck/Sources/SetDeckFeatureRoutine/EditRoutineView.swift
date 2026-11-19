@@ -278,7 +278,7 @@ public struct EditRoutineView: View {
     }
 
     private func detailBackground(for exercise: SetDeckExercise) -> some View {
-        let tint = exercise.muscleGroups.first?.editorColor ?? .blueStart
+        let tint = exercise.presentationTint()
         return RoundedRectangle(cornerRadius: Brand.Radius.card, style: .continuous)
             .fill(.ultraThinMaterial)
             .overlay(

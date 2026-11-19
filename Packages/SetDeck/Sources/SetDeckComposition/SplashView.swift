@@ -45,7 +45,8 @@ struct SplashView: View {
             GeometryReader { proxy in
                 let foldX = proxy.hasFoldIfAvailable ? proxy.foldCenterXIfAvailable : nil
                 if let foldX, proxy.size.width >= 600 {
-                    foldedLayout(size: proxy.size, foldX: foldX, isFoldActive: proxy.isFoldActiveIfAvailable)
+                    foldedLayout(size: proxy.size, foldX: foldX, isFoldActive: proxy.isFoldActiveIfAvailable,
+                                 trailingInset: LayoutProbe.isVerticalBar(proxy.safeAreaInsets) ? proxy.safeAreaInsets.trailing : 0)
                 } else {
                     flatLayout(size: proxy.size, trailingInset: LayoutProbe.isVerticalBar(proxy.safeAreaInsets) ? proxy.safeAreaInsets.trailing : 0)
                 }
@@ -100,10 +101,11 @@ struct SplashView: View {
 
     // MARK: Folded layout (unfolded Duo)
 
-    private func foldedLayout(size: CGSize, foldX: CGFloat, isFoldActive: Bool) -> some View {
+    private func foldedLayout(size: CGSize, foldX: CGFloat, isFoldActive: Bool, trailingInset: CGFloat) -> some View {
         let gap = isFoldActive ? Brand.Space.xxl * 2 : Brand.Space.xxl
         let leadingWidth = max(0, foldX - gap / 2)
-        let trailingWidth = max(0, size.width - foldX - gap / 2)
+        // The Duo's vertical bar takes the trailing edge: centre in what is left of it.
+        let trailingWidth = max(0, size.width - foldX - gap / 2 - trailingInset)
         let side = min(markSide, leadingWidth * 0.8)
 
         return HStack(spacing: 0) {
@@ -119,8 +121,11 @@ struct SplashView: View {
                     .offset(y: showsText ? 0 : 10)
                 startButton
             }
-            .padding(.horizontal, Brand.Space.lg)
+            .frame(maxWidth: 420)
+            .padding(.horizontal, Brand.Space.xl)
             .frame(width: trailingWidth, height: size.height)
+
+            Color.clear.frame(width: trailingInset)
         }
     }
 

@@ -34,6 +34,8 @@ struct SetRowView: View {
     /// Logged today.
     var isLogged: Bool = false
     var accent: Color = .greenStart
+    /// Minimum height of the collapsed row; the content is centred in it.
+    var minRowHeight: CGFloat = 0
 
     private var hasChanges: Bool {
         editReps != originalReps ||
@@ -98,6 +100,7 @@ struct SetRowView: View {
                     .animation(.easeInOut(duration: 0.25), value: isEditing)
             }
             .padding(12)
+            .frame(minHeight: isEditing ? 0 : minRowHeight)
             .contentShape(Rectangle())
             .onTapGesture {
                 guard !isEditing else { return }

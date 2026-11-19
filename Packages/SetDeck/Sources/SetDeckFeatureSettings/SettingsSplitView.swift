@@ -102,11 +102,13 @@ public struct SettingsSplitView: View {
                 NavigationStack {
                     pageList
                         .navigationTitle("Settings")
+                        .containerBackground(.clear, for: .navigation)
                 }
             },
             trailing: {
                 NavigationStack {
                     detail
+                        .containerBackground(.clear, for: .navigation)
                 }
             }
         )
@@ -166,7 +168,7 @@ public struct SettingsSplitView: View {
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
-                .listRowBackground(isSelected ? Color.accentColor.opacity(0.18) : nil)
+                .listRowBackground(isSelected ? Color.greenStart.opacity(0.18) : nil)
                 .accessibilityAddTraits(isSelected ? .isSelected : [])
                 .hoverEffectIfAvailable(.highlight)
             }
