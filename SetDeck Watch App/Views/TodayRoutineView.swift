@@ -13,9 +13,10 @@ import SetDeckCore
 struct TodayRoutineView: View {
     @Environment(WatchConnectivityManager.self) private var connectivityManager
     @State private var selectedExercise: WatchExercise?
+    @State private var path: [WatchExercise] = []
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             Group {
                 if let routine = connectivityManager.todayRoutine {
                     if routine.exercises.isEmpty {
@@ -32,6 +33,12 @@ struct TodayRoutineView: View {
         }
         .onAppear {
             connectivityManager.requestTodayRoutine()
+            #if DEBUG
+            if let screen = WatchDemo.screen, screen == "exercise" || screen == "log",
+               let first = connectivityManager.todayRoutine?.exercises.first, path.isEmpty {
+                path = [first]
+            }
+            #endif
         }
     }
 

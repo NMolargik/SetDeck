@@ -65,6 +65,20 @@ final class WatchWorkoutSession {
         }
     }
 
+#if DEBUG
+    /// Screenshot demo: seeds an in-progress workout (two Bench Press sets logged).
+    func seedDemo(rest startRest: Bool) {
+        guard let routine else { return }
+        var current = WatchWorkoutLog(routineId: routine.id, startedAt: Date().addingTimeInterval(-9 * 60))
+        for set in routine.exercises[0].sets.prefix(WatchDemo.loggedSets) {
+            _ = current.record(setId: set.id, exerciseId: routine.exercises[0].id, reps: set.targetReps, weight: set.weight, rpe: set.rpe)
+        }
+        log = current
+        // Skips alert scheduling and snapshot publishing (no phone or widget host here).
+        if startRest { rest = WatchRestTimer(duration: 90); runRestTask() }
+    }
+#endif
+
     // MARK: - Workout lifecycle
     /// Starts today's cached routine: a fresh log plus the HealthKit workout.
     func startRoutine() async {

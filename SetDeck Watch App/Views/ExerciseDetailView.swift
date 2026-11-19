@@ -51,6 +51,16 @@ struct ExerciseDetailView: View {
             }
         }
         .listStyle(.carousel)
+        #if DEBUG
+        .onAppear {
+            if WatchDemo.screen == "log", selectedSet == nil, exercise.sets.count > WatchDemo.loggedSets {
+                Task {
+                    try? await Task.sleep(for: .milliseconds(600))
+                    selectedSet = exercise.sets[WatchDemo.loggedSets]
+                }
+            }
+        }
+        #endif
         .navigationTitle(exercise.name)
         .navigationBarTitleDisplayMode(.inline)
         .sheet(item: $selectedSet) { set in

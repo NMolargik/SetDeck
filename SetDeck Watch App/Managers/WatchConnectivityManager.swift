@@ -57,6 +57,9 @@ class WatchConnectivityManager: NSObject {
 
     // MARK: - Request Routine from iPhone
     func requestTodayRoutine() {
+        #if DEBUG
+        if WatchDemo.isOn { todayRoutine = WatchDemo.routine; return }
+        #endif
         // First, try to load from cached application context
         if todayRoutine == nil, let context = session?.receivedApplicationContext,
            let routineData = context[WatchMessageKey.routineData] as? Data {
