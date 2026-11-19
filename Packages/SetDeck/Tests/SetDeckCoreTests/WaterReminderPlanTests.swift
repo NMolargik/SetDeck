@@ -98,3 +98,46 @@ struct WaterReminderSettingsTests {
         #expect(s.plan == WaterReminderPlan(startMinute: 0, endMinute: 600, intervalMinutes: 90))
     }
 }
+
+@Suite("Water reminder daily goal")
+struct WaterReminderGoalTests {
+
+    @Test("remaining slots are the ones strictly after now")
+    func remaining() {
+        let plan = WaterReminderPlan()   // 480, 600, ... 1200
+        #expect(plan.remainingSlots(afterMinute: 600) == [720, 840, 960, 1080, 1200])
+        #expect(plan.remainingSlots(afterMinute: 0).count == 7)
+        #expect(plan.remainingSlots(afterMinute: 1200).isEmpty)
+    }
+
+    @Test("goal met skips the rest of today once")
+    func skipOnce() {
+        let met = WaterReminderGoalAction.decide(todayML: 2100, goalML: 2000, skippedDay: nil, today: "2026-11-18")
+        #expect(met == .skipRestOfToday)
+        let again = WaterReminderGoalAction.decide(todayML: 2500, goalML: 2000, skippedDay: "2026-11-18", today: "2026-11-18")
+        #expect(again == .none)
+    }
+
+    @Test("a new day restores the schedule")
+    func restoreNextDay() {
+        let a = WaterReminderGoalAction.decide(todayML: 300, goalML: 2000, skippedDay: "2026-11-17", today: "2026-11-18")
+        #expect(a == .restore)
+        let none = WaterReminderGoalAction.decide(todayML: 300, goalML: 2000, skippedDay: nil, today: "2026-11-18")
+        #expect(none == .none)
+    }
+
+    @Test("goal already met on a new day skips again")
+    func skipNewDay() {
+        let a = WaterReminderGoalAction.decide(todayML: 2000, goalML: 2000, skippedDay: "2026-11-17", today: "2026-11-18")
+        #expect(a == .skipRestOfToday)
+    }
+
+    @Test("day key is zero-padded and one-shot identifiers stay reminder identifiers")
+    func keys() {
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = TimeZone(identifier: "UTC")!
+        let date = Date(timeIntervalSince1970: 1_767_225_600)   // 2026-01-01
+        #expect(WaterReminderGoalAction.dayKey(for: date, calendar: cal) == "2026-01-01")
+        #expect(WaterReminderPlan.isReminderIdentifier(WaterReminderPlan.identifier(forSlot: 600, dayOffset: 2)))
+    }
+}

@@ -81,6 +81,14 @@ public struct RootView: View {
             wasReturningUser = isOnboardingComplete
             viewModel.prepareApp(isOnboardingComplete: isOnboardingComplete)
         }
+        // Quiet water reminders once today's goal is met; restore them on a new day.
+        .onChange(of: scenePhase) { _, phase in
+            guard phase == .active else { return }
+            Task { await session.refreshWaterReminderGoal() }
+        }
+        .onChange(of: session.healthManager.todayWaterML) { _, total in
+            Task { await session.waterReminders.applyDailyGoal(todayML: total) }
+        }
         // iCloud sync runs in the background. When a remote change lands, the change
         // stream already refreshes the deck; confirm the sync (once) with a toast.
         .onChange(of: session.cloudSyncManager.lastSyncDate) { _, newValue in

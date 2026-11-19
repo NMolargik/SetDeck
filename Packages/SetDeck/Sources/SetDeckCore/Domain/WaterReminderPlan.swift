@@ -20,6 +20,12 @@ nonisolated public enum WaterReminderKeys {
     public static let defaultEndMinute = 20 * 60
     public static let defaultIntervalMinutes = 120
 
+    /// Day (`yyyy-MM-dd`, device calendar) on which the rest of the reminders were
+    /// skipped because the daily water goal was met.
+    public static let skippedDay = "waterReminders.skippedDay"
+    /// Daily water goal used to quiet reminders: 2 litres (about 68 fl oz).
+    public static let dailyGoalML: Double = 2000
+
     public static let requestIdentifierPrefix = "setdeck.waterReminder."
     public static let categoryIdentifier = "setdeck.waterReminder.category"
     public static let logGlassActionIdentifier = "setdeck.waterReminder.logGlass"
@@ -81,6 +87,17 @@ nonisolated public struct WaterReminderPlan: Equatable, Sendable {
         identifier.hasPrefix(WaterReminderKeys.requestIdentifierPrefix)
     }
 
+    /// Slots later than `minuteOfDay` (minutes after midnight): the reminders still to
+    /// come today.
+    public func remainingSlots(afterMinute minuteOfDay: Int) -> [Int] {
+        slots.filter { $0 > minuteOfDay }
+    }
+
+    /// Identifier for a one-shot reminder at `slot` that is `dayOffset` days ahead.
+    public static func identifier(forSlot minute: Int, dayOffset: Int) -> String {
+        identifier(forSlot: minute) + ".d" + String(dayOffset)
+    }
+
     // MARK: - Glass size
 
     /// One glass: 250 ml in metric, 8 fl oz in imperial.
@@ -115,5 +132,41 @@ nonisolated public struct WaterReminderSettings: Equatable, Sendable {
                 intervalMinutes: interval
             )
         )
+    }
+}
+
+// MARK: - Daily goal policy
+
+/// What to do with today's pending reminders given the day's water total.
+nonisolated public enum WaterReminderGoalAction: Equatable, Sendable {
+    case none
+    /// Goal met: drop the rest of today's reminders (tomorrow's stay).
+    case skipRestOfToday
+    /// Reminders were skipped earlier but should run normally again (new day, or the
+    /// total fell back under the goal).
+    case restore
+
+    /// - Parameters:
+    ///   - skippedDay: the day the reminders were last skipped, if any.
+    ///   - today: today's day key (`dayKey(for:)`).
+    public static func decide(
+        todayML: Double,
+        goalML: Double,
+        skippedDay: String?,
+        today: String
+    ) -> WaterReminderGoalAction {
+        let goalMet = goalML > 0 && todayML >= goalML
+        switch (goalMet, skippedDay) {
+        case (true, today): return .none
+        case (true, _): return .skipRestOfToday
+        case (false, nil): return .none
+        case (false, _): return .restore
+        }
+    }
+
+    /// `yyyy-MM-dd` key for `date` in `calendar`.
+    public static func dayKey(for date: Date, calendar: Calendar = .current) -> String {
+        let c = calendar.dateComponents([.year, .month, .day], from: date)
+        return String(format: "%04d-%02d-%02d", c.year ?? 0, c.month ?? 0, c.day ?? 0)
     }
 }

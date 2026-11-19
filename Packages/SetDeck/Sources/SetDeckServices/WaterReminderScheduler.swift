@@ -70,6 +70,7 @@ public final class WaterReminderScheduler {
     /// Brings pending requests in line with the stored settings: removes this feature's
     /// requests, then (if enabled and permitted) adds one repeating daily trigger per slot.
     public func reschedule() async {
+        defaults.removeObject(forKey: WaterReminderKeys.skippedDay)
         await registerCategory()
         await removeAllReminders()
 
@@ -85,11 +86,7 @@ public final class WaterReminderScheduler {
 
         for slot in settings.plan.slots {
             let (hour, minute) = WaterReminderPlan.hourAndMinute(fromMinute: slot)
-            let content = UNMutableNotificationContent()
-            content.title = String(localized: "Time for some water 💧")
-            content.body = String(localized: "A glass now keeps you going. Tap to log it.")
-            content.sound = .default
-            content.categoryIdentifier = WaterReminderKeys.categoryIdentifier
+            let content = makeContent()
 
             var components = DateComponents()
             components.hour = hour
@@ -106,6 +103,74 @@ public final class WaterReminderScheduler {
                 Log.app.error("Failed to schedule water reminder \(slot): \(error.localizedDescription)")
             }
         }
+    }
+
+    // MARK: - Daily goal
+
+    /// Days of one-shot reminders laid down after skipping the rest of today. The app
+    /// restores the repeating schedule the next time it becomes active.
+    private static let skipHorizonDays = 3
+
+    /// Quiets reminders once today's water total meets the daily goal: today's remaining
+    /// repeating reminders are removed and replaced by one-shot reminders for the next
+    /// few days, and the repeating schedule is restored on the next day's first call.
+    /// Safe to call often (app active, after logging water).
+    public func applyDailyGoal(todayML: Double, now: Date = Date(), calendar: Calendar = .current) async {
+        let settings = WaterReminderSettings.load(from: defaults)
+        guard settings.isEnabled else { return }
+
+        let today = WaterReminderGoalAction.dayKey(for: now, calendar: calendar)
+        let action = WaterReminderGoalAction.decide(
+            todayML: todayML,
+            goalML: WaterReminderKeys.dailyGoalML,
+            skippedDay: defaults.string(forKey: WaterReminderKeys.skippedDay),
+            today: today
+        )
+
+        switch action {
+        case .none:
+            return
+        case .restore:
+            defaults.removeObject(forKey: WaterReminderKeys.skippedDay)
+            await reschedule()
+        case .skipRestOfToday:
+            let comps = calendar.dateComponents([.hour, .minute], from: now)
+            let minuteOfDay = (comps.hour ?? 0) * 60 + (comps.minute ?? 0)
+            let remaining = settings.plan.remainingSlots(afterMinute: minuteOfDay)
+            guard !remaining.isEmpty else {
+                defaults.set(today, forKey: WaterReminderKeys.skippedDay)
+                return
+            }
+            center.removePendingNotificationRequests(
+                withIdentifiers: remaining.map { WaterReminderPlan.identifier(forSlot: $0) }
+            )
+            for offset in 1...Self.skipHorizonDays {
+                guard let day = calendar.date(byAdding: .day, value: offset, to: now) else { continue }
+                let dayComponents = calendar.dateComponents([.year, .month, .day], from: day)
+                for slot in remaining {
+                    var components = dayComponents
+                    (components.hour, components.minute) = WaterReminderPlan.hourAndMinute(fromMinute: slot)
+                    let request = UNNotificationRequest(
+                        identifier: WaterReminderPlan.identifier(forSlot: slot, dayOffset: offset),
+                        content: makeContent(),
+                        trigger: UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+                    )
+                    do { try await center.add(request) } catch {
+                        Log.app.error("Failed to schedule post-goal reminder: \(error.localizedDescription)")
+                    }
+                }
+            }
+            defaults.set(today, forKey: WaterReminderKeys.skippedDay)
+        }
+    }
+
+    private func makeContent() -> UNMutableNotificationContent {
+        let content = UNMutableNotificationContent()
+        content.title = String(localized: "Time for some water 💧")
+        content.body = String(localized: "A glass now keeps you going. Tap to log it.")
+        content.sound = .default
+        content.categoryIdentifier = WaterReminderKeys.categoryIdentifier
+        return content
     }
 
     public func removeAllReminders() async {

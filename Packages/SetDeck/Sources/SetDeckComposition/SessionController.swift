@@ -201,10 +201,12 @@ public final class SessionController {
         // "Log a Glass" action on a cold launch is delivered).
         #if canImport(UserNotifications) && canImport(HealthKit) && !os(macOS)
         let waterHealth = healthManager
-        waterReminders = WaterReminderScheduler(defaults: defaults)
+        let reminders = WaterReminderScheduler(defaults: defaults)
+        waterReminders = reminders
         waterReminderHandler = WaterReminderNotificationHandler(defaults: defaults) { ml in
             await waterHealth.requestAuthorization()
             await waterHealth.addWaterIntakeIfSupported(amountML: ml, date: Date())
+            await reminders.applyDailyGoal(todayML: waterHealth.todayWaterML)
         }
         UNUserNotificationCenter.current().delegate = waterReminderHandler
         #endif
@@ -260,9 +262,24 @@ public final class SessionController {
         #endif
         #if canImport(UserNotifications) && canImport(HealthKit) && !os(macOS)
         let reminders = waterReminders
-        Task { await reminders.reschedule() }
+        Task {
+            await reminders.reschedule()
+            await refreshWaterReminderGoal()
+        }
         #endif
         reindexExercises()
+    }
+
+    // MARK: - Water reminders
+
+    /// Re-reads today's water total and quiets (or restores) the reminders against the
+    /// daily goal. Call when the app becomes active; logging paths call
+    /// `waterReminders.applyDailyGoal` directly.
+    public func refreshWaterReminderGoal() async {
+        #if canImport(UserNotifications) && canImport(HealthKit) && !os(macOS)
+        await healthManager.refreshWaterToday()
+        await waterReminders.applyDailyGoal(todayML: healthManager.todayWaterML)
+        #endif
     }
 
     // MARK: - Deep links
