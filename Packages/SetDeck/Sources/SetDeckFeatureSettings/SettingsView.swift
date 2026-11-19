@@ -48,6 +48,11 @@ public struct SettingsView: View {
                     .accessibilityHint("Switch between Month–Day–Year and Day–Month–Year formats for dates.")
                     .onChange(of: useDayMonthYearDates) { _, _ in Haptics.lightImpact() }
             }
+
+            // MARK: - Water Reminders
+            #if canImport(UserNotifications)
+            WaterReminderSettingsView()
+            #endif
         }
     }
 
