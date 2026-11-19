@@ -19,7 +19,7 @@ Your data syncs privately through iCloud, and your Apple Watch is ready at the r
 
 PLAN YOUR WEEK
 • A routine for each day, Sunday through Saturday, shown as a deck of exercise cards
-• Visual exercise cards with muscle groups, equipment, notes and video links
+• Visual exercise cards with muscle-group colours and icons
 • Four set types: reps, AMAP (as many as possible), timed duration and freeform
 • Mark exercises as warm-ups, reorder them, and set targets for weight, reps and time
 • On supported devices, muscle groups can be suggested for you, on-device
@@ -46,11 +46,12 @@ APPLE HEALTH, WATER AND ENERGY
 
 WATER REMINDERS (NEW)
 • Optional reminders you switch on yourself, off by default
-• Choose active hours and how often you'd like a nudge
+• Choose active hours, how often you'd like a nudge and your daily goal
+• Reminders stop for the day once you reach your goal
 • Tap "Log a Glass" right from the notification
 
 BUILT FOR iPHONE DUO (NEW)
-• Unfold and the routine deck sits beside the selected exercise
+• Unfold and the routine deck sits beside your week at a glance
 • Stats become a two-column dashboard
 • Settings split into a list and a detail pane
 • Everything still works beautifully on a standard iPhone and on iPad
@@ -80,7 +81,7 @@ PRIVATE BY DESIGN
 
 Available in English, Spanish, French (Canadian) and Japanese.
 
-SetDeck is made by Farside Software. Questions or ideas? We'd love to hear from you at support@farsidesoftware.com.
+SetDeck is made by Farside Software. Questions or ideas? Find help and contact us at farsidesoftware.com/support.
 ```
 
 ## Keywords — 100/100
@@ -93,7 +94,7 @@ Words already in the name or subtitle (setdeck, workout, tracker, plan, lifts, l
 SetDeck 3.0 is here!
 • Made for iPhone Duo: unfold for a routine deck beside your exercise, two-column stats and a split Settings
 • A redesigned routine editor with visual exercise cards
-• New water reminders with a "Log a Glass" action (optional, in Settings)
+• New water reminders with a daily goal and a "Log a Glass" action (optional, in Settings)
 • A fresh onboarding experience
 • Fixes and polish throughout
 
@@ -116,5 +117,6 @@ Alternative keyword sets assume the default name and subtitle. If you adopt a na
 - Everything described maps to code: set types (reps/AMAP/duration/freeform), RPE, warm-up flag, muscle heatmap, 19 achievements, Health workouts + Live Activity, water/energy widgets and Control Center control, Watch rest timer/complication/Double Tap, Siri intents, Spotlight, iCloud, es/fr-CA/ja.
 - Muscle-group suggestions are on-device and iOS 26+ only, hence "on supported devices".
 - 3.0 items (Duo layouts, editor, water reminders, onboarding) are written as shipping per the brief; confirm against the final build.
-- Water reminders are described without "skips once your goal is met" because the plan only says "if feasible".
+- Water reminders: the daily goal setting and the stop-at-goal behaviour were added on 2026-11-19; recheck against the final build.
+- 2026-11-19 review: removed equipment/notes/video from the exercise-card line (they display when present but cannot be edited in the app), pointed contact at the support page (no farsidesoftware.com mailbox exists yet), and matched the Duo routine line to the shipped layout (deck beside the week overview).
 - No prices, competitor names or "best". The old "Free, no subscriptions" line was dropped to avoid a price claim.
