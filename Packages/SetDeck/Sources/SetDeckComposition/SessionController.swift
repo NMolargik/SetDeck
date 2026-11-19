@@ -241,8 +241,29 @@ public final class SessionController {
             let model = achievements
             Task {
                 try? await Task.sleep(for: .seconds(2))
-                model.pendingCelebration = .firstWorkout
+                // `-sdCelebrate threePlates` picks the achievement; default First Workout.
+                model.pendingCelebration = DebugLaunch.value("-sdCelebrate").flatMap(Achievement.init(rawValue:)) ?? .firstWorkout
             }
+        }
+        // `-sdSeedHealth` (preview videos): a week of believable water, food and active-energy
+        // samples written to Health once (the app must already hold Health access).
+        if DebugLaunch.flag("-sdSeedHealth") {
+            #if canImport(HealthKit) && !os(macOS)
+            let health = healthManager
+            Task {
+                let cal = Calendar.current
+                let water = [1980.0, 2150, 1850, 2240, 2050, 1900]
+                let food = [2380.0, 2540, 2290, 2610, 2450, 2330]
+                let burn = [560.0, 640, 510, 690, 600, 580]
+                for i in 0..<6 {
+                    guard let day = cal.date(byAdding: .day, value: -(i + 1), to: Date()),
+                          let noon = cal.date(bySettingHour: 12, minute: 0, second: 0, of: day) else { continue }
+                    try? await health.addWater(ml: water[i], date: noon)
+                    try? await health.addCalories(kcal: food[i], date: noon)
+                    try? await health.addActiveEnergy(kcal: burn[i], date: noon)
+                }
+            }
+            #endif
         }
         if ProcessInfo.processInfo.arguments.contains("-duoStartWorkout") {
             #if canImport(HealthKit) && !os(macOS)

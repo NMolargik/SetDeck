@@ -14,8 +14,8 @@ import os
 @MainActor
 public struct SampleWorkoutData: GenerateSampleData {
 
-    private let routines: any RoutineRepository
-    private let history: any HistoryRepository
+    let routines: any RoutineRepository
+    let history: any HistoryRepository
 
     public init(routines: any RoutineRepository, history: any HistoryRepository) {
         self.routines = routines
@@ -38,6 +38,11 @@ public struct SampleWorkoutData: GenerateSampleData {
     /// Generates one workout per day for the last 30 days with slow progressive
     /// overload. Aborts (without change) when any history already exists.
     public func callAsFunction() throws(PersistenceError) {
+        // `-sdShowcase` (preview videos): a stronger 90-day program and history.
+        if DebugLaunch.flag("-sdShowcase") {
+            try generateShowcase()
+            return
+        }
         try generateLast30Days()
     }
 
