@@ -192,9 +192,10 @@ public struct SettingsSplitView: View {
                 if selection == .achievements {
                     AchievementsView(unlockedAchievements: achievementManager.unlockedAchievements, showsDone: false)
                 } else {
+                    // The selected row in the list already names the page, and an inline title
+                    // here would sit under the floating tab pill in short windows.
                     SettingsView(page: selection)
-                        .navigationTitle(selection.title)
-                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbar(.hidden, for: .navigationBar)
                 }
             }
             .id(selection)
