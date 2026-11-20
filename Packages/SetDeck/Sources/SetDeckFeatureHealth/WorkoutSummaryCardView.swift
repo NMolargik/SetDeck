@@ -95,7 +95,7 @@ public struct WorkoutSummaryShareLink: View {
     }
 
     public var body: some View {
-        Group {
+        ZStack {
             if let rendered {
                 ShareLink(
                     item: rendered,
