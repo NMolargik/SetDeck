@@ -27,6 +27,8 @@ private struct WorkoutCompletionHandler: ViewModifier {
     @State private var presentedSummary: WorkoutSummary?
     /// A review moment is waiting for the summary sheet to be dismissed.
     @State private var isReviewPending = false
+    /// Height of the window the sheet appears in; short windows get a full-height sheet.
+    @State private var hostHeight: CGFloat = 1000
 
     private let policy = ReviewPromptPolicy()
 
@@ -36,6 +38,7 @@ private struct WorkoutCompletionHandler: ViewModifier {
 
     func body(content: Content) -> some View {
         content
+            .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { hostHeight = $0 }
             .onChange(of: healthManager.lastCompletedWorkout) { _, summary in
                 guard let summary else { return }
                 presentedSummary = summary
@@ -43,7 +46,7 @@ private struct WorkoutCompletionHandler: ViewModifier {
             }
             .sheet(item: $presentedSummary, onDismiss: askForReviewIfPending) { summary in
                 WorkoutCompleteSheet(summary: summary)
-                    .presentationDetents([.medium])
+                    .presentationDetents(hostHeight < 700 ? [.large] : [.medium, .large])
                     .colorScheme(.dark)
             }
     }
@@ -69,17 +72,18 @@ struct WorkoutCompleteSheet: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 20) {
-                Text("Nice work!")
-                    .font(.title.bold())
-                WorkoutSummaryCardView(summary: summary)
-                WorkoutSummaryShareLink(summary: summary)
-                    .buttonStyle(.borderedProminent)
-                    .tint(.greenStart)
-                Spacer(minLength: 0)
+            ScrollView {
+                VStack(spacing: 20) {
+                    Text("Nice work!")
+                        .font(.title.bold())
+                        .accessibilityAddTraits(.isHeader)
+                    WorkoutSummaryCardView(summary: summary)
+                    WorkoutSummaryShareLink(summary: summary)
+                        .buttonStyle(.borderedProminent)
+                        .tint(.greenStart)
+                }
+                .padding()
             }
-            .padding()
-            .navigationTitle("Workout Complete")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
