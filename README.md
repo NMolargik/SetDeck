@@ -1,157 +1,81 @@
-<img src="Icons/AppIcon-iOS-Default-1024x1024@1x.png" alt="SetDeck" width="128" height="128">
+<p align="center">
+  <img src="Docs/readme/icon.png" width="128" height="128" alt="SetDeck app icon">
+</p>
 
-# SetDeck
+<h1 align="center">SetDeck</h1>
 
-A modern strength training and fitness tracking app for iOS and Apple Watch.
+<p align="center"><strong>Plan the training week, log every set, and watch the numbers climb.</strong></p>
 
-## Overview
+<p align="center">
+  <a href="https://apps.apple.com/us/app/setdeck/id6484503374">App Store</a> &middot;
+  <a href="https://farsidesoftware.com/setdeck">Product page</a> &middot;
+  <a href="https://farsidesoftware.com/support">Support</a>
+</p>
 
-SetDeck helps you plan and track your weightlifting workouts with flexible weekly routines, detailed exercise configuration, and comprehensive set logging. Built with SwiftUI and SwiftData, it features seamless iCloud sync, HealthKit integration, Live Activities, and a full Apple Watch companion app.
+<p align="center">
+  <img src="Docs/readme/shot-1.png" height=380 alt="Today's routine as a deck of exercise cards">
+  <img src="Docs/readme/shot-2.png" height=380 alt="Editing a routine">
+  <img src="Docs/readme/shot-3.png" height=380 alt="Training volume and personal records">
+  <img src="Docs/readme/shot-4.png" height=380 alt="Hydration and energy in Health">
+</p>
 
-## What's New in 2.5
+SetDeck is a strength training tracker built around the way lifters train: a routine for each day of the week, the exercises in it, and the sets inside each exercise. It syncs privately through iCloud and works with Apple Watch, Siri, and Apple Health. This repository is the current codebase, which is SetDeck 3.0.
 
-Polish and maintenance release: fixed Health permission text, Apple Watch version alignment, smarter review prompt after your first completed workout, share your workout summary.
+## What it does
 
-### App Store "What's New" text
+- **Plan your week.** A routine for each day, shown as a deck of exercise cards with muscle-group colors. Four set types: reps, AMAP, timed duration, and freeform, with warm-ups and targets for weight, reps, and time.
+- **Log in a tap.** Mark sets complete, rate effort with RPE, and switch between pounds and kilograms. Every completed set is saved to your history.
+- **See what is working.** Training volume over time, a muscle heatmap, muscle distribution, intensity charts, personal records with estimated one-rep max, and 19 achievements.
+- **Apple Health.** Record strength training workouts, follow them in a Live Activity on the Lock Screen and Dynamic Island, and log water and calories with widgets and a Control Center control. Optional water reminders have a daily goal.
+- **Apple Watch.** Today's routine, set logging, a guided rest timer, workout start and stop, and a complication.
+- **Siri, Shortcuts, and Spotlight.** Ask for today's workout, start and stop a workout, add water or calories, and find exercises in Spotlight.
+- **iPhone Duo.** Unfolded, the routine deck sits beside your week, stats become two columns, and Settings splits into a list and detail pane.
 
-> Polish and maintenance release: fixed Health permission text, Apple Watch version alignment, smarter review prompt after your first completed workout, share your workout summary.
+Every feature is free, with no accounts and no ads. SetDeck is available in English, Spanish, Canadian French, and Japanese.
 
-### Promotional text
+## Platforms and requirements
 
-> Build your weekly routine, log every set, and keep your Apple Health hydration, energy, and workouts in one place — now with shareable workout summaries. Free, no subscriptions.
+- iPhone and iPad (iOS 18 or later) and Apple Watch (watchOS 11 or later).
+- To build: Xcode 27, Swift 6 language mode, and an Apple Developer account for the CloudKit and HealthKit capabilities.
 
-## Features
+## Building
 
-### Workout Management
-- Plan weekly routines across 7 days with customizable exercises
-- Exercise library with muscle group assignments, equipment, notes, and video references
-- Flexible set types: reps, AMAP (As Many As Possible), duration-based, and freeform
-- RPE (Rate of Perceived Exertion) ratings for completed sets
-- AI-powered automatic muscle group inference for exercises (on-device, iOS 26+)
-- Achievements across consistency, volume, routine, variety, and strength — with confetti
+1. Clone the repository and open `SetDeck.xcworkspace`, not the bare `.xcodeproj`. It resolves the local package in `Packages/SetDeck`.
+2. Set your signing team and update the bundle identifiers and the App Group and iCloud container identifiers.
+3. Enable the capabilities: iCloud (CloudKit, private database), HealthKit with background delivery, App Groups (shared with the widgets and watch app), and Siri.
+4. Build and run the `SetDeck` scheme.
 
-### Health Integration
-- **HealthKit Sync**: Read and write workout data, hydration, and calories
-- **Strength Training Workouts**: Tracked workout sessions with a Live Activity timer
-- **Hydration Tracking**: Monitor daily water intake
-- **Calorie Tracking**: View consumed and burned calories
-
-### Apple Watch
-- Companion app to view daily routine and log sets from your wrist
-- Guided rest timer between sets
-- Watch face complication for today's workout
-- Start and stop workouts directly from Watch
-
-### Widgets & Live Activities
-- **Water Widgets**: Daily hydration in liters or ounces
-- **Energy Widget**: Calories consumed and burned
-- **Live Activity**: Elapsed workout time on the Lock Screen and Dynamic Island, pause-aware
-- **Control Center**: Quick workout toggle (iOS 18+)
-
-### Siri & System Integration
-- "What's my workout today?", per-day queries, workout status, and exercise counts
-- Start/stop workouts hands-free; donations teach Siri your routine
-- Exercises are semantically indexed into Spotlight
-- `setdeck://` deep links from widgets, shortcuts, and menu commands
-- Localized in English, Spanish, French (Canada), and Japanese
-
-## Requirements
-
-- iOS 18.0+ / watchOS 11.0+
-- Xcode 27 beta (Swift 6 language mode)
-- Apple Developer account (for CloudKit and HealthKit capabilities)
-
-## Setup
-
-1. Clone the repository
-2. **Open `SetDeck.xcworkspace`** (not the bare `.xcodeproj`) — it resolves the local Swift package
-3. Configure signing with your Apple Developer account
-4. Update bundle identifiers and App Group/iCloud container identifiers
-5. Build and run
-
-### Required Capabilities
-
-- iCloud (CloudKit with private database)
-- HealthKit (with background delivery)
-- App Groups (shared with widgets and watch)
-- Siri
-
-## Architecture
-
-SetDeck is a **thin app target on top of an SPM umbrella package** (`Packages/SetDeck`) of layered, single-responsibility modules. Dependencies point inward: features depend on the design system and core; data implements core's protocols; core depends on nothing.
-
-```
-SetDeck app / widgets / watch (thin shells)
-    └── SetDeckComposition       SessionController (composition root) + RootView/MainView
-            ├── SetDeckFeature*  Routine · Stats · Health · Settings · Onboarding
-            ├── SetDeckFeatureShared  WorkoutDataModel · AchievementModel (environment-injected)
-            ├── SetDeckServices  HealthKit + Live Activities · CloudKit sync · WatchConnectivity · on-device ML
-            ├── SetDeckData      SwiftData repositories · CloudKit store with graceful fallback
-            ├── SetDeckDesignSystem  brand colors/tokens · glass styles · toast stack
-            └── SetDeckCore      models · domain logic · protocols · watch wire DTOs (pure)
-```
-
-### Key Components
-
-| Component | Responsibility |
-|-----------|---------------|
-| `SessionController` | Composition root: builds the dependency graph, owns deep-link routing and Spotlight reindexing |
-| `WorkoutDataModel` | Shared data surface for feature views — every read/write goes through a use-case, failures surface as toasts |
-| `AchievementModel` + `AchievementEvaluator` | Pure achievement logic (pinned calendar) with celebration bookkeeping |
-| `RoutineRepository` / `HistoryRepository` | Protocol boundaries over SwiftData, consumed through single-verb use-cases with typed errors |
-| `HealthManager` | HealthKit lifecycle, hydration/energy logging, and the strength-training Live Activity |
-| `PhoneConnectivityManager` | Watch relay over shared Codable wire DTOs (defined once in Core for both phone and watch) |
-
-### Key Patterns
-
-- **Repositories + use-cases**: views never touch SwiftData; every read/write goes through a single-verb use-case (`LoadExercises`, `LogSet`, …) with typed `throws(PersistenceError)`
-- **One multicast change stream**: repositories and CloudKit imports notify a single `AsyncStream`; screens, achievements, and Spotlight all observe it
-- **Graceful persistence degradation**: CloudKit → local-only → in-memory, never a launch crash
-- **Host-run tests**: the bulk of the suite runs on the Mac in seconds — no simulator
-
-### Data Models
-
-| Model | Description |
-|-------|-------------|
-| `SetDeckRoutine` | One weekly slot (day 0–6) holding exercises |
-| `SetDeckExercise` | Exercise with muscle groups, equipment, order, and sets |
-| `SetDeckSet` | Set configuration (type, target reps/weight/duration, RPE) |
-| `SetDeckSetHistory` | Audit trail of every completed set |
-
-## Project Structure
-
-```
-SetDeck.xcworkspace             # Open this
-├── SetDeck/                    # Thin app target: app shell, App Intents, Spotlight, menu commands
-├── SetDeckWidget/              # Widget extension: water/energy widgets, control widget, Live Activity
-├── SetDeck Watch App/          # Watch companion (WatchConnectivity over Core DTOs)
-├── SetDeck Watch Widget/       # Watch complication
-├── Packages/SetDeck/           # The real app (SPM umbrella package)
-│   ├── Sources/                #   Core · Data · Services · DesignSystem · FeatureShared ·
-│   │                           #   FeatureRoutine/Stats/Health/Settings/Onboarding · Composition
-│   └── Tests/                  #   Host-run suite (swift test, no simulator)
-└── Scripts/                    # Localization pinning tooling
-```
-
-## Testing
+Run the package tests, which need no simulator:
 
 ```sh
 cd Packages/SetDeck && swift test
 ```
 
-Domain (achievements, deep links, models), repositories, the shared feature models (over fake use-cases), and composition policy are all covered on the host. The hosted `SetDeckTests` target covers app-target glue only.
+## Architecture
+
+SetDeck is a thin app target on top of an SPM umbrella package of layered modules. Dependencies point inward: features depend on the design system and core, data implements core's protocols, and core depends on nothing.
+
+```
+SetDeck app / widgets / watch (thin shells)
+    └── SetDeckComposition       SessionController (composition root) + RootView/MainView
+            ├── SetDeckFeature*  Routine · Stats · Health · Settings · Onboarding
+            ├── SetDeckFeatureShared  WorkoutDataModel · AchievementModel
+            ├── SetDeckServices  HealthKit and Live Activities · CloudKit sync · WatchConnectivity · on-device ML
+            ├── SetDeckData      SwiftData repositories · CloudKit store with graceful fallback
+            ├── SetDeckDesignSystem  brand colors and tokens · glass styles
+            └── SetDeckCore      models · domain logic · protocols · watch wire DTOs (pure)
+```
+
+- **Repositories and use-cases.** Views never touch SwiftData. Every read and write goes through a single-verb use-case with typed errors.
+- **One change stream.** Repositories and CloudKit imports notify a single `AsyncStream` that screens, achievements, and Spotlight all observe.
+- **Graceful persistence.** CloudKit, then local-only, then in-memory, so a storage problem never crashes the launch.
+
+`CLAUDE.md` has the module-by-module detail.
 
 ## Privacy
 
-- All workout data stays in your private iCloud container
-- Health data is read and written only with your permission, directly via HealthKit
-- Muscle-group inference runs entirely on-device
-- No analytics or tracking
+Your routines and history stay in your private iCloud container. Health data is read and written only with your permission, muscle-group suggestions run on-device, and there is no analytics or tracking.
 
-## License
+---
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Author
-
-Farside Software LLC — https://farsidesoftware.com
+Made by [Farside Software LLC](https://farsidesoftware.com). Released under the MIT License, see [LICENSE](LICENSE).
