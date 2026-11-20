@@ -25,15 +25,17 @@ for (name, w, h) in sizes {
     // Soft green glow, 20% at the centre fading out.
     let glow = CGGradient(colorsSpace: space, colors: [rgb(0x4FC290, 0.20), rgb(0x4FC290, 0.08), rgb(0x4FC290, 0)] as CFArray, locations: [0, 0.5, 1])!
     ctx.drawRadialGradient(glow, startCenter: centre, startRadius: 0, endCenter: centre, endRadius: base * 0.75, options: [])
-    // Three stacked card outlines (the icon), large, low in the canvas and cropped by the edge, about 5% white.
-    let cardW = base * 0.95, cardH = cardW * 1.32, r = cardW * 0.14
-    let pivot = CGPoint(x: centre.x + W * 0.02, y: centre.y + H * 0.34)
+    // The new icon's fan of three card outlines (front card plus two tilted -16 and +16 degrees about a pivot below the cards, as in
+    // AppIcon.icon: card 420 x 575, radius 75, pivot 367.5 below the card centre), large, low in the canvas and cropped by the edge, about 5% white.
+    let cardW = base * 0.95, k = cardW / 420, cardH = 575 * k, r = 75 * k
+    let front = CGPoint(x: centre.x + W * 0.02, y: centre.y + H * 0.34)
+    let pivot = CGPoint(x: front.x, y: front.y + 367.5 * k)
     ctx.setStrokeColor(rgb(0xFFFFFF, 0.05)); ctx.setLineWidth(max(3, cardW * 0.008)); ctx.setLineJoin(.round)
-    for (i, ang) in [(-9.0), 0.0, 9.0].enumerated() {
+    for ang in [-16.0, 16.0, 0.0] {
         ctx.saveGState()
-        ctx.translateBy(x: pivot.x + CGFloat(i - 1) * cardW * 0.06, y: pivot.y)
+        ctx.translateBy(x: pivot.x, y: pivot.y)
         ctx.rotate(by: CGFloat(ang) * .pi / 180)
-        let rect = CGRect(x: -cardW / 2, y: -cardH / 2, width: cardW, height: cardH)
+        let rect = CGRect(x: -cardW / 2, y: -367.5 * k - cardH / 2, width: cardW, height: cardH)
         ctx.addPath(CGPath(roundedRect: rect, cornerWidth: r, cornerHeight: r, transform: nil))
         ctx.strokePath()
         ctx.restoreGState()
