@@ -196,6 +196,8 @@ public struct SettingsSplitView: View {
                     // here would sit under the floating tab pill in short windows.
                     SettingsView(page: selection)
                         .toolbar(.hidden, for: .navigationBar)
+                        // Without the bar the form would start flush with the top edge (unfolded Duo).
+                        .contentMargins(.top, Brand.Space.xl, for: .scrollContent)
                 }
             }
             .id(selection)
