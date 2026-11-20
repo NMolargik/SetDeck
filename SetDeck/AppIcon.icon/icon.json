@@ -1,113 +1,97 @@
 {
-  "fill-specializations" : [
+  "fill-specializations": [
     {
-      "value" : {
-        "linear-gradient" : [
+      "value": {
+        "linear-gradient": [
           "display-p3:1.00000,1.00000,1.00000,1.00000",
           "srgb:0.91373,0.90980,0.93725,1.00000"
         ]
       }
     },
     {
-      "appearance" : "dark",
-      "value" : {
-        "linear-gradient" : [
+      "appearance": "dark",
+      "value": {
+        "linear-gradient": [
           "display-p3:0.20392,0.18824,0.23922,1.00000",
           "srgb:0.07059,0.06275,0.08235,1.00000"
         ]
       }
     }
   ],
-  "groups" : [
+  "groups": [
     {
-      "layers" : [
+      "name": "Dumbbell",
+      "layers": [
         {
-          "image-name" : "Flame.svg",
-          "name" : "Flame"
-        },
-        {
-          "image-name" : "Dumbbell.svg",
-          "name" : "Dumbbell"
-        },
-        {
-          "image-name" : "Drop.svg",
-          "name" : "Drop",
-          "opacity" : 1
+          "image-name": "glyph.svg",
+          "name": "Dumbbell"
         }
       ],
-      "lighting" : "individual",
-      "refractivity" : {
-        "depth" : 0,
-        "enabled" : false,
-        "strength" : 0.5
+      "shadow": {
+        "kind": "layer-color",
+        "opacity": 0.4
       },
-      "shadow" : {
-        "kind" : "layer-color",
-        "opacity" : 0.4
-      },
-      "translucency" : {
-        "enabled" : true,
-        "value" : 0.5
+      "translucency": {
+        "enabled": false,
+        "value": 0.3
       }
     },
     {
-      "layers" : [
+      "name": "Front",
+      "layers": [
         {
-          "image-name" : "Card-1.svg",
-          "name" : "Card-1",
-          "opacity-specializations" : [
-            {
-              "value" : 0.95
-            },
-            {
-              "appearance" : "dark",
-              "value" : 0.95
-            }
-          ]
-        },
-        {
-          "image-name" : "Card-2.svg",
-          "name" : "Card-2",
-          "opacity-specializations" : [
-            {
-              "value" : 0.95
-            },
-            {
-              "appearance" : "dark",
-              "value" : 0.95
-            }
-          ]
-        },
-        {
-          "image-name" : "Card-3.svg",
-          "name" : "Card-3",
-          "opacity-specializations" : [
-            {
-              "value" : 0.95
-            },
-            {
-              "appearance" : "dark",
-              "value" : 0.95
-            }
-          ]
+          "image-name": "front.svg",
+          "name": "Front"
         }
       ],
-      "name" : "Cards",
-      "shadow" : {
-        "kind" : "neutral",
-        "opacity" : 0.25
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.3
       },
-      "specular" : true,
-      "translucency" : {
-        "enabled" : true,
-        "value" : 0.3
+      "translucency": {
+        "enabled": true,
+        "value": 0.45
+      }
+    },
+    {
+      "name": "Right",
+      "layers": [
+        {
+          "image-name": "right.svg",
+          "name": "Right"
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.3
+      },
+      "translucency": {
+        "enabled": true,
+        "value": 0.45
+      }
+    },
+    {
+      "name": "Left",
+      "layers": [
+        {
+          "image-name": "left.svg",
+          "name": "Left"
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.3
+      },
+      "translucency": {
+        "enabled": true,
+        "value": 0.45
       }
     }
   ],
-  "supported-platforms" : {
-    "circles" : [
+  "supported-platforms": {
+    "circles": [
       "watchOS"
     ],
-    "squares" : "shared"
+    "squares": "shared"
   }
 }

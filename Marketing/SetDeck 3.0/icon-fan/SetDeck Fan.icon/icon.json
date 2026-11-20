@@ -1,0 +1,97 @@
+{
+  "fill-specializations": [
+    {
+      "value": {
+        "linear-gradient": [
+          "display-p3:1.00000,1.00000,1.00000,1.00000",
+          "srgb:0.91373,0.90980,0.93725,1.00000"
+        ]
+      }
+    },
+    {
+      "appearance": "dark",
+      "value": {
+        "linear-gradient": [
+          "display-p3:0.20392,0.18824,0.23922,1.00000",
+          "srgb:0.07059,0.06275,0.08235,1.00000"
+        ]
+      }
+    }
+  ],
+  "groups": [
+    {
+      "name": "Dumbbell",
+      "layers": [
+        {
+          "image-name": "glyph.svg",
+          "name": "Dumbbell"
+        }
+      ],
+      "shadow": {
+        "kind": "layer-color",
+        "opacity": 0.4
+      },
+      "translucency": {
+        "enabled": false,
+        "value": 0.3
+      }
+    },
+    {
+      "name": "Front",
+      "layers": [
+        {
+          "image-name": "front.svg",
+          "name": "Front"
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.3
+      },
+      "translucency": {
+        "enabled": true,
+        "value": 0.45
+      }
+    },
+    {
+      "name": "Right",
+      "layers": [
+        {
+          "image-name": "right.svg",
+          "name": "Right"
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.3
+      },
+      "translucency": {
+        "enabled": true,
+        "value": 0.45
+      }
+    },
+    {
+      "name": "Left",
+      "layers": [
+        {
+          "image-name": "left.svg",
+          "name": "Left"
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.3
+      },
+      "translucency": {
+        "enabled": true,
+        "value": 0.45
+      }
+    }
+  ],
+  "supported-platforms": {
+    "circles": [
+      "watchOS"
+    ],
+    "squares": "shared"
+  }
+}
